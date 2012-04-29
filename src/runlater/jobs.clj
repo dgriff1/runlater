@@ -12,8 +12,8 @@
                     o )))))
 
 
-(defn assert_task [ task ]
-    (and (contains? task :task) (contains? task :name)))
+(defn assert_task [ job ]
+    (= (sort [:name :when :url])  (sort (keys job )) ))
 
 
 (defn convert [json_stream]
