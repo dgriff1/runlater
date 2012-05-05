@@ -7,6 +7,7 @@
                      [ring/ring-jetty-adapter "1.0.1"]
                      [lein-ring "0.5.4"]
                      [clj-time "0.4.2"]
+                     [com.novemberain/validateur "1.1.0"]
                       ]
                      :dev-dependencies [[lein-ring "0.5.4"]]
                      :ring {:handler runlater.core/app})

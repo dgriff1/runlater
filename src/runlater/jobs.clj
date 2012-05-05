@@ -1,6 +1,6 @@
 (ns runlater.jobs
    (:require [clojure.data.json] [monger.collection :as mc] [monger.json] )
-   (:use clojure.data.json)
+   (:use clojure.data.json validateur.validation )
     (:import [org.bson.types ObjectId]
                [com.mongodb DB WriteConcern]))
 
@@ -18,9 +18,15 @@
           (assoc o :_id (.toString (:_id o))))))
       (json-str objs)))
     
+(def jobs_validator (validation-set 
+    (presence-of :name )
+    (presence-of :url )
+    (presence-of :when )
+    (presence-of :interval)
+    ))
 
 (defn assert_task [ job ]
-    (= (sort [:name :when :url :interval ])  (sort (keys job )) ))
+    (valid? jobs_validator job ))
 
 
 (defn convert [json_stream]
