@@ -6,6 +6,7 @@
                      [com.novemberain/monger "1.0.0-beta4"]
                      [ring/ring-jetty-adapter "1.0.1"]
                      [lein-ring "0.5.4"]
+                     [clj-time "0.4.2"]
                       ]
                      :dev-dependencies [[lein-ring "0.5.4"]]
                      :ring {:handler runlater.core/app})

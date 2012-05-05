@@ -4,26 +4,35 @@
     (:import [org.bson.types ObjectId]
                [com.mongodb DB WriteConcern]))
 
+(defn safe_assoc [m k v] 
+  (if (contains? m k) k (assoc m k v)))
+
+
 
 (defn to-json [objs]
-    (json-str (for [o objs]
-                (if (contains? o :_id )
-                    (assoc o :_id (.toString (:_id o))
-                    o )))))
-
+    (prn objs)
+    (if (seq? objs) 
+      (json-str (for [o objs]
+        (if (contains? o :_id )
+          o
+          (assoc o :_id (.toString (:_id o))))))
+      (json-str objs)))
+    
 
 (defn assert_task [ job ]
-    (= (sort [:name :when :url])  (sort (keys job )) ))
+    (= (sort [:name :when :url :interval ])  (sort (keys job )) ))
 
 
 (defn convert [json_stream]
-    (assoc (read-json (slurp json_stream))  :_id (ObjectId.))   )
+  (let [doc (read-json json_stream)]
+    (prn "Doc is " doc)
+    (safe_assoc (assoc doc :_id (ObjectId.)) :interval "" ) ))
 
 (defn index []
     {:status 200 :body (to-json (mc/find-maps "todos"))} )
 
 (defn create [req body]
-    (let [ doc (convert body) ]
+    (let [ doc (convert (slurp body)) ]
         (if (and ( assert_task doc) (mc/insert "todos" doc))
             {:status 201 :body (json-str doc ) }
             {:status 400 :body (str "Invalid Keys" ) }
