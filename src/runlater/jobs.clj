@@ -1,6 +1,6 @@
 (ns runlater.jobs
-   (:require [clojure.data.json] [monger.collection :as mc] [monger.json] )
-   (:use clojure.data.json validateur.validation )
+   (:require [clojure.data.json] [monger.collection :as mc] [monger.json] [monger.joda-time]   )
+   (:use clojure.data.json validateur.validation clj-time.format )
     (:import [org.bson.types ObjectId]
                [com.mongodb DB WriteConcern]))
 
@@ -29,7 +29,7 @@
 
 (defn convert [json_stream]
   (let [doc (read-json json_stream)]
-    (safe_assoc (assoc doc :_id (ObjectId.)) :interval "" ) ))
+    (assoc (safe_assoc (assoc doc :_id (ObjectId.)) :interval "" ) :when (parse (formatters :date-time) (get doc :when) ) )))
 
 (defn index []
     {:status 200 :body (to-json (mc/find-maps "todos"))} )
