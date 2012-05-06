@@ -8,6 +8,7 @@
                      [lein-ring "0.5.4"]
                      [clj-time "0.4.2"]
                      [com.novemberain/validateur "1.1.0"]
+                     [clj-time "0.4.2"]
                       ]
                      :dev-dependencies [[lein-ring "0.5.4"]]
                      :ring {:handler runlater.core/app})

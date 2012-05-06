@@ -10,7 +10,6 @@
 
 
 (defn to-json [objs]
-    (prn objs)
     (if (seq? objs) 
       (json-str (for [o objs]
         (if (contains? o :_id )
@@ -31,7 +30,6 @@
 
 (defn convert [json_stream]
   (let [doc (read-json json_stream)]
-    (prn "Doc is " doc)
     (safe_assoc (assoc doc :_id (ObjectId.)) :interval "" ) ))
 
 (defn index []
