@@ -7,5 +7,6 @@
   [ 
   (is (= (split_into_hash "2 hOurs") {:hours 2}  ))
   (is (= (split_into_hash "2 hours 4 minuTes") {:hours 2 :minutes 4}  ))
+  (is (= (split_into_hash "2 hours 4 minuTes 2 minutes") {:hours 2 :minutes 6}  ))
 ])
 
