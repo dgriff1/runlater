@@ -1,0 +1,71 @@
+
+body {
+	background-color: #FDFDFD;
+	font-family:Tahoma, Geneva, sans-serif;
+	font-size: 0.8em;
+	color: #212121;
+	margin: 0;
+	font-weight: 100px;
+}
+
+.header {
+	background-color: #242c2e;
+	height: 57px;
+	min-width: 600px;
+	padding-left: 6%;
+
+}
+
+.header a {
+	color: #FFFFFF; 
+	font-size: 1.4em;
+	text-decoration: none;
+
+}
+
+.content {
+	margin-auto;
+	margin-left: 5%;
+	min-width: 1010px;
+	width: 1010px;
+	display: block;
+	padding-left: 40px;
+	padding-top: 20px;
+}
+
+.signin {
+	text-align: center;
+	border: 1px dashed #CDCDCD;
+	padding: 20px;
+	padding-top: 5px;
+	border-radius:25px;
+	-moz-border-radius:25px; /* Firefox 3.6 and earlier */
+	width: 100%;
+}
+
+
+.infographic {
+	margin-top: 30px;
+	text-align: center;
+	padding: 20px;
+	padding-top: 5px;
+	height: 500PX;
+}
+
+.left {
+	min-width: 250px;
+	float: left;
+	width: 250px;
+}
+
+.right {
+	width: 720px;
+	margin-left: 320px;
+}
+
+
+
+form {
+	padding: 0;
+	margin: 0;
+}
