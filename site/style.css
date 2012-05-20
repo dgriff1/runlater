@@ -4,7 +4,7 @@ body {
 	background-image: url(include/image/bgimg.jpg) ;
 	line-height: 25px;
 	font-family:Tahoma, Geneva, sans-serif;
-	font-size: 0.8em;
+	font-size: 0.9em;
 	color: #212121;
 	margin: 0;
 	font-weight: 400px;
@@ -38,6 +38,14 @@ body {
 	color: #FFFFFF; 
 	font-size: 1.4em;
 	text-decoration: none;
+}
+
+.graphic_pane {
+	margin-right: 45px;
+	float: left;
+}
+
+.info_pane{
 }
 
 a.login {
