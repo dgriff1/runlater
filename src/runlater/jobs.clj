@@ -27,23 +27,31 @@
     (valid? jobs_validator job ))
 
 
-(defn convert [json_stream]
-  (let [doc (read-json json_stream)]
+(defn new_doc [json_stream]  
+  (let [doc (read-json json_stream)] 
+      ((comp 
+        (fn [m] (if (contains? m :_id ) m (throw "Do not specify _id"))) 
+        
+      ) doc )))
+
+(defn convert [doc]
     ((comp 
-        (fn [m] (assoc m :_id (ObjectId.)) )
+        (fn [m] (safe_assoc m :_id (ObjectId.)) )
         (fn [m] (assoc m :when (parse (formatters :date-time) (get m :when))))
-        (fn [m] (assoc m :interval ( sched/split_into_hash  (get m :interval "")))) 
-    ) doc)
-))
+        (fn [m] (assoc m :interval ( sched/split_into_hash (get m :interval "")))) 
+    ) doc))
+
+
 (defn index []
     {:status 200 :body (to-json (mc/find-maps "todos"))} )
 
 (defn create [req body]
-    (let [ doc (convert (slurp body)) ]
-        (if (and ( assert_task doc) (mc/insert "todos" doc))
-            {:status 201 :body (json-str doc ) }
-            {:status 400 :body (str "Invalid Keys" ) }
-            )) )
+        (try (let [doc (convert (new_doc (slurp body))) ] 
+              (mc/insert "jobs" doc)
+            {:status 201 :body (json-str doc ) })
+        (catch Exception e 
+            {:status 400 :body (str e ) } )
+             ))
 
 (defn edit [id req body]
     {:status 200 :body (str "Edit " id " req " req " --" (read-json (slurp body )) ) } )

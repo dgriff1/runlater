@@ -10,6 +10,6 @@
 
 
 (deftest test_conversion ;; Test massaging the JSON
-  (let [doc (convert (to-json { :name "RunLater" :when "2012-05-06T06:15:42.215Z" :url "www.google.com" :_id "someid"}  ))]
-    [ (is (not (= (:_id doc) "someid" ))) 
+  (let [doc (convert { :name "RunLater" :when "2012-05-06T06:15:42.215Z" :url "www.google.com" :_id "someid"}  )]
+    [ (is (contains? doc :_id )) 
       (is (not (= (:when doc) ""))) ] ))
