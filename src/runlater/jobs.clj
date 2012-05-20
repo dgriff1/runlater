@@ -1,5 +1,5 @@
 (ns runlater.jobs
-   (:require [clojure.data.json] [monger.collection :as mc] [monger.json] [monger.joda-time] [runlater.sched :as sched]  )
+   (:require [clojure.data.json] [monger.collection :as mc] [monger.json] [monger.joda-time] [runlater.sched :as sched] [runlater.client :as rclient] )
    (:use clojure.data.json validateur.validation clj-time.format )
     (:import [org.bson.types ObjectId]
                [com.mongodb DB WriteConcern]))
@@ -27,23 +27,34 @@
     (valid? jobs_validator job ))
 
 
-(defn convert [json_stream]
-  (let [doc (read-json json_stream)]
+(defn new_doc [json_str headers]  
+      ((comp 
+        (fn [m] (if (contains? m :_id ) m (throw "Do not specify _id"))) 
+        (fn [m] (if (and (contains? headers :runlater_key ) (contains? headers :runlater_hash)) 
+                  (if (= (rclient/hmac (:runlater_key headers) json_str) (:runlater_hash headers)) 
+                      m 
+                      (throw (Exception. "Invalid HMAC Hash")))
+                  (throw (Exception. "Must Specify runlater_key and runlater_hash in headers") ))) 
+      ) (read-json json_str) ))
+
+(defn convert [doc]
     ((comp 
-        (fn [m] (assoc m :_id (ObjectId.)) )
+        (fn [m] (safe_assoc m :_id (ObjectId.)) )
         (fn [m] (assoc m :when (parse (formatters :date-time) (get m :when))))
-        (fn [m] (assoc m :interval ( sched/split_into_hash  (get m :interval "")))) 
-    ) doc)
-))
+        (fn [m] (assoc m :interval ( sched/split_into_hash (get m :interval "")))) 
+    ) doc))
+
+
 (defn index []
     {:status 200 :body (to-json (mc/find-maps "todos"))} )
 
 (defn create [req body]
-    (let [ doc (convert (slurp body)) ]
-        (if (and ( assert_task doc) (mc/insert "todos" doc))
-            {:status 201 :body (json-str doc ) }
-            {:status 400 :body (str "Invalid Keys" ) }
-            )) )
+        (try (let [doc (convert (new_doc (slurp body) (:headers req)  )) ] 
+              (mc/insert "jobs" doc)
+            {:status 201 :body (json-str doc ) })
+        (catch Exception e 
+            {:status 400 :body (str e ) } )
+             ))
 
 (defn edit [id req body]
     {:status 200 :body (str "Edit " id " req " req " --" (read-json (slurp body )) ) } )
