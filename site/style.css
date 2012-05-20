@@ -25,6 +25,12 @@ body {
 	word-spacing: 30px;
 }
 
+.header_links {
+	float: left;
+	margin-left: 50px;
+	margin-top: 28px;
+}
+
 .header a {
 	color: #FFFFFF; 
 	font-size: 1.4em;
