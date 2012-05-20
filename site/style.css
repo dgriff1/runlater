@@ -1,0 +1,59 @@
+
+body {
+	background-color: #121212;
+	line-height: 25px;
+	font-family:Tahoma, Geneva, sans-serif;
+	font-size: 0.8em;
+	color: #212121;
+	margin: 0;
+	font-weight: 400px;
+	font-family: "myriad pro", "lucida grande", tahoma, verdana, arial, sans-serif;
+	text-align: center;
+}
+
+.header {
+	background-color: #242c2e;
+	height: 57px;
+	padding-top: 10px;
+	padding-bottom: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+	width: 1000px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: left;
+	word-spacing: 30px;
+}
+
+.header_links {
+	float: left;
+	margin-left: 50px;
+	margin-top: 28px;
+}
+
+.header a {
+	color: #FFFFFF; 
+	font-size: 1.4em;
+	text-decoration: none;
+}
+
+a.login {
+	color: #55FF43;
+}
+
+.content {
+	text-align: justify;
+	color: #121212;
+	background-color: #FDFDFD;
+	padding-top: 20px;
+	padding-left: 10px;
+	padding-right: 10px;
+	width: 1000px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+form {
+	padding: 0;
+	margin: 0;
+}
