@@ -1,9 +1,10 @@
 
 body {
 	background-color: #121212;
+	background-image: url(include/image/bgimg.jpg) ;
 	line-height: 25px;
 	font-family:Tahoma, Geneva, sans-serif;
-	font-size: 0.8em;
+	font-size: 0.9em;
 	color: #212121;
 	margin: 0;
 	font-weight: 400px;
@@ -23,6 +24,8 @@ body {
 	margin-right: auto;
 	text-align: left;
 	word-spacing: 30px;
+	margin-top: 20px;
+	border-right: 2px solid black;
 }
 
 .header_links {
@@ -35,6 +38,14 @@ body {
 	color: #FFFFFF; 
 	font-size: 1.4em;
 	text-decoration: none;
+}
+
+.graphic_pane {
+	margin-right: 45px;
+	float: left;
+}
+
+.info_pane{
 }
 
 a.login {
@@ -51,6 +62,9 @@ a.login {
 	width: 1000px;
 	margin-left: auto;
 	margin-right: auto;
+	border-bottom: 2px solid black;
+	border-right: 2px solid black;
+	vertical-align: top;
 }
 
 form {
