@@ -1,5 +1,5 @@
 (ns runlater.jobs
-   (:require [clojure.data.json] [monger.collection :as mc] [monger.json] [monger.joda-time] [runlater.sched :as sched]  )
+   (:require [clojure.data.json] [monger.collection :as mc] [monger.json] [monger.joda-time] [runlater.sched :as sched] [runlater.client :as rclient] )
    (:use clojure.data.json validateur.validation clj-time.format )
     (:import [org.bson.types ObjectId]
                [com.mongodb DB WriteConcern]))
@@ -27,12 +27,15 @@
     (valid? jobs_validator job ))
 
 
-(defn new_doc [json_stream]  
-  (let [doc (read-json json_stream)] 
+(defn new_doc [json_str headers]  
       ((comp 
         (fn [m] (if (contains? m :_id ) m (throw "Do not specify _id"))) 
-        
-      ) doc )))
+        (fn [m] (if (and (contains? headers :runlater_key ) (contains? headers :runlater_hash)) 
+                  (if (= (rclient/hmac (:runlater_key headers) json_str) (:runlater_hash headers)) 
+                      m 
+                      (throw (Exception. "Invalid HMAC Hash")))
+                  (throw (Exception. "Must Specify runlater_key and runlater_hash in headers") ))) 
+      ) (read-json json_str) ))
 
 (defn convert [doc]
     ((comp 
@@ -46,7 +49,7 @@
     {:status 200 :body (to-json (mc/find-maps "todos"))} )
 
 (defn create [req body]
-        (try (let [doc (convert (new_doc (slurp body))) ] 
+        (try (let [doc (convert (new_doc (slurp body) (:headers req)  )) ] 
               (mc/insert "jobs" doc)
             {:status 201 :body (json-str doc ) })
         (catch Exception e 
