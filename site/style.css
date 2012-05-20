@@ -40,20 +40,17 @@ body {
 	text-decoration: none;
 }
 
-.graphic_pane {
-	margin-right: 45px;
-	float: left;
-}
-
-.info_pane{
-}
 
 a.login {
 	color: #55FF43;
 }
 
-.content {
+.info {
 	text-align: justify;
+}
+
+.content {
+	text-align: center;
 	color: #121212;
 	background-color: #FDFDFD;
 	padding-top: 20px;
