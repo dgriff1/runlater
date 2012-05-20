@@ -1,6 +1,7 @@
 
 body {
 	background-color: #121212;
+	background-image: url(include/image/bgimg.jpg) ;
 	line-height: 25px;
 	font-family:Tahoma, Geneva, sans-serif;
 	font-size: 0.8em;
@@ -23,6 +24,8 @@ body {
 	margin-right: auto;
 	text-align: left;
 	word-spacing: 30px;
+	margin-top: 20px;
+	border-right: 2px solid black;
 }
 
 .header_links {
@@ -51,6 +54,9 @@ a.login {
 	width: 1000px;
 	margin-left: auto;
 	margin-right: auto;
+	border-bottom: 2px solid black;
+	border-right: 2px solid black;
+	vertical-align: top;
 }
 
 form {
