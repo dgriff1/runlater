@@ -1,5 +1,5 @@
 (ns runlater.test.jobs
-  (:use [runlater.jobs ] [runlater.client] )
+  (:use [runlater.jobs ] [runlater.client] [runlater.utils] )
   (:use [clojure.test] ))
 
 (deftest test_assert ;; Test parsing the JSON

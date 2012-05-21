@@ -38,3 +38,17 @@
 (defn -main [port]
   (run-jetty app {:port (Integer. port)}))
 
+(defn polling_func [] 
+  :do_shit )
+
+(def poller (agent {} ))
+
+(defn start_poller [] 
+  (send-off poller polling_func))
+
+    
+
+
+
+
+
