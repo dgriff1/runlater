@@ -39,6 +39,12 @@ body {
 	font-size: 1.4em;
 	text-decoration: none;
 }
+.header a:hover {
+	background-color: #353d3f;
+	color: #FFFFFF; 
+	font-size: 1.4em;
+	text-decoration: none;
+}
 
 
 a.login {
