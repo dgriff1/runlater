@@ -52,7 +52,9 @@ a.login {
 }
 
 .info {
+	vertical-align: text-top; 
 	text-align: justify;
+	clear: both;
 }
 
 .content {
