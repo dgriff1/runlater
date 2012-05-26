@@ -9,7 +9,6 @@
 
 (defroutes main-routes
   ; what's going on
-  (GET "/" [] (jobs/index ) )
   (GET "/jobs/" [] (jobs/index) )
   (PUT "/jobs/" { params :params  body :body }  (jobs/create params body) )
   ; resource actions 

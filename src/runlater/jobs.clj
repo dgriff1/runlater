@@ -10,6 +10,9 @@
     (presence-of :url )
     (presence-of :when )
     (presence-of :interval)
+    (presence-of :headers)
+    (presence-of :body)
+    (presence-of :method)
     ))
 
 (defn assert_task [ job ]

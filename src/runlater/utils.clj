@@ -5,8 +5,6 @@
 (defn safe_assoc [m k v]
   (if (contains? m k) m (assoc m k v)))
 
-
-
 (defn to-json [objs]
     (if (seq? objs)
       (json-str (for [o objs]
