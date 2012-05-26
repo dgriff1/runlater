@@ -4,7 +4,7 @@ body {
 	background-image: url(include/image/bgimg.jpg) ;
 	line-height: 25px;
 	font-family:Tahoma, Geneva, sans-serif;
-	font-size: 0.9em;
+	font-size: 1.0em;
 	color: #212121;
 	margin: 0;
 	font-weight: 400px;
@@ -39,21 +39,26 @@ body {
 	font-size: 1.4em;
 	text-decoration: none;
 }
-
-.graphic_pane {
-	margin-right: 45px;
-	float: left;
+.header a:hover {
+	background-color: #353d3f;
+	color: #FFFFFF; 
+	font-size: 1.4em;
+	text-decoration: none;
 }
 
-.info_pane{
-}
 
 a.login {
 	color: #55FF43;
 }
 
-.content {
+.info {
+	vertical-align: text-top; 
 	text-align: justify;
+	clear: both;
+}
+
+.content {
+	text-align: center;
 	color: #121212;
 	background-color: #FDFDFD;
 	padding-top: 20px;
