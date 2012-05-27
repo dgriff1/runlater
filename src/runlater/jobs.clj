@@ -21,12 +21,12 @@
 
 (defn new_doc [json_str headers]  
       ((comp 
-        (fn [m] (if (contains? m :_id ) m (throw "Do not specify _id"))) 
-        (fn [m] (if (and (contains? headers :runlater_key ) (contains? headers :runlater_hash)) 
-                  (if (= (rclient/hmac (:runlater_key headers) json_str) (:runlater_hash headers)) 
+        (fn [m] (if (contains? m :_id ) (throw (Exception. "Do not specify _id")) m )) 
+        (fn [m] (if (and (contains? headers "runlater_key" ) (contains? headers "runlater_hash")) 
+                  (if (= (rclient/hmac "1234" json_str) (get headers "runlater_hash")) ; replace later with looked up API Account secret
                       m 
-                      (throw (Exception. "Invalid HMAC Hash")))
-                  (throw (Exception. "Must Specify runlater_key and runlater_hash in headers") ))) 
+                      (throw (Exception. (str "Invalid HMAC Hash  " (rclient/hmac "1234" json_str) " -- "  (get headers "runlater_hash") " body " json_str)   )))
+                  (throw (Exception. (str "Must Specify runlater_key and runlater_hash in headers" headers) ) ))) 
       ) (read-json json_str) ))
 
 (defn convert [doc]
@@ -46,8 +46,9 @@
               (mc/insert "rljobs" doc)
             {:status 201 :body (json-str doc ) })
         (catch Exception e 
-            {:status 400 :body (.getLocalizedMessage e ) } )
-             ))
+            (last [ (prn e)
+            {:status 400 :body (json-str { :error (.getLocalizedMessage e ) } ) }  ] )
+             )))
 
 (defn edit [id req body]
     {:status 200 :body (str "Edit " id " req " req " --" (read-json (slurp body )) ) } )

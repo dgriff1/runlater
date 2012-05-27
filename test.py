@@ -1,28 +1,39 @@
 import httplib, urllib
 import json
+import hmac
+import hashlib
+import base64
 
 headers = {"Content-type": "application/json",
     "Accept": "application/json"}
 
-conn = httplib.HTTPConnection("localhost", 3000)
+conn = httplib.HTTPConnection("localhost", 5000)
 
-data = { "name" : "Daily Backup", "when" : "2012-5-1 12:30:45", "interval" : "2 hours", "url" : "http://google.com" }
+data = { "name" : "Daily Backup", "when" : "2012-05-06T06:15:42.215Z", "interval" : "2 hours", "url" : "http://google.com", "method" : "POST", "headers" : {}  }
+json_data = json.dumps(data)
 
-conn.request("PUT", "/jobs/", json.dumps(data))
-response = conn.getresponse()
-print response.status, response.reason, json.loads(response.read())
-
-conn.request("GET", "/jobs/" )
-response = conn.getresponse()
-as_str = response.read()
-print "json ", json.loads(as_str)
+print "MD5 ", hmac.new("1234", json_data).digest()
+print "SHA1 ", base64.b64encode( hmac.new("1234", json_data, hashlib.sha1).digest() )
 
 
-conn.request("PUT", "/jobs/", json.dumps(data))
-response = conn.getresponse()
-doc = json.loads(response.read())
-print response.status, response.reason, doc
-
-conn.request("DELETE", "/jobs/" + doc["_id"])
+spec_headers = { "runlater_key" : "onwner key", "runlater_hash" : base64.b64encode( hmac.new("1234", json_data, hashlib.sha1).digest()) , "Content-Type" : "application/json" } 
+print "JSON ", json_data
+print "SPEC ", spec_headers
+conn.request("POST", "/jobs/", json_data, spec_headers )
 response = conn.getresponse()
 print response.status, response.reason, response.read()
+
+#conn.request("GET", "/jobs/" , headers = spec_headers)
+#response = conn.getresponse()
+#as_str = response.read()
+#print "json ", json.loads(as_str)
+
+
+#conn.request("PUT", "/jobs/", json.dumps(data), headers = spec_headers)
+#response = conn.getresponse()
+#doc = json.loads(response.read())
+#print response.status, response.reason, doc
+
+#conn.request("DELETE", "/jobs/" + doc["_id"])
+#response = conn.getresponse()
+#print response.status, response.reason, response.read()

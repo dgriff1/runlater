@@ -10,9 +10,9 @@
 (defroutes main-routes
   ; what's going on
   (GET "/jobs/" [] (jobs/index) )
-  (PUT "/jobs/" { params :params  body :body }  (jobs/create params body) )
+  (POST "/jobs/" { body :body :as request}  (jobs/create request body ) )
   ; resource actions 
-  (POST "/jobs/:id" { {id :id} :params  params :params  body :body }  (jobs/lookup id params body) )
+  (PUT "/jobs/:id" { {id :id} :params  params :params  body :body }  (jobs/lookup id params body) )
   (POST "/jobs/:id/edit" { {id :id} :params  params :params  body :body }  (jobs/edit id params body) )
   (DELETE "/jobs/:id" { {id :id} :params  params :params  body :body }  (jobs/delete id params body) )
   ; fall backs 
