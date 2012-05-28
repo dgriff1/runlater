@@ -13,5 +13,3 @@
           (assoc o :_id (.toString (:_id o))))))
       (json-str objs)))
 
-
-
