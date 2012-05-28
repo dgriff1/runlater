@@ -22,12 +22,12 @@
 (defn new_doc [json_str headers]  
       ((comp 
         (fn [m] (if (contains? m :_id ) (throw (Exception. "Do not specify _id")) m )) 
-        (fn [m] (if (and (contains? headers "runlater_key" ) (contains? headers "runlater_hash")) 
-                  (if (= (rclient/hmac "1234" json_str) (get headers "runlater_hash")) ; replace later with looked up API Account secret
+        (fn [m] (if (and (contains? headers :runlater_key ) (contains? headers :runlater_hash)) 
+                  (if (= (rclient/hmac "1234" json_str) (get headers :runlater_hash)) ; replace later with looked up API Account secret
                       m 
-                      (throw (Exception. (str "Invalid HMAC Hash  " (rclient/hmac "1234" json_str) " -- "  (get headers "runlater_hash") " body " json_str)   )))
-                  (throw (Exception. (str "Must Specify runlater_key and runlater_hash in headers" headers) ) ))) 
-      ) (read-json json_str) ))
+                      (throw (Exception. (str "Invalid HMAC Hash" )   )))
+                  (throw (Exception. (str "Must Specify runlater_key and runlater_hash in headers" ) ) ))) 
+      ) (read-json json_str true) ))
 
 (defn convert [doc]
     ((comp 
@@ -35,6 +35,7 @@
         (fn [m] (assoc m :when (parse (formatters :date-time) (get m :when))))
         (fn [m] (assoc m :interval ( sched/split_into_hash (get m :interval "")))) 
         (fn [m] (assoc m :doctype "job" ) ) 
+        (fn [m] (assoc m :status "waiting" ) ) 
     ) doc))
 
 
@@ -51,7 +52,7 @@
              )))
 
 (defn edit [id req body]
-    {:status 200 :body (str "Edit " id " req " req " --" (read-json (slurp body )) ) } )
+    {:status 200 :body (str "Edit " id " req " req " --" (read-json (slurp body ) true ) ) } )
 
 (defn delete [id req body]
     {:status 200 :body (str "Delete " id " " ( mc/remove "rljobs" { :_id (ObjectId. id) })) }  )
