@@ -2,13 +2,12 @@
 body {
 	background-color: #121212;
 	background-image: url(include/image/bgimg.jpg) ;
-	line-height: 25px;
-	font-family:Tahoma, Geneva, sans-serif;
-	font-size: 1.0em;
+	line-height: 35px;
+	font-size: 1em;
 	color: #212121;
 	margin: 0;
-	font-weight: 400px;
-	font-family: "myriad pro", "lucida grande", tahoma, verdana, arial, sans-serif;
+	font-weight: 500;
+	font-family: arial, sans-serif;
 	text-align: center;
 }
 
@@ -52,6 +51,8 @@ a.login {
 }
 
 .info {
+	margin-top: 30px;
+	background-color: #DCDCDC;
 	vertical-align: text-top; 
 	text-align: justify;
 	clear: both;
@@ -70,6 +71,35 @@ a.login {
 	border-bottom: 2px solid black;
 	border-right: 2px solid black;
 	vertical-align: top;
+}
+
+.leftcontent {
+
+	margin-left: 125px;
+	float: left;
+	padding-right: 20px;
+}
+
+.rightcontent {
+	background-color: #e4ffde;
+	width: 375px;
+	text-align: left;
+	float: left;	
+	padding-left: 20px;
+
+}
+
+.leftcontentSecond {
+	float: left;
+	text-align: left;
+	background-color: #e4ffde;
+	padding-right: 20px;
+}
+
+.rightcontentSecond
+{
+	float: left;
+	padding-left: 40px;
 }
 
 form {
