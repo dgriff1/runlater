@@ -85,7 +85,7 @@ a.login {
 	text-align: left;
 	float: right;	
 	padding-left: 20px;
-	margin-right: 20px;
+	margin-right: 40px;
 }
 
 .leftcontentSecond {
@@ -101,7 +101,8 @@ a.login {
 {
 	padding-left: 20px;
 	float: right;
-	margin-left: 30px;
+	margin-left: 20px;
+	margin-right: 40px;
 	width: 375px;
 	text-align: left;
 }
