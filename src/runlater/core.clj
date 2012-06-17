@@ -18,7 +18,7 @@
   (DELETE "/jobs/:id" { {id :id} :params  params :params  body :body }  (jobs/delete id params body) )
 
   (GET "/users" [] (users/index) )
-  (POST "/users" { body :body :as request}  (users/create request body ) )
+  (POST "/users/" { body :body :as request}  (users/create request body ) )
   ; resource actions 
   (GET "/users/:id" { {id :id} :params  params :params  body :body }  (users/lookup id params body) )
   (PUT "/users/:id" { {id :id} :params  params :params  body :body }  (users/edit id params body) )

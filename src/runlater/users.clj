@@ -18,14 +18,14 @@
 
 (defn new_doc [json_str headers]  
       ((comp 
-        (fn [m] (if (contains? m :_id ) m (throw (Exception. "Do not specify _id")))) 
+        (fn [m] (if (contains? m :_id ) (throw (Exception. "Do not specify _id")) m )) 
       ) (read-json json_str) ))
 
 (defn convert [doc]
     ((comp 
         (fn [m] (safe_assoc m :created (clj-time/now) ))
         (fn [m] (assoc m :password (if (> (count (:password m)) 0)  
-              (rclient/gensha (str "dsaf123" (:password m)  ) )
+              (rclient/gensha (str rclient/rlsalt (:password m)  ) )
               (throw (Exception. "Invalid password")))))
         (fn [m] (safe_assoc m :_id (get m :email) ))
         (fn [m] (if (assert_user m) m (throw (Exception. "Missing Keys")) )))

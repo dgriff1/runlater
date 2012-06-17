@@ -9,6 +9,15 @@ headers = {"Content-type": "application/json",
 
 conn = httplib.HTTPConnection("localhost", 5000)
 
+data = { "first" : "Dan", "last" : "Griffin", "email" : "test@runlater.com", "password" : "pass", "company" : "runlater" } 
+
+json_data = json.dumps(data)
+
+conn.request("POST", "/users/", json_data, headers )
+response = conn.getresponse()
+print "Create a user ", response.status, response.reason, response.read()
+
+
 data = { "name" : "Daily Backup", "when" : "2012-05-06T06:15:42.215Z", "interval" : "2 hours", "url" : "http://google.com", "method" : "POST", "headers" : {}  }
 json_data = json.dumps(data)
 

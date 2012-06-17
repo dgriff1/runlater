@@ -22,4 +22,4 @@
     (let [digest (.digest md)]
       (str-join "" (map #(Integer/toHexString (bit-and % 0xff)) digest)))))
 
-
+(def rlsalt "dsaf123")
