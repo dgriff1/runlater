@@ -3,7 +3,8 @@
     (:require [compojure.route :as route]
               [monger core util]
               [compojure.handler :as handler]
-              [runlater.jobs :as jobs ] ))
+              [runlater.jobs :as jobs ]
+              [runlater.users :as users ] ))
 
 
 
@@ -15,6 +16,15 @@
   (GET "/jobs/:id" { {id :id} :params  params :params  body :body }  (jobs/lookup id params body) )
   (PUT "/jobs/:id" { {id :id} :params  params :params  body :body }  (jobs/edit id params body) )
   (DELETE "/jobs/:id" { {id :id} :params  params :params  body :body }  (jobs/delete id params body) )
+
+  (GET "/users" [] (users/index) )
+  (POST "/users" { body :body :as request}  (users/create request body ) )
+  ; resource actions 
+  (GET "/users/:id" { {id :id} :params  params :params  body :body }  (users/lookup id params body) )
+  (PUT "/users/:id" { {id :id} :params  params :params  body :body }  (users/edit id params body) )
+  (DELETE "/users/:id" { {id :id} :params  params :params  body :body }  (users/delete id params body) )
+
+  
   ; fall backs 
   (route/resources "/")
   (route/not-found "Page not found")   )
