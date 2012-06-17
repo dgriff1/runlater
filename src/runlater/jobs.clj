@@ -48,8 +48,8 @@
               (mc/insert "rljobs" doc)
             {:status 201 :body (json-str doc ) })
         (catch Exception e 
-            (last [ (prn e)
-            {:status 400 :body (json-str { :error (.getLocalizedMessage e ) } ) }  ] )
+            (-> (prn e)
+            {:status 400 :body (json-str { :error (.getLocalizedMessage e ) } ) }   )
              )) ] ))
 
 (defn edit [id req body]

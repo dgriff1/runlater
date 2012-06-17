@@ -1,31 +1,35 @@
 (ns runlater.users
-   (:require [clojure.data.json] [monger.collection :as mc] [monger.json] [monger.joda-time] [runlater.sched :as sched] [runlater.client :as rclient] )
-   (:use clojure.data.json validateur.validation clj-time.format )
+   (:require [clojure.data.json] [monger.collection :as mc] [monger.json] [monger.joda-time] [runlater.sched :as sched] [runlater.client :as rclient] [clj-time.core :as clj-time] )
+   (:use clojure.data.json validateur.validation clj-time.format runlater.utils )
     (:import [org.bson.types ObjectId]
                [com.mongodb DB WriteConcern]))
 
 (def user_validator (validation-set 
-    (presence-of :name )
-    (presence-of :url )
-    (presence-of :when )
-    (presence-of :interval)
+    (presence-of :first )
+    (presence-of :last )
+    (presence-of :email )
+    (presence-of :company )
+    (presence-of :password )
     ))
 
-(defn assert_task [ user ]
+(defn assert_user [ user ]
     (valid? user_validator user ))
 
 
 (defn new_doc [json_str headers]  
       ((comp 
-        (fn [m] (if (contains? m :_id ) m (throw "Do not specify _id"))) 
+        (fn [m] (if (contains? m :_id ) m (throw (Exception. "Do not specify _id")))) 
       ) (read-json json_str) ))
 
 (defn convert [doc]
     ((comp 
-        (fn [m] (safe_assoc m :_id (ObjectId.)) )
-        (fn [m] (assoc m :when (parse (formatters :date-time) (get m :when))))
-        (fn [m] (assoc m :interval ( sched/split_into_hash (get m :interval "")))) 
-    ) doc))
+        (fn [m] (safe_assoc m :created (clj-time/now) ))
+        (fn [m] (assoc m :password (if (> (count (:password m)) 0)  
+              (rclient/gensha (str "dsaf123" (:password m)  ) )
+              (throw (Exception. "Invalid password")))))
+        (fn [m] (safe_assoc m :_id (get m :email) ))
+        (fn [m] (if (assert_user m) m (throw (Exception. "Missing Keys")) )))
+    doc))
 
 
 (defn index []
