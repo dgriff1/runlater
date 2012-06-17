@@ -18,11 +18,6 @@
 (defn new_doc [json_str headers]  
       ((comp 
         (fn [m] (if (contains? m :_id ) m (throw "Do not specify _id"))) 
-        (fn [m] (if (and (contains? headers :runlater_key ) (contains? headers :runlater_hash)) 
-                  (if (= (rclient/hmac (:runlater_key headers) json_str) (:runlater_hash headers)) 
-                      m 
-                      (throw (Exception. "Invalid HMAC Hash")))
-                  (throw (Exception. "Must Specify runlater_key and runlater_hash in headers") ))) 
       ) (read-json json_str) ))
 
 (defn convert [doc]

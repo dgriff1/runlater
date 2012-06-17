@@ -12,8 +12,8 @@
   (GET "/jobs/" [] (jobs/index) )
   (POST "/jobs/" { body :body :as request}  (jobs/create request body ) )
   ; resource actions 
-  (PUT "/jobs/:id" { {id :id} :params  params :params  body :body }  (jobs/lookup id params body) )
-  (POST "/jobs/:id/edit" { {id :id} :params  params :params  body :body }  (jobs/edit id params body) )
+  (GET "/jobs/:id" { {id :id} :params  params :params  body :body }  (jobs/lookup id params body) )
+  (PUT "/jobs/:id" { {id :id} :params  params :params  body :body }  (jobs/edit id params body) )
   (DELETE "/jobs/:id" { {id :id} :params  params :params  body :body }  (jobs/delete id params body) )
   ; fall backs 
   (route/resources "/")

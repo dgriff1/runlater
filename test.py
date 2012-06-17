@@ -12,8 +12,8 @@ conn = httplib.HTTPConnection("localhost", 5000)
 data = { "name" : "Daily Backup", "when" : "2012-05-06T06:15:42.215Z", "interval" : "2 hours", "url" : "http://google.com", "method" : "POST", "headers" : {}  }
 json_data = json.dumps(data)
 
-print "MD5 ", hmac.new("1234", json_data).digest()
 print "SHA1 ", base64.b64encode( hmac.new("1234", json_data, hashlib.sha1).digest() )
+print "EMPTY SHA1 ", base64.b64encode( hmac.new("1234", "", hashlib.sha1).digest() )
 
 
 spec_headers = { "runlater_key" : "onwner key", "runlater_hash" : base64.b64encode( hmac.new("1234", json_data, hashlib.sha1).digest()) , "Content-Type" : "application/json" } 
