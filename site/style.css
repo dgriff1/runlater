@@ -2,13 +2,12 @@
 body {
 	background-color: #121212;
 	background-image: url(include/image/bgimg.jpg) ;
-	line-height: 25px;
-	font-family:Tahoma, Geneva, sans-serif;
-	font-size: 1.0em;
+	line-height: 35px;
+	font-size: 1em;
 	color: #212121;
 	margin: 0;
-	font-weight: 400px;
-	font-family: "myriad pro", "lucida grande", tahoma, verdana, arial, sans-serif;
+	font-weight: 500;
+	font-family: arial, sans-serif;
 	text-align: center;
 }
 
@@ -52,9 +51,12 @@ a.login {
 }
 
 .info {
+	margin-top: 30px;
+	background-color: #DCDCDC;
 	vertical-align: text-top; 
 	text-align: justify;
 	clear: both;
+	wit
 }
 
 .content {
@@ -70,6 +72,40 @@ a.login {
 	border-bottom: 2px solid black;
 	border-right: 2px solid black;
 	vertical-align: top;
+}
+
+.leftcontent {
+	width: 500px;
+	float: left;
+	margin-left: 20px;
+}
+
+.rightcontent {
+	background-color: #e4ffde;
+	width: 375px;
+	text-align: left;
+	float: right;	
+	padding-left: 20px;
+	margin-right: 40px;
+}
+
+.leftcontentSecond {
+	width: 500px;
+	margin-left: 50px;
+	float: left;
+	text-align: left;
+	background-color: #e4ffde;
+	padding-right: 20px;
+}
+
+.rightcontentSecond
+{
+	padding-left: 20px;
+	float: right;
+	margin-left: 20px;
+	margin-right: 40px;
+	width: 375px;
+	text-align: left;
 }
 
 form {
