@@ -13,6 +13,7 @@
   (let [doc (convert { :first "Dan" :last"Griffin" :email "test@runlater.com" :company "Run Later" :password "pass" }  )]
     [ (is (contains? doc :_id ))
       (is (get doc :_id) "test@runlater.com")
+      (is (= (get doc :apikeys) {}) "test@runlater.com")
       (is (not (= (get doc :password) "pass")))
     ] ))
 

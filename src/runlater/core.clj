@@ -11,18 +11,22 @@
 (defroutes main-routes
   ; what's going on
   (GET "/jobs/" [] (jobs/index) )
-  (POST "/jobs/" { body :body :as request}  (jobs/create request body ) )
+  (PUT "/jobs/" { body :body :as request}  (jobs/create request body ) )
   ; resource actions 
   (GET "/jobs/:id" { {id :id} :params  params :params  body :body }  (jobs/lookup id params body) )
   (PUT "/jobs/:id" { {id :id} :params  params :params  body :body }  (jobs/edit id params body) )
   (DELETE "/jobs/:id" { {id :id} :params  params :params  body :body }  (jobs/delete id params body) )
 
   (GET "/users" [] (users/index) )
-  (POST "/users/" { body :body :as request}  (users/create request body ) )
+  (PUT "/users/" { body :body :as request}  (users/create request body ) )
   ; resource actions 
   (GET "/users/:id" { {id :id} :params  params :params  body :body }  (users/lookup id params body) )
   (PUT "/users/:id" { {id :id} :params  params :params  body :body }  (users/edit id params body) )
   (DELETE "/users/:id" { {id :id} :params  params :params  body :body }  (users/delete id params body) )
+
+  (GET "/users/:id/apikey/" { {id :id} :params  params :params  body :body }  (users/lookup_apikeys id params body) )
+  (PUT "/users/:id/apikey/" { {id :id} :params  params :params  body :body }  (users/create_apikey id params body) )
+  (DELETE "/users/:id/apikey/" { {id :id} :params  params :params  body :body }  (users/delete_apikey id params body) )
 
   
   ; fall backs 
