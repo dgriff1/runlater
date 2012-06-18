@@ -23,3 +23,14 @@
       (str-join "" (map #(Integer/toHexString (bit-and % 0xff)) digest)))))
 
 (def rlsalt "dsaf123")
+
+(def random (java.util.Random.))
+;define characters list to use to generate string
+(def chars-range
+   (map char (concat (range 48 58) (range 66 92) (range 97 123))))
+;   ;generates 1 random character
+(defn random-char [] 
+  (nth chars-range (.nextInt random (count chars-range))))
+; generates random string of length characters
+(defn random-string [length]
+   (apply str (take length (repeatedly random-char))))
