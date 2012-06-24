@@ -104,14 +104,15 @@
 ;
 ; Create an API key
 ; 
-(defn create_apikey [id req body]
-    {:status 200 :body (str "API Key Create " id " req " req " --" (read-json (slurp body )) ) } )
+(defn create_apikey [id keyname req body]
+    (let [ doc (mc/find-one-as-map "rlusers" {:_id (ObjectId. id) } ) ]
+      {:status 200 :body (str "API Key Create " id " req " req " --" (read-json (slurp body )) ) } ))
 
 
 ;
 ; Delete  an API key
 ; 
-(defn delete_apikey [id req body]
+(defn delete_apikey [id keyname req body]
     {:status 200 :body (str "API Key Delete " id " req " req " --" (read-json (slurp body )) ) } )
 
 
