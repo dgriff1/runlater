@@ -32,7 +32,16 @@ response = conn.getresponse()
 api_resp = response.read()
 print "Created API Keys  ", response.status, response.reason, api_resp
 
-data = { "first" : "Dan", "last" : "Griffin", "email" : "test@runlater.com", "password" : "pass", "company" : "runlater" } 
+conn.request("DELETE", "/users/" + js["_id"] + "/apikey/prodkey", "", headers)
+response = conn.getresponse()
+api_resp = response.read()
+print "DELETE API Key ", response.status, response.reason, api_resp
+
+conn.request("GET", "/users/" + js["_id"] + "/apikey/", "", headers)
+response = conn.getresponse()
+api_resp = response.read()
+print "Deleted API Keys  ", response.status, response.reason, api_resp
+
 json_data = json.dumps(data)
 conn.request("GET", "/users/"+ json.loads(json_resp)["_id"] , json_data, headers )
 response = conn.getresponse()

@@ -1,6 +1,6 @@
 (ns runlater.users
    (:require [clojure.data.json] [monger.collection :as mc] [monger.json] [monger.joda-time] [runlater.sched :as sched] [runlater.client :as rclient] [clj-time.core :as clj-time] )
-   (:use clojure.data.json validateur.validation clj-time.format runlater.utils )
+   (:use clojure.data.json validateur.validation clj-time.format runlater.utils clojure.walk )
     (:import [org.bson.types ObjectId]
                [com.mongodb DB WriteConcern]))
 
@@ -105,14 +105,14 @@
 ; Create an API key
 ; 
 (defn create_apikey [id keyname req body]
-    (let [ doc (mc/find-one-as-map "rlusers" {:_id (ObjectId. id) } ) ]
-		(if (contains? keyname (:apikeys doc))
-				{:status 400 :body (str "API key " keyname " already created") }
-		(let [up_doc (assoc doc :apikeys (assoc (:apikeys doc) (keyword keyname) { :public (rclient/random-string 12) :private (rclient/random-string 12)} ))]  
+    (let [ doc (keywordize-keys (mc/find-one-as-map "rlusers" {:_id (ObjectId. id) } )) keyw (keyword keyname)   ]
+		(if (contains? (:apikeys doc) keyw )
+				{:status 400 :body (str "API key " keyw " already created") }
+		(let [up_doc (assoc doc :apikeys (assoc (:apikeys doc) (keyword keyw) { :public (rclient/random-string 12) :private (rclient/random-string 12)} ))]  
 			(last [ 
-					(prn "new doc " up_doc " keyname " keyname ) 
+					(prn "new doc " up_doc " keyname " keyw) 
 					(mc/save "rlusers" up_doc)
-					{:status 200 :body (json-str { (keyword keyname) (get (:apikeys up_doc) (keyword keyname) ) } ) }
+					{:status 200 :body (json-str { (keyword keyw) (get (:apikeys up_doc) (keyword keyw) ) } ) }
 				  ]
 			)
 			)
@@ -125,9 +125,14 @@
 ; Delete  an API key
 ; 
 (defn delete_apikey [id keyname req body]
-    (let [ doc (mc/find-one-as-map "rlusers" {:_id (ObjectId. id) } ) ]
-		(mc/remove "rlusers" doc)
-    	{:status 200 :body (str "API Key Delete " id " req " req " --" (read-json (slurp body )) ) } ))
+    (let [ doc (keywordize-keys (mc/find-one-as-map "rlusers" {:_id (ObjectId. id) } )) keyw (keyword keyname)  ]
+		(if (contains? (:apikeys doc) keyw )
+			(last [ 
+				(mc/save "rlusers" (assoc doc :apikeys (dissoc (:apikeys doc) keyw)))
+    			{:status 200 :body "API Key Deleted " }
+				]
+			)
+    	{:status 400 :body (str "API Key " keyw " Not Found " (:apikeys doc))  } )))
 
 
 
