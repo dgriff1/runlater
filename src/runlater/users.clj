@@ -106,14 +106,28 @@
 ; 
 (defn create_apikey [id keyname req body]
     (let [ doc (mc/find-one-as-map "rlusers" {:_id (ObjectId. id) } ) ]
-      {:status 200 :body (str "API Key Create " id " req " req " --" (read-json (slurp body )) ) } ))
+		(if (contains? keyname (:apikeys doc))
+				{:status 400 :body (str "API key " keyname " already created") }
+		(let [up_doc (assoc doc :apikeys (assoc (:apikeys doc) (keyword keyname) { :public (rclient/random-string 12) :private (rclient/random-string 12)} ))]  
+			(last [ 
+					(prn "new doc " up_doc " keyname " keyname ) 
+					(mc/save "rlusers" up_doc)
+					{:status 200 :body (json-str { (keyword keyname) (get (:apikeys up_doc) (keyword keyname) ) } ) }
+				  ]
+			)
+			)
+		)
+	)
+)
 
 
 ;
 ; Delete  an API key
 ; 
 (defn delete_apikey [id keyname req body]
-    {:status 200 :body (str "API Key Delete " id " req " req " --" (read-json (slurp body )) ) } )
+    (let [ doc (mc/find-one-as-map "rlusers" {:_id (ObjectId. id) } ) ]
+		(mc/remove "rlusers" doc)
+    	{:status 200 :body (str "API Key Delete " id " req " req " --" (read-json (slurp body )) ) } ))
 
 
 

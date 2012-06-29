@@ -25,8 +25,8 @@
   (DELETE "/users/:id" { {id :id} :params  params :params  body :body }  (users/delete id params body) )
 
   (GET "/users/:id/apikey/" { {id :id} :params  params :params  body :body }  (users/lookup_apikeys id params body) )
-  (PUT "/users/:id/apikey/:keyname" { {id :id} :params {keyname :keyname} :params params :params  body :body }  (users/create_apikey id keyname params body) )
-  (DELETE "/users/:id/apikey/:keyname" { {id :id} :params {keyname :keyname} :params params :params  body :body }  (users/delete_apikey id keyname params body) )
+  (PUT "/users/:id/apikey/:otherid" { {id :id} :params {keyname :otherid} :params params :params  body :body }  (users/create_apikey id keyname params body) )
+  (DELETE "/users/:id/apikey/:otherid" { {id :id} :params {keyname :otherid} :params params :params  body :body }  (users/delete_apikey id keyname params body) )
 
   
   ; fall backs 

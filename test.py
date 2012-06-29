@@ -16,7 +16,21 @@ response = conn.getresponse()
 json_resp = response.read()
 print "Create a user ", response.status, response.reason, json_resp
 
+js = json.loads(json_resp)
+conn.request("GET", "/users/" + js["_id"] + "/apikey/", "", headers)
+response = conn.getresponse()
+api_resp = response.read()
+print "Empty API Keys  ", response.status, response.reason, api_resp
 
+conn.request("PUT", "/users/" + js["_id"] + "/apikey/prodkey", "", headers)
+response = conn.getresponse()
+api_resp = response.read()
+print "Create API Key ", response.status, response.reason, api_resp
+
+conn.request("GET", "/users/" + js["_id"] + "/apikey/", "", headers)
+response = conn.getresponse()
+api_resp = response.read()
+print "Created API Keys  ", response.status, response.reason, api_resp
 
 data = { "first" : "Dan", "last" : "Griffin", "email" : "test@runlater.com", "password" : "pass", "company" : "runlater" } 
 json_data = json.dumps(data)
