@@ -14,3 +14,5 @@ start the app
 - foreman start
 
 runlater
+
+Install mongodb
