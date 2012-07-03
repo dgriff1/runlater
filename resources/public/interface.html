@@ -27,29 +27,33 @@
 		<script language="javascript">
 			//var hash = CryptoJS.HmacSHA1("1234", "1234");
 
-			xmlhttp=new XMLHttpRequest(); 
-			xmlhttp.open("PUT","http://127.0.0.1:5000/users/",true);
-			xmlhttp.send( JSON.stringify({"first" : "Mike", "last" : "Miles", "email" : "test2@runlater.com", "password" : "123red", "company" : "runlater" })); 
+		        var id = false;
+			$.ajax({
+					url: "users/",
+					type: "PUT",
+					contentType: 'application/json',
+					data: JSON.stringify(  { "first" : "Dan", "last" : "Griffin", "email" : "test@runlater.com", "password" : "pass", "company" : "runlater" }  ),
+					error: function(XMLHttpRequest, textStatus, errorThrown){
+					    alert(errorThrown);
+					}, success: function(data, textStatus, XMLHttpRequest){
+						    var resp = JSON.parse(XMLHttpRequest.responseText);
+						    var id = (resp["_id"]);
+							$.ajax({
+								url: "users/" + id,
+								type: "GET",
+								contentType: "application/json",
+								error: function(XMLHttpRequest, textStatus, errorThrown){
+								    alert(errorThrown);
+								}, success: function(data, textStatus, XMLHttpRequest){
+									userRecord = JSON.parse(XMLHttpRequest.responseText);
+									alert(userRecord.first);
+								}
 
+							});
 
-			/*
+					}
+				    });
 
-			var job = Backbone.Model.extend({
-				url : "http://127.0.0.1:5000/jobs",
-				defaults: {
-					name: "",
-					when: "",
-					interval: "",
-					url: "",
-				},
-				initialize: function(){
-					console.log("Job Init");
-				}
-			});
-
-			var newJob = new job();
-			newJob.set({ name: "Test", when "2012-05-06T06:15:42.215Z"});
-			newJob.save();*/
 
 		</script>
 

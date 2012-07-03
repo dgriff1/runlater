@@ -23,6 +23,7 @@
 
 (defn convert [doc]
     ((comp 
+	(fn [m] (last [ (prn "Creating new user " m) m]))
         (fn [m] (safe_assoc m :created (clj-time/now) ))
         (fn [m] (assoc m :apikeys {} ))
         (fn [m] (assoc m :password (if (> (count (:password m)) 0)  
@@ -49,7 +50,7 @@
 ; List all 
 ;
 (defn index []
-    {:status 400 :body ("Viewing all Users is not allowed")} )
+    {:status 400 :body "Viewing all Users is not allowed"} )
 
 
 ;
