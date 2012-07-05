@@ -16,8 +16,7 @@
 	<body>
 		<script type="text/javascript" src="include/js/jquery-1.7.2.min.js"></script>
 		<script type="text/javascript" src="include/js/jquery-ui-1.8.20.custom.min.js"></script>
-		<!--- <script type="text/javascript" src="include/js/underscore-min.js"></script>
-		<script type="text/javascript" src="include/js/backbone.js"></script> --->
+		<script type="text/javascript" src="include/js/util.js"></script>
 
 		<script src="http://crypto-js.googlecode.com/svn/tags/3.0.2/build/rollups/hmac-md5.js"></script>
 		<script src="http://crypto-js.googlecode.com/svn/tags/3.0.2/build/rollups/hmac-sha1.js"></script>
@@ -25,32 +24,6 @@
 		<script src="http://crypto-js.googlecode.com/svn/tags/3.0.2/build/rollups/hmac-sha512.js"></script>
 
 		<script language="javascript">
-			//var hash = CryptoJS.HmacSHA1("1234", "1234");
-
-			xmlhttp=new XMLHttpRequest(); 
-			xmlhttp.open("PUT","http://127.0.0.1:5000/users/",true);
-			xmlhttp.send( JSON.stringify({"first" : "Mike", "last" : "Miles", "email" : "test2@runlater.com", "password" : "123red", "company" : "runlater" })); 
-
-
-			/*
-
-			var job = Backbone.Model.extend({
-				url : "http://127.0.0.1:5000/jobs",
-				defaults: {
-					name: "",
-					when: "",
-					interval: "",
-					url: "",
-				},
-				initialize: function(){
-					console.log("Job Init");
-				}
-			});
-
-			var newJob = new job();
-			newJob.set({ name: "Test", when "2012-05-06T06:15:42.215Z"});
-			newJob.save();*/
-
 		</script>
 
 		<div class="header">
