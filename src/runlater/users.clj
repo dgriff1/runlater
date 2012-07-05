@@ -15,6 +15,15 @@
 (defn assert_user [ user ]
     (valid? user_validator user ))
 
+(defn validate_user [req target]
+	(let [headers (:headers (keywordize-keys req))]
+		(if (and (contains? headers :runlater_password)
+				(> 0 (count (:runlater_password headers)))
+					(mc/find-one-as-map "rlusers" { :_id (ObjectId. target) :password (rclient/gensha (str rclient/rlsalt) (:runlater_password headers))  }))
+					true 
+			false
+		)))
+
 
 (defn new_doc [json_str headers]  
       ((comp 
@@ -104,13 +113,12 @@
 ;
 ; Create an API key
 ; 
-(defn create_apikey [id keyname req body]
-    (let [ doc (keywordize-keys (mc/find-one-as-map "rlusers" {:_id (ObjectId. id) } )) keyw (keyword keyname)   ]
+(defn create_apikey [id req body]
+    (let [ doc (keywordize-keys (mc/find-one-as-map "rlusers" {:_id (ObjectId. id) } )) keyw (.toString (ObjectId. ) )    ]
 		(if (contains? (:apikeys doc) keyw )
 				{:status 400 :body (str "API key " keyw " already created") }
-		(let [up_doc (assoc doc :apikeys (assoc (:apikeys doc) (keyword keyw) { :public (rclient/random-string 12) :private (rclient/random-string 12)} ))]  
+		(let [up_doc (assoc doc :apikeys (assoc (:apikeys doc) keyw (rclient/random-string 12) ))]  
 			(last [ 
-					(prn "new doc " up_doc " keyname " keyw) 
 					(mc/save "rlusers" up_doc)
 					{:status 200 :body (json-str { (keyword keyw) (get (:apikeys up_doc) (keyword keyw) ) } ) }
 				  ]

@@ -19,14 +19,24 @@
     (valid? jobs_validator job ))
 
 
+(defn lookup_key [ headers ] 
+	(let [key (mc/find-one-as-map "rlusers" { (str "apikeys." (:runlater_key headers)) { "$exists" true}}) ]
+		(do (prn "key " key " -- " (:runlater_key headers)  ) 
+			key))
+)
+	
+
 (defn new_doc [json_str headers]  
       ((comp 
         (fn [m] (if (contains? m :_id ) (throw (Exception. "Do not specify _id")) m )) 
-        (fn [m] (if (and (contains? headers :runlater_key ) (contains? headers :runlater_hash)) 
-                  (if (= (rclient/hmac "1234" json_str) (get headers :runlater_hash)) ; replace later with looked up API Account secret
+        (fn [m] (if (contains? headers :runlater_hash) 
+                  (if (= (rclient/hmac (lookup_key headers) json_str) (get headers :runlater_hash)) ; replace later with looked up API Account secret
                       m 
                       (throw (Exception. (str "Invalid HMAC Hash" )   )))
                   (throw (Exception. (str "Must Specify runlater_key and runlater_hash in headers" ) ) ))) 
+        (fn [m] (if (contains? headers :runlater_key)
+					m
+					(throw (Exception. "Must Specify runlater_key")) )  ) 
       ) (read-json json_str true) ))
 
 (defn convert [doc]
@@ -43,14 +53,14 @@
     {:status 200 :body (to-json (mc/find-maps "rljobs"))} )
 
 (defn create [req body]
-      (last [ (prn "req ", req  ) 
+      (do (prn "req ", req  ) 
         (try (let [doc (convert (new_doc (slurp body) (:headers (keywordize-keys req))  )) ] 
               (mc/insert "rljobs" doc)
             {:status 201 :body (json-str doc ) })
         (catch Exception e 
-            (-> (prn e)
-            {:status 400 :body (json-str { :error (.getLocalizedMessage e ) } ) }   )
-             )) ] ))
+			(do (prn "Exception is " e " trace " (.printStackTrace e)) 
+            {:status 400 :body (json-str { :error (.getLocalizedMessage e ) } ) }   ))
+             )  ))
 
 (defn edit [id req body]
     {:status 200 :body (str "Edit " id " req " req " --" (read-json (slurp body ) true ) ) } )

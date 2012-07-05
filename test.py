@@ -22,20 +22,17 @@ response = conn.getresponse()
 api_resp = response.read()
 print "Empty API Keys  ", response.status, response.reason, api_resp
 
-conn.request("PUT", "/users/" + js["_id"] + "/apikey/prodkey", "", headers)
+conn.request("PUT", "/users/" + js["_id"] + "/apikey/", "", headers)
 response = conn.getresponse()
 api_resp = response.read()
 print "Create API Key ", response.status, response.reason, api_resp
+
 
 conn.request("GET", "/users/" + js["_id"] + "/apikey/", "", headers)
 response = conn.getresponse()
 api_resp = response.read()
 print "Created API Keys  ", response.status, response.reason, api_resp
 
-conn.request("DELETE", "/users/" + js["_id"] + "/apikey/prodkey", "", headers)
-response = conn.getresponse()
-api_resp = response.read()
-print "DELETE API Key ", response.status, response.reason, api_resp
 
 conn.request("GET", "/users/" + js["_id"] + "/apikey/", "", headers)
 response = conn.getresponse()
@@ -54,7 +51,7 @@ print "SHA1 ", base64.b64encode( hmac.new("1234", json_data, hashlib.sha1).diges
 print "EMPTY SHA1 ", base64.b64encode( hmac.new("1234", "", hashlib.sha1).digest() )
 
 
-spec_headers = { "runlater_key" : "onwner key", "runlater_hash" : base64.b64encode( hmac.new("1234", json_data, hashlib.sha1).digest()) , "Content-Type" : "application/json" } 
+spec_headers = { "runlater_key" : "123123", "runlater_hash" : base64.b64encode( hmac.new("1234", json_data, hashlib.sha1).digest()) , "Content-Type" : "application/json" } 
 conn.request("PUT", "/jobs/", json_data, spec_headers )
 response = conn.getresponse()
 print "Create a job ", response.status, response.reason, response.read()
@@ -64,7 +61,6 @@ print "Create a job ", response.status, response.reason, response.read()
 #as_str = response.read()
 #print "json ", json.loads(as_str)
 
-
 #conn.request("PUT", "/jobs/", json.dumps(data), headers = spec_headers)
 #response = conn.getresponse()
 #doc = json.loads(response.read())
@@ -73,3 +69,8 @@ print "Create a job ", response.status, response.reason, response.read()
 #conn.request("DELETE", "/jobs/" + doc["_id"])
 #response = conn.getresponse()
 #print response.status, response.reason, response.read()
+
+conn.request("DELETE", "/users/" + js["_id"] + "/apikey/prodkey", "", headers)
+response = conn.getresponse()
+api_resp = response.read()
+print "DELETE API Key ", response.status, response.reason, api_resp
