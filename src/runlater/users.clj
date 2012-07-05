@@ -121,7 +121,7 @@
 		(let [up_doc (assoc doc :apikeys (assoc (:apikeys doc) keyw (rclient/random-string 12) ))]  
 			(last [ 
 					(mc/save "rlusers" up_doc)
-					{:status 200 :body (json-str { (keyword keyw) (get (:apikeys up_doc) (keyword keyw) ) } ) }
+					{:status 200 :body (json-str { "public" keyw "private" (get (:apikeys up_doc) keyw ) } ) }
 				  ]
 			)
 			)

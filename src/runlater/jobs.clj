@@ -20,20 +20,20 @@
 
 
 (defn lookup_key [ headers ] 
-	(let [key (mc/find-one-as-map "rlusers" { (str "apikeys." (:runlater_key headers)) { "$exists" true}}) ]
-		(do (prn "key " key " -- " (:runlater_key headers)  ) 
-			key))
+	(let [doc (mc/find-one-as-map "rlusers" { (str "apikeys." (:runlater_key headers)) { "$exists" true}}) ]
+			(get  (:apikeys doc ) (keyword (:runlater_key headers) )) )
 )
 	
 
 (defn new_doc [json_str headers]  
       ((comp 
         (fn [m] (if (contains? m :_id ) (throw (Exception. "Do not specify _id")) m )) 
-        (fn [m] (if (contains? headers :runlater_hash) 
-                  (if (= (rclient/hmac (lookup_key headers) json_str) (get headers :runlater_hash)) ; replace later with looked up API Account secret
+        (fn [m] (let [key (lookup_key headers)] 
+			(if (and (contains? headers :runlater_hash)  key)
+                  (if (= (rclient/hmac key json_str) (get headers :runlater_hash)) ; replace later with looked up API Account secret
                       m 
-                      (throw (Exception. (str "Invalid HMAC Hash" )   )))
-                  (throw (Exception. (str "Must Specify runlater_key and runlater_hash in headers" ) ) ))) 
+                      (throw (Exception. (str "Invalid HMAC Hash or Bad API Key" )   )))
+                  (throw (Exception. (str "Must Specify runlater_key and runlater_hash in headers" ) ) ))) )
         (fn [m] (if (contains? headers :runlater_key)
 					m
 					(throw (Exception. "Must Specify runlater_key")) )  ) 

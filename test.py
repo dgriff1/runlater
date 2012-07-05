@@ -17,27 +17,23 @@ json_resp = response.read()
 print "Create a user ", response.status, response.reason, json_resp
 
 js = json.loads(json_resp)
-conn.request("GET", "/users/" + js["_id"] + "/apikey/", "", headers)
+conn.request("GET", "/users/" + js["_id"] + "/apikeys/", "", headers)
 response = conn.getresponse()
 api_resp = response.read()
 print "Empty API Keys  ", response.status, response.reason, api_resp
 
-conn.request("PUT", "/users/" + js["_id"] + "/apikey/", "", headers)
+conn.request("PUT", "/users/" + js["_id"] + "/apikeys/", "", headers)
 response = conn.getresponse()
-api_resp = response.read()
+api_resp = json.loads(response.read())
 print "Create API Key ", response.status, response.reason, api_resp
 
+api_public_key  = api_resp["public"]
+api_private_key  = api_resp["private"]
 
-conn.request("GET", "/users/" + js["_id"] + "/apikey/", "", headers)
+conn.request("GET", "/users/" + js["_id"] + "/apikeys/", "", headers)
 response = conn.getresponse()
 api_resp = response.read()
 print "Created API Keys  ", response.status, response.reason, api_resp
-
-
-conn.request("GET", "/users/" + js["_id"] + "/apikey/", "", headers)
-response = conn.getresponse()
-api_resp = response.read()
-print "Deleted API Keys  ", response.status, response.reason, api_resp
 
 json_data = json.dumps(data)
 conn.request("GET", "/users/"+ json.loads(json_resp)["_id"] , json_data, headers )
@@ -47,11 +43,11 @@ print "Lookup a user ", response.status, response.reason, response.read()
 data = { "name" : "Daily Backup", "when" : "2012-05-06T06:15:42.215Z", "interval" : "2 hours", "url" : "http://google.com", "method" : "POST", "headers" : {}  }
 json_data = json.dumps(data)
 
-print "SHA1 ", base64.b64encode( hmac.new("1234", json_data, hashlib.sha1).digest() )
-print "EMPTY SHA1 ", base64.b64encode( hmac.new("1234", "", hashlib.sha1).digest() )
+print "SHA1 ", base64.b64encode( hmac.new(str( api_private_key ), json_data, hashlib.sha1).digest() )
+print "EMPTY SHA1 ", base64.b64encode( hmac.new(str( api_private_key ) , "", hashlib.sha1).digest() )
 
 
-spec_headers = { "runlater_key" : "123123", "runlater_hash" : base64.b64encode( hmac.new("1234", json_data, hashlib.sha1).digest()) , "Content-Type" : "application/json" } 
+spec_headers = { "runlater_key" : api_public_key, "runlater_hash" : base64.b64encode( hmac.new(str(api_private_key), json_data, hashlib.sha1).digest()) , "Content-Type" : "application/json" } 
 conn.request("PUT", "/jobs/", json_data, spec_headers )
 response = conn.getresponse()
 print "Create a job ", response.status, response.reason, response.read()
@@ -70,7 +66,12 @@ print "Create a job ", response.status, response.reason, response.read()
 #response = conn.getresponse()
 #print response.status, response.reason, response.read()
 
-conn.request("DELETE", "/users/" + js["_id"] + "/apikey/prodkey", "", headers)
+conn.request("DELETE", "/users/" + js["_id"] + "/apikeys/"+api_public_key, "", headers)
 response = conn.getresponse()
 api_resp = response.read()
 print "DELETE API Key ", response.status, response.reason, api_resp
+
+conn.request("GET", "/users/" + js["_id"] + "/apikeys/", "", headers)
+response = conn.getresponse()
+api_resp = response.read()
+print "Deleted API Keys  ", response.status, response.reason, api_resp
