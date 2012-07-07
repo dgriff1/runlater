@@ -1,6 +1,6 @@
 (ns runlater.test.users
-  (:use [runlater.users ] [runlater.client] [runlater.utils] )
-  (:use [clojure.test] ))
+  (:use [runlater.users ] [runlater.client] [runlater.utils] [clojure.data.json] )
+  (:use [clojure.test] [clojure.java.io ] ))
 
 (deftest test_assert ;; Test parsing the JSON
   ;                                           YYYY-MM-DDTHH:MM:SS.SSSZ
@@ -11,12 +11,16 @@
 
 (deftest test_conversion ;; Test massaging the JSON
   (let [doc (convert { :first "Dan" :last"Griffin" :email "test@runlater.com" :company "Run Later" :password "pass" }  )]
-    [ (is (contains? doc :_id ))
+    (do (is (contains? doc :_id ))
       (is (get doc :_id) "test@runlater.com")
       (is (= (get doc :apikeys) {}) "test@runlater.com")
       (is (not (= (get doc :password) "pass")))
-    ] ))
+      doc ) ))
 
+(defn test_apikey [] ;; Test creating an API Key 
+	(create_apikey (get (read-json (:body (create { :headers {} } (java.io.StringReader. (to-json { :first "Dan" :last"Griffin" :email "test@runlater.com" :company "Run Later" :password "pass" }))))) :_id ) nil nil))
+
+			
 
 ;(deftest test_new_doc ;; Test massaging the JSON
 ;  (let [

@@ -32,8 +32,8 @@
 			(if (and (contains? headers :runlater_hash)  key)
                   (if (= (rclient/hmac key json_str) (get headers :runlater_hash)) ; replace later with looked up API Account secret
                       m 
-                      (throw (Exception. (str "Invalid HMAC Hash or Bad API Key" )   )))
-                  (throw (Exception. (str "Must Specify runlater_key and runlater_hash in headers" ) ) ))) )
+                      (throw (Exception. (str "Invalid HMAC Hash" )   )))
+                  (throw (Exception. (str "Must supply valid runlater_key and runlater_hash in headers" ) ) ))) )
         (fn [m] (if (contains? headers :runlater_key)
 					m
 					(throw (Exception. "Must Specify runlater_key")) )  ) 
