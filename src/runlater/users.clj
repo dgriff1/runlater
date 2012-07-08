@@ -113,8 +113,8 @@
 ;
 ; Create an API key
 ; 
-(defn create_apikey [id req body]
-    (let [ doc (keywordize-keys (mc/find-one-as-map "rlusers" {:_id (ObjectId. id) } )) keyw (.toString (ObjectId. ) )    ]
+(defn create_apikey [id keyw req body]
+    (let [ doc (keywordize-keys (mc/find-one-as-map "rlusers" {:_id (ObjectId. id) } ))     ]
 		(if (contains? (:apikeys doc) keyw )
 				{:status 400 :body (str "API key " keyw " already created") }
 		(let [up_doc (assoc doc :apikeys (assoc (:apikeys doc) keyw (rclient/random-string 12) ))]  

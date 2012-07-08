@@ -22,7 +22,7 @@ response = conn.getresponse()
 api_resp = response.read()
 print "Empty API Keys  ", response.status, response.reason, api_resp
 
-conn.request("PUT", "/users/" + js["_id"] + "/apikeys/", "", headers)
+conn.request("PUT", "/users/" + js["_id"] + "/apikeys/prodkey", "", headers)
 response = conn.getresponse()
 api_resp = json.loads(response.read())
 print "Create API Key ", response.status, response.reason, api_resp
