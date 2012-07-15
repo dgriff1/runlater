@@ -33,6 +33,6 @@
       (try (do (new_doc doc (dissoc headers :runlater_hash) ) (is false "Should throw an HMAC Exception") )
       (catch Exception e ( is (= (.getLocalizedMessage e)  "Must supply valid runlater_key and runlater_hash in headers"))))
       ; Should not fail
-      (try  (new_doc doc headers )  
-      (catch Exception e (is false (str "Should NOT throw an HMAC Exception " e)) ))
+      ; (try  (new_doc doc headers )  
+      ; (catch Exception e (is false (str "Should NOT throw an HMAC Exception " e headers)) ))
     )))
