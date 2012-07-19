@@ -108,6 +108,17 @@ a.login {
 	text-align: left;
 }
 
+.addJob {
+	display: block;
+	width: 40px;
+	height: 26px;
+	background: url('/include/image/add.png') bottom;
+	text-indent: -99999px;
+}
+.addJob:hover {
+	background: url('/include/image/add_hover.png') bottom;
+}
+
 form {
 	padding: 0;
 	margin: 0;
