@@ -15,15 +15,15 @@ function renderJobs()
 
 function buildTable(results)
 {
-	var table='<table width="100%" border="1">';
+	var table='<table width="100%" border="0">';
 	
 	table+='<tr>';
-	table+='<td></td>';
-	table+='<td>NAME</td>';       
-	table+='<td>STATUS</td>';       
-	table+='<td>URL</td>';       
-	table+='<td>INTERVAL</td>';       
-	table+='<td>WHEN</td></tr>';       
+	table+='<th></th>';
+	table+='<th>NAME</th>';       
+	table+='<th>STATUS</th>';       
+	table+='<th>URL</th>';       
+	table+='<th>INTERVAL</th>';       
+	table+='<th>WHEN</th></tr>';       
 	for(var i = 0; i < results.length; i++)
 	{
 		table+='<tr>';
@@ -39,6 +39,16 @@ function buildTable(results)
 	 
 
 	$(".tableWrapper").html( table );	
+}
+
+function closeJob()
+{
+	$(".addJobDialog").dialog();
+}
+
+function addJob()
+{
+	$(".addJobDialog").dialog({"width" : "400px", "title" : "Add Job"});
 }
 
 function testTest()

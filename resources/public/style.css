@@ -108,15 +108,20 @@ a.login {
 	text-align: left;
 }
 
-.addJob {
-	display: block;
-	width: 40px;
-	height: 26px;
-	background: url('/include/image/add.png') bottom;
-	text-indent: -99999px;
+.welcome {
+	float: right;
+	padding-bottom: 5px;
 }
-.addJob:hover {
-	background: url('/include/image/add_hover.png') bottom;
+
+.addJobDialog {
+	float: left;
+	display : none;
+	background-color: white;
+}
+
+th {
+	background-color: #346734;
+	color: white;
 }
 
 form {

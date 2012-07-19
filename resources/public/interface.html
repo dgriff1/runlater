@@ -35,15 +35,28 @@
 
 		<div class="content">
 
-		<div align="left">
-			<a class="addJob" href="#addJob">Add</a>
+		<div style="float: left;">
+			<button onclick="javascript:addJob();">Add</button>
+		</div>		
+		<div class="welcome">
+			Welcome, User!
 		</div>		
 
-			<div class="tableWrapper">
+			<div style="clear: both;" class="tableWrapper">
 
 			</div>
 
 		</div>
+
+		<div name="addJobDialog" class="addJobDialog">
+				Name: <input type="input"/>
+
+				<div align="center">
+					<button onclick="">Save</button>
+					<button onclick="javascript:closeJob();">Cancel</button>
+				</div>
+		</div>
+
 	</body>
 
 </html>
