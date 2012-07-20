@@ -18,7 +18,7 @@
       doc ) ))
 
 (defn test_apikey [] ;; Test creating an API Key 
-	(create_apikey (get (read-json (:body (create { :headers {} } (java.io.StringReader. (to-json { :first "Dan" :last"Griffin" :email "test@runlater.com" :company "Run Later" :password "pass" }))))) :_id ) "production" nil nil))
+	(create_apikey (get (read-json (:body (create { :headers {} } (java.io.StringReader. (to-json { :first "Dan" :last"Griffin" :email (str (random-string 24) "@runlater.com") :company "Run Later" :password "pass" }))))) :_id ) "production" nil nil))
 
 			
 

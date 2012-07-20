@@ -28,11 +28,24 @@
 (defn new_doc [json_str headers]  
       ((comp 
         (fn [m] (if (contains? m :_id ) (throw (Exception. "Do not specify _id")) m )) 
-        (fn [m] (let [key (lookup_key headers)] 
-			(if (and (contains? headers :runlater_hash)  key)
-                  (if (= (rclient/hmac key json_str) (get headers :runlater_hash)) ; replace later with looked up API Account secret
+        (fn [m] (let [hkey (lookup_key headers)] 
+			(if (and (contains? headers :runlater_hash)  hkey)
+                  (if (= (rclient/hmac hkey json_str) (get headers :runlater_hash)) ; replace later with looked up API Account secret
                       m 
-                      (throw (Exception. (str "Invalid HMAC Hash" )   )))
+                      (throw (Exception. (str "Invalid HMAC Hash" ) )))
+                  (throw (Exception. (str "Must supply valid runlater_key and runlater_hash in headers" ) ) ))) )
+        (fn [m] (if (contains? headers :runlater_key)
+					m
+					(throw (Exception. "Must Specify runlater_key")) )  ) 
+      ) (read-json json_str true) ))
+
+(defn edit_doc [json_str headers]  
+      ((comp 
+        (fn [m] (let [hkey (lookup_key headers)] 
+			(if (and (contains? headers :runlater_hash)  hkey)
+                  (if (= (rclient/hmac hkey json_str) (get headers :runlater_hash)) ; replace later with looked up API Account secret
+                      m 
+                      (throw (Exception. (str "Invalid HMAC Hash " )   )))
                   (throw (Exception. (str "Must supply valid runlater_key and runlater_hash in headers" ) ) ))) )
         (fn [m] (if (contains? headers :runlater_key)
 					m
