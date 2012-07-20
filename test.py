@@ -14,20 +14,29 @@ json_data = json.dumps(data)
 conn.request("PUT", "/users/", json_data, headers )
 response = conn.getresponse()
 json_resp = response.read()
+js = json.loads(json_resp)
 print "Create a user ", response.status, response.reason, json_resp
 
-js = json.loads(json_resp)
+assert response.status == 201
+assert "_id" in js
+
 USER_ID = js["_id"] 
 
 conn.request("GET", "/users/" + USER_ID + "/apikeys/", "", headers)
 response = conn.getresponse()
-api_resp = response.read()
+api_resp = json.loads(response.read())
 print "Empty API Keys  ", response.status, response.reason, api_resp
+assert  api_resp == []
+assert response.status == 200
 
 conn.request("PUT", "/users/" + USER_ID + "/apikeys/prodkey", "", headers)
 response = conn.getresponse()
 api_resp = json.loads(response.read())
 print "Create API Key ", response.status, response.reason, api_resp
+assert "public" in api_resp
+assert "private" in api_resp
+assert api_resp["public"] == "prodkey"
+assert response.status == 201
 
 api_public_key  = api_resp["public"]
 api_private_key  = api_resp["private"]
@@ -35,12 +44,19 @@ api_private_key  = api_resp["private"]
 conn.request("GET", "/users/" + USER_ID + "/apikeys/", "", headers)
 response = conn.getresponse()
 api_resp = response.read()
-print "Created API Keys  ", response.status, response.reason, api_resp
+print "List all API Keys ", response.status, response.reason, api_resp
+assert len(api_resp) > 0 
+assert "prodkey" in api_resp
+assert response.status == 200
 
 json_data = json.dumps(data)
-conn.request("GET", "/users/"+ json.loads(json_resp)["_id"] , json_data, headers )
+conn.request("GET", "/users/"+ USER_ID , json_data, headers )
 response = conn.getresponse()
-print "Lookup a user ", response.status, response.reason, response.read()
+api_resp = json.loads( response.read() )
+print "Lookup a user ", response.status, response.reason, api_resp
+assert response.status == 200
+assert "_id" in api_resp
+
 
 data = { "name" : "Daily Backup", "when" : "2012-05-06T06:15:42.215Z", "interval" : "2 hours", "url" : "http://google.com", "method" : "POST", "headers" : {}  }
 json_data = json.dumps(data)

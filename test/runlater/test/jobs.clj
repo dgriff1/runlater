@@ -24,7 +24,6 @@
         headers { :runlater_key (:public apikeys) :runlater_hash (hmac (:private apikeys) doc ) }
        ]
     (do
-	  (prn "API KEYS ", apikeys)
       (try  (new_doc doc (:_id apiuser) headers )  
        (catch Exception e (is false (str "Should NOT throw an HMAC Exception " e headers)) ))
       ; Bad Hashes should throw an exception
@@ -38,6 +37,6 @@
       	(catch Exception e ( is (= (.getLocalizedMessage e)  "Must Specify runlater_key"))))
       ; Must have the hash specified 
       (try (do (new_doc doc (:_id apiuser) (dissoc headers :runlater_hash) ) (is false "Should throw an HMAC Exception") )
-      (catch Exception e ( is (= (.getLocalizedMessage e)  "Must supply valid runlater_key and runlater_hash in headers"))))
+       (catch Exception e ( is (= (.getLocalizedMessage e)  "Must supply valid runlater_key and runlater_hash in headers"))))
       ; Should not fail
     )))

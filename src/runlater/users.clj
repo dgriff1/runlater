@@ -108,7 +108,10 @@
 ; 
 (defn lookup_apikeys [id req body]
     (let [doc (mc/find-one-as-map "rlusers" {:_id (ObjectId. id) })]
-      {:status 200 :body (json-str (:apikeys doc)) } ))
+		( do (prn "Doc " doc (json-str [])  )
+      (if (or (nil? doc) (= (count (:apikeys doc)) 0 ))
+	  	{:status 200 :body (json-str []) }  
+		{:status 200 :body (json-str (:apikeys doc))}   ))))
 
 ;
 ; Create an API key
@@ -120,7 +123,7 @@
 		(let [up_doc (assoc doc :apikeys (assoc (:apikeys doc) keyw (rclient/random-string 12) ))]  
 			(last [ 
 					(mc/save "rlusers" up_doc)
-					{:status 200 :body (json-str { "public" keyw "private" (get (:apikeys up_doc) keyw ) } ) }
+					{:status 201 :body (json-str { "public" keyw "private" (get (:apikeys up_doc) keyw ) } ) }
 				  ]
 			)
 			)
