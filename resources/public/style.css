@@ -108,6 +108,22 @@ a.login {
 	text-align: left;
 }
 
+.welcome {
+	float: right;
+	padding-bottom: 5px;
+}
+
+.addJobDialog {
+	float: left;
+	display : none;
+	background-color: white;
+}
+
+th {
+	background-color: #346734;
+	color: white;
+}
+
 form {
 	padding: 0;
 	margin: 0;

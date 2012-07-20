@@ -24,19 +24,39 @@
 		<script src="http://crypto-js.googlecode.com/svn/tags/3.0.2/build/rollups/hmac-sha512.js"></script>
 
 		<script language="javascript">
+			$(document).ready(function() {
+				renderJobs();
+			});
 		</script>
 
 		<div class="header">
 			<img  src="header.jpg" alt="runlater.com"/>
-
-		
-
-
 		</div>
 
 		<div class="content">
-			Interface<br/>
+
+		<div style="float: left;">
+			<button onclick="javascript:addJob();">Add</button>
+		</div>		
+		<div class="welcome">
+			Welcome, User!
+		</div>		
+
+			<div style="clear: both;" class="tableWrapper">
+
+			</div>
+
 		</div>
+
+		<div name="addJobDialog" class="addJobDialog">
+				Name: <input type="input"/>
+
+				<div align="center">
+					<button onclick="">Save</button>
+					<button onclick="javascript:closeJob();">Cancel</button>
+				</div>
+		</div>
+
 	</body>
 
 </html>
