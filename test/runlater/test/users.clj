@@ -17,8 +17,11 @@
       (is (not (= (get doc :password) "pass")))
       doc ) ))
 
-(defn test_apikey [] ;; Test creating an API Key 
-	(create_apikey (get (read-json (:body (create { :headers {} } (java.io.StringReader. (to-json { :first "Dan" :last"Griffin" :email (str (random-string 24) "@runlater.com") :company "Run Later" :password "pass" }))))) :_id ) "production" nil nil))
+(defn create_user [] 
+	(create { :headers {} } (java.io.StringReader. (to-json { :first "Dan" :last"Griffin" :email (str (random-string 24) "@runlater.com") :company "Run Later" :password "pass" }))))	
+
+(defn test_apikey [ u ] ;; Test creating an API Key 
+	(create_apikey u "production" nil nil))
 
 			
 

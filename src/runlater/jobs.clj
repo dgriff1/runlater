@@ -19,16 +19,16 @@
     (valid? jobs_validator job ))
 
 
-(defn lookup_key [ headers ] 
-	(let [doc (mc/find-one-as-map "rlusers" { (str "apikeys." (:runlater_key headers)) { "$exists" true}}) ]
+(defn lookup_key [ userid headers ] 
+	(let [doc (mc/find-one-as-map "rlusers" { "$and" [ {(str "apikeys." (:runlater_key headers)) { "$exists" true}}  { :_id (ObjectId. userid)  } ] }) ]
 			(get  (:apikeys doc ) (keyword (:runlater_key headers) )) )
 )
 	
 
-(defn new_doc [json_str headers]  
+(defn new_doc [json_str userid headers]  
       ((comp 
         (fn [m] (if (contains? m :_id ) (throw (Exception. "Do not specify _id")) m )) 
-        (fn [m] (let [hkey (lookup_key headers)] 
+        (fn [m] (let [hkey (lookup_key userid headers)] 
 			(if (and (contains? headers :runlater_hash)  hkey)
                   (if (= (rclient/hmac hkey json_str) (get headers :runlater_hash)) ; replace later with looked up API Account secret
                       m 
@@ -62,12 +62,12 @@
     ) doc))
 
 
-(defn index []
+(defn index [userid request body]
     {:status 200 :body (to-json (mc/find-maps "rljobs"))} )
 
-(defn create [req body]
-      (do (prn "req ", req  ) 
-        (try (let [doc (convert (new_doc (slurp body) (:headers (keywordize-keys req))  )) ] 
+(defn create [userid req body]
+      (do 
+        (try (let [doc (convert (new_doc (slurp body) userid (:headers (keywordize-keys req))  )) ] 
               (mc/insert "rljobs" doc)
             {:status 201 :body (json-str doc ) })
         (catch Exception e 
@@ -75,13 +75,13 @@
             {:status 400 :body (json-str { :error (.getLocalizedMessage e ) } ) }   ))
              )  ))
 
-(defn edit [id req body]
+(defn edit [id userid req body]
     {:status 200 :body (str "Edit " id " req " req " --" (read-json (slurp body ) true ) ) } )
 
-(defn delete [id req body]
+(defn delete [id userid req body]
     {:status 200 :body (str "Delete " id " " ( mc/remove "rljobs" { :_id (ObjectId. id) })) }  )
 
-(defn lookup [id req body]
+(defn lookup [id userid req body]
     {:status 200 :body (str "Lookup " id " req " req " --" (read-json (slurp body )) ) } )
 
 
