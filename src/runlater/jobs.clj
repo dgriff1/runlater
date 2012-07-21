@@ -1,55 +1,24 @@
 (ns runlater.jobs
-   (:require [clojure.data.json] [monger.collection :as mc] [monger.json] [monger.joda-time] [runlater.sched :as sched] [runlater.client :as rclient] [runlater.utils] )
-   (:use clojure.data.json validateur.validation clj-time.format runlater.utils clojure.walk )
+   (:require [clojure.data.json] [monger.collection :as mc] [monger.json] 
+   		[monger.joda-time] [runlater.sched :as sched] [runlater.client :as rclient] [runlater.utils] [runlater.valid :as rvalid ] )
+   (:use clojure.data.json clj-time.format runlater.utils clojure.walk )
     (:import [org.bson.types ObjectId]
                [com.mongodb DB WriteConcern]))
 
 
-(def jobs_validator (validation-set 
-    (presence-of :name )
-    (presence-of :url )
-    (presence-of :when )
-    (presence-of :interval)
-    (presence-of :headers)
-    (presence-of :body)
-    (presence-of :method)
-    ))
-
-(defn assert_task [ job ]
-    (valid? jobs_validator job ))
-
-
-(defn lookup_key [ userid headers ] 
-	(let [doc (mc/find-one-as-map "rlusers" { "$and" [ {(str "apikeys." (:runlater_key headers)) { "$exists" true}}  { :_id (ObjectId. userid)  } ] }) ]
-			(get  (:apikeys doc ) (keyword (:runlater_key headers) )) )
-)
-	
-
 (defn new_doc [json_str userid headers]  
       ((comp 
-        (fn [m] (if (contains? m :_id ) (throw (Exception. "Do not specify _id")) m )) 
-        (fn [m] (let [hkey (lookup_key userid headers)] 
-			(if (and (contains? headers :runlater_hash)  hkey)
-                  (if (= (rclient/hmac hkey json_str) (get headers :runlater_hash)) ; replace later with looked up API Account secret
-                      m 
-                      (throw (Exception. (str "Invalid HMAC Hash" ) )))
-                  (throw (Exception. (str "Must supply valid runlater_key and runlater_hash in headers" ) ) ))) )
-        (fn [m] (if (contains? headers :runlater_key)
-					m
-					(throw (Exception. "Must Specify runlater_key")) )  ) 
+	  	rvalid/no_id
+		(partial rvalid/valid_hmac userid json_str headers)
+		(partial rvalid/has_runlater_key headers)
+		rvalid/assert_job
       ) (read-json json_str true) ))
 
-(defn edit_doc [json_str headers]  
+(defn edit_doc [json_str userid headers]  
       ((comp 
-        (fn [m] (let [hkey (lookup_key headers)] 
-			(if (and (contains? headers :runlater_hash)  hkey)
-                  (if (= (rclient/hmac hkey json_str) (get headers :runlater_hash)) ; replace later with looked up API Account secret
-                      m 
-                      (throw (Exception. (str "Invalid HMAC Hash " )   )))
-                  (throw (Exception. (str "Must supply valid runlater_key and runlater_hash in headers" ) ) ))) )
-        (fn [m] (if (contains? headers :runlater_key)
-					m
-					(throw (Exception. "Must Specify runlater_key")) )  ) 
+		(partial rvalid/valid_hmac userid json_str headers)
+		(partial rvalid/has_runlater_key headers)
+		rvalid/assert_job
       ) (read-json json_str true) ))
 
 (defn convert [doc]
@@ -76,10 +45,16 @@
              )  ))
 
 (defn edit [id userid req body]
-    {:status 200 :body (str "Edit " id " req " req " --" (read-json (slurp body ) true ) ) } )
+    (try (let [doc (convert (edit_doc (slurp body) userid (:headers (keywordize-keys req))  )) ] 
+		(mc/update "rljobs" doc)
+    	{:status 200 :body (json-str { :_id (:_id doc)} )  } )
+	(catch Exception e 
+		(do (prn "Exception is " e " trace " (.printStackTrace e)) 
+        	{:status 400 :body (json-str { :error (.getLocalizedMessage e ) } ) }   ))
+		))
 
 (defn delete [id userid req body]
-    {:status 200 :body (str "Delete " id " " ( mc/remove "rljobs" { :_id (ObjectId. id) })) }  )
+    	{:status 200 :body (str "Delete " id " " ( mc/remove "rljobs" { :_id (ObjectId. id) })) }  )
 
 (defn lookup [id userid req body]
     {:status 200 :body (str "Lookup " id " req " req " --" (read-json (slurp body )) ) } )

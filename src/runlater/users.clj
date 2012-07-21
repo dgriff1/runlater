@@ -108,10 +108,9 @@
 ; 
 (defn lookup_apikeys [id req body]
     (let [doc (mc/find-one-as-map "rlusers" {:_id (ObjectId. id) })]
-		( do (prn "Doc " doc (json-str [])  )
       (if (or (nil? doc) (= (count (:apikeys doc)) 0 ))
 	  	{:status 200 :body (json-str []) }  
-		{:status 200 :body (json-str (:apikeys doc))}   ))))
+		{:status 200 :body (json-str (:apikeys doc))}   )))
 
 ;
 ; Create an API key
