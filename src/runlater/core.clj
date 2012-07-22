@@ -13,9 +13,9 @@
   (PUT "/users/:userid/jobs/" { {userid :userid} :params  body :body :as request}  (jobs/create userid request body ) )
   (GET "/users/:userid/jobs/" { {userid :userid} :params  body :body :as request} (jobs/index userid request body) )
   ; resource actions 
-  (GET "/users/:userid/jobs/:jobid" { {userid :userid} :params {id :jobid} :params  params :params  body :body }  (jobs/lookup id userid params body) )
-  (PUT "/users/:userid/jobs/:jobid" { {userid :userid} :params {id :jobid} :params  params :params  body :body }  (jobs/edit id userid params body) )
-  (DELETE "/users/:userid/jobs/:jobid" { {userid :userid} :params {id :jobid} :params  params :params  body :body }  (jobs/delete id userid params body) )
+  (GET "/users/:userid/jobs/:jobid" { {userid :userid} :params {id :jobid} :params  body :body :as request }  (jobs/lookup id userid request body) )
+  (PUT "/users/:userid/jobs/:jobid" { {userid :userid} :params {id :jobid} :params  body :body :as request }  (jobs/edit id userid request body) )
+  (DELETE "/users/:userid/jobs/:jobid" { {userid :userid} :params {id :jobid} :params  body :body :as request }  (jobs/delete id userid request body) )
 
   (GET "/users" [] (users/index) )
   (PUT "/users/" { body :body :as request}  (users/create request body ) )

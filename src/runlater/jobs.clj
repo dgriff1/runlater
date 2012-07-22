@@ -21,7 +21,7 @@
 		rvalid/assert_job
       ) (read-json json_str true) ))
 
-(defn convert [doc]
+(defn convert_job [doc]
     ((comp 
         (fn [m] (safe_assoc m :_id (ObjectId.)) )
         (fn [m] (assoc m :when (parse (formatters :date-time) (get m :when))))
@@ -31,12 +31,18 @@
     ) doc))
 
 
+(defn update_job [doc] 
+	(( comp 
+		(fn [m]  (assoc m :editted (parse (formatters :date-time) (get m :when))))
+		(fn [m] (assoc m :status "waiting" ) )
+	) doc))
+
 (defn index [userid request body]
     {:status 200 :body (to-json (mc/find-maps "rljobs"))} )
 
 (defn create [userid req body]
       (do 
-        (try (let [doc (convert (new_doc (slurp body) userid (:headers (keywordize-keys req))  )) ] 
+        (try (let [doc (convert_job (new_doc (slurp body) userid (:headers (keywordize-keys req))  )) ] 
               (mc/insert "rljobs" doc)
             {:status 201 :body (json-str doc ) })
         (catch Exception e 
@@ -45,9 +51,9 @@
              )  ))
 
 (defn edit [id userid req body]
-    (try (let [doc (convert (edit_doc (slurp body) userid (:headers (keywordize-keys req))  )) ] 
-		(mc/update "rljobs" doc)
-    	{:status 200 :body (json-str { :_id (:_id doc)} )  } )
+    (try (let [doc (update_job (edit_doc (slurp body) userid (:headers (keywordize-keys req))  )) ] 
+		(mc/save "rljobs" doc)
+    	{:status 200 :body (json-str doc) } )
 	(catch Exception e 
 		(do (prn "Exception is " e " trace " (.printStackTrace e)) 
         	{:status 400 :body (json-str { :error (.getLocalizedMessage e ) } ) }   ))
