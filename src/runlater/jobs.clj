@@ -1,7 +1,7 @@
 (ns runlater.jobs
    (:require [clojure.data.json] [monger.collection :as mc] [monger.json] 
    		[monger.joda-time] [runlater.sched :as sched] [runlater.client :as rclient] [runlater.utils] [runlater.valid :as rvalid ] )
-   (:use clojure.data.json clj-time.format runlater.utils clojure.walk )
+   (:use clojure.data.json clj-time.format runlater.utils clojure.walk [ monger.result :only [ok? has-error?]] )
     (:import [org.bson.types ObjectId]
                [com.mongodb DB WriteConcern]))
 
@@ -60,7 +60,17 @@
 		))
 
 (defn delete [id userid req body]
-    	{:status 200 :body (str "Delete " id " " ( mc/remove "rljobs" { :_id (ObjectId. id) })) }  )
+	(try (do 
+		(prn "REq " (:uri req))
+		(rvalid/valid_hmac userid (:uri req) (:headers (keywordize-keys req)) {})  
+			(if (ok? (mc/remove "rljobs" {:_id (ObjectId. id)}))
+    			{:status 200 :body (str "Delete " id " " ( mc/remove "rljobs" { :_id (ObjectId. id) })) }  
+				(throw (Exception. "Unable to delete, is the ID valid?"))))
+	(catch Exception e 
+		(do (prn "Exception is " e " trace " (.printStackTrace e)) 
+        	{:status 400 :body (json-str { :error (.getLocalizedMessage e ) } ) }   ))
+		))
+
 
 (defn lookup [id userid req body]
     {:status 200 :body (str "Lookup " id " req " req " --" (read-json (slurp body )) ) } )
