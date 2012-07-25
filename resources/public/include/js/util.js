@@ -2,11 +2,18 @@
 
 function renderJobs()
 {
-		var hash = CryptoJS.SHA256("wtYpQKgYtYfJ");
-		alert(hash);
+		var userID = "500f8353e4b0fe671fc74d65";
+		var publicKey = "prodkey";
+		var privateKey = "Ft[7JfgICm2n";
+		var privateKey = encode64(CryptoJS.SHA1(privateKey, ""));
 
 			$.ajax({
-					url: "jobs/" + "500f57d2e4b0fe671fc74d5e/",
+					headers: {
+						"runlater_key" : publicKey,
+						"runlater_hash" : privateKey,
+						"Content-Type" : "application/json"
+					},
+					url: "jobs/" + userID + "/",
 					type: "GET",
 					contentType: 'application/json',
 					error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -16,7 +23,7 @@ function renderJobs()
 					}
 				    });
 }
-
+""
 function buildTable(results)
 {
 	var table='<table width="100%" border="0">';

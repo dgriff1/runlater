@@ -22,7 +22,6 @@ assert "_id" in js
 
 USER_ID = js["_id"] 
 
-
 conn.request("GET", "/users/" + USER_ID + "/apikeys/", "", headers)
 response = conn.getresponse()
 api_resp = json.loads(response.read())
