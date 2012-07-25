@@ -1,8 +1,12 @@
 
+
 function renderJobs()
 {
+		var hash = CryptoJS.SHA256("wtYpQKgYtYfJ");
+		alert(hash);
+
 			$.ajax({
-					url: "jobs/",
+					url: "jobs/" + "500f57d2e4b0fe671fc74d5e/",
 					type: "GET",
 					contentType: 'application/json',
 					error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -85,4 +89,5 @@ function addUser()
 					}
 				    });
 }
+
 
