@@ -70,12 +70,17 @@ function addJob()
 	data += '"interval" : "2 hours",';
 	data += '"url" : "' + url + '" , ';
 	data += '"method" : "POST" , ';
-	data += '"headers" : ""'; 
+	data += '"headers" : {}'; 
 	data += ' } ';
+
+	alert(data);
 
 	var hash = CryptoJS.HmacSHA1(privateKey, data);
 
-	hash.toString(CryptoJS.enc.Base64);	
+	hash = hash.toString(CryptoJS.enc.Base64);	
+
+	alert(data);
+	alert(hash);
 
 	$.ajax({
 			headers: {
