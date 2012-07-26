@@ -20,7 +20,7 @@
 		<script src="http://crypto-js.googlecode.com/svn/tags/3.0.2/build/rollups/hmac-sha1.js"></script>
 		<script src="http://crypto-js.googlecode.com/svn/tags/3.0.2/build/rollups/hmac-sha256.js"></script>
 		<script src="http://crypto-js.googlecode.com/svn/tags/3.0.2/build/rollups/hmac-sha512.js"></script>
-		<script type="text/javascript" src="include/js/b64encode.js"></script>
+		<script src="http://crypto-js.googlecode.com/svn/tags/3.0.2/build/components/enc-base64-min.js"></script>
 		<script type="text/javascript" src="include/js/util.js"></script>
 
 
@@ -37,7 +37,7 @@
 		<div class="content">
 
 		<div style="float: left;">
-			<button onclick="javascript:addJob();">Add</button>
+			<button onclick="javascript:showJobDialog();">Add</button>
 		</div>		
 		<div class="welcome">
 			Welcome, User!
@@ -50,10 +50,16 @@
 		</div>
 
 		<div name="addJobDialog" class="addJobDialog">
-				Name: <input type="input"/>
-
-				<div align="center">
-					<button onclick="">Save</button>
+				<div style="padding: 5px;float: left;">
+					Name: <br/>
+					URL:
+				</div>
+				<div style="padding: 5px;float: left;">
+					<input name="name" type="text"/><br/>
+					 <input name="url" type="text"/>
+				</div>
+				<div align="center" style="clear: both;">
+					<button onclick="javascript:addJob();">Save</button>
 					<button onclick="javascript:closeJob();">Cancel</button>
 				</div>
 		</div>
