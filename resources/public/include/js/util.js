@@ -1,7 +1,8 @@
 
-var userID = "ID501228d4e4b0b4753b0c6210";
+var userID = "50189177e4b0b4753b0c6212";
 var publicKey = "prodkey";
-var privateKey = "R4C9[kT3ddK2";
+var privateKey = "CXLHDJxb0Spf";
+var enc = "Pz5oTQA+1z7OsrGg6VT5sRh9JL8=";
 
 function renderJobs()
 {
@@ -75,16 +76,18 @@ function addJob()
 
 	var hash2 = CryptoJS.HmacSHA1(privateKey, data);
 	hash2 = hash2.toString(CryptoJS.enc.Base64);	
-	
+
 	$.ajax({
 			beforeSend: function(xhr) {
 				xhr.setRequestHeader("runlater_key", publicKey);
-				xhr.setRequestHeader("runlater_hash", hash2);
+				xhr.setRequestHeader("runlater_hash", encodeURI(hash2));
 				xhr.setRequestHeader("Content-Type", "application/json");
+				xhr.setRequestHeader("Accept", "application/json");
 			     },
 			url: "users/" + userID + "/jobs/",
 			type: "PUT",
 			data: data,
+			dataType: "json",
 			contentType: 'application/json',
 			error: function(XMLHttpRequest, textStatus, errorThrown){
 			    alert(errorThrown);
