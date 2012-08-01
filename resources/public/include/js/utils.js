@@ -25,7 +25,7 @@ function renderJobs()
 					}
 				    });
 }
-""
+
 function buildTable(results)
 {
 	var table='<table width="100%" border="0">';
