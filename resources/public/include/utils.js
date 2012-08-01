@@ -29,7 +29,7 @@ function renderJobs()
 function buildTable(results)
 {
 	var table='<table width="100%" border="0">';
-	
+
 	table+='<tr>';
 	table+='<th></th>';
 	table+='<th>NAME</th>';       
@@ -49,7 +49,7 @@ function buildTable(results)
 		table+='</tr>';
 	}
 	table+='</table>';
-	 
+
 
 	$(".tableWrapper").html( table );	
 }
@@ -137,5 +137,3 @@ function addUser()
 					}
 				    });
 }
-
-
