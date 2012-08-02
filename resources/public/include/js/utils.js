@@ -27,7 +27,7 @@ function renderJobs()
 
 function buildTable(results)
 {
-	var table='<table width="100%" border="0">';
+	var table='<table id="jobsTable" name="jobsTable" width="100%" border="0">';
 
 	table+='<tr>';
 	table+='<th></th>';
@@ -51,6 +51,7 @@ function buildTable(results)
 
 
 	$(".tableWrapper").html( table );	
+	$(".jobsTable").tablesorter(); 
 }
 
 function closeJob()
@@ -58,6 +59,13 @@ function closeJob()
 	$(".addJobDialog").find("[name=name]").val("");
 	$(".addJobDialog").find("[name=url]").val("");
 	$(".addJobDialog").dialog('close');
+}
+
+function updateStatus(str)
+{
+ 	$('#status').fadeIn('slow');
+	$("#status").html(str);
+ 	$('#status').fadeOut(2000);
 }
 
 function addJob()
@@ -91,6 +99,7 @@ function addJob()
 			error: function(XMLHttpRequest, textStatus, errorThrown){
 			    alert(errorThrown);
 			}, success: function(data, textStatus, XMLHttpRequest){
+					updateStatus("Job " + name + " added.");
 					closeJob();
 					renderJobs();
 			}
