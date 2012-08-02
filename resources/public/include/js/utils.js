@@ -2,7 +2,6 @@
 var userID = "50189177e4b0b4753b0c6212";
 var publicKey = "prodkey";
 var privateKey = "CXLHDJxb0Spf";
-var enc = "Pz5oTQA+1z7OsrGg6VT5sRh9JL8=";
 
 function renderJobs()
 {
@@ -74,7 +73,7 @@ function addJob()
 	data += '"headers" : {}'; 
 	data += ' } ';
 
-	var hash2 = CryptoJS.HmacSHA1(privateKey, data);
+	var hash2 = CryptoJS.HmacSHA1(data, privateKey);
 	hash2 = hash2.toString(CryptoJS.enc.Base64);	
 
 	$.ajax({
@@ -92,7 +91,8 @@ function addJob()
 			error: function(XMLHttpRequest, textStatus, errorThrown){
 			    alert(errorThrown);
 			}, success: function(data, textStatus, XMLHttpRequest){
-					buildTable(JSON.parse(XMLHttpRequest.responseText));
+					closeJob();
+					renderJobs();
 			}
 		    });
 
