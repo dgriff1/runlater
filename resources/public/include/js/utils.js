@@ -30,18 +30,16 @@ function buildTable(results)
 	var table='<table id="jobsTable" name="jobsTable" width="100%" border="0">';
 
 	table+='<tr>';
-	table+='<th></th>';
+	table+='<th><input type="checkbox" id="checkboxMain"/></th>';
 	table+='<th>NAME</th>';       
-	table+='<th>STATUS</th>';       
 	table+='<th>URL</th>';       
 	table+='<th>INTERVAL</th>';       
 	table+='<th>WHEN</th></tr>';       
 	for(var i = 0; i < results.length; i++)
 	{
 		table+='<tr>';
-		table+='<td><input type="checkbox" id="'+results[i]._id+'"></td>';       
+		table+='<td><input type="checkbox" id="'+results[i]._id+'"/></td>';       
 		table+='<td>'+results[i].name+'</td>';    
-		table+='<td>'+results[i].status+'</td>';    
 		table+='<td>'+results[i].url+'</td>';    
 		table+='<td>'+results[i].internal+'</td>';    
 		table+='<td>'+results[i].when+'</td>';    
@@ -51,7 +49,7 @@ function buildTable(results)
 
 
 	$(".tableWrapper").html( table );	
-	$(".jobsTable").tablesorter(); 
+	$("#jobsTable").tablesorter(); 
 }
 
 function closeJob()
@@ -63,9 +61,9 @@ function closeJob()
 
 function updateStatus(str)
 {
- 	$('#status').fadeIn('slow');
+ 	$('#status').show();
 	$("#status").html(str);
- 	$('#status').fadeOut(2000);
+ 	$('#status').fadeOut(4000);
 }
 
 function addJob()
