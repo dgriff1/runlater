@@ -3,6 +3,45 @@ var userID = "501b0ffee4b056f52558715e";
 var publicKey = "prodkey";
 var privateKey = "QrF4fHSHWQrM";
 
+var globalResults = [];
+
+function objLength(obj)
+{
+	var count = 0;
+	for (var p in obj) {
+	    if (obj.hasOwnProperty(p)) {
+		count++;
+	    }
+	}
+	return count;
+}
+
+function objCopy(obj1, obj2)
+{
+	temp = {};
+	temp["name"] = obj1["name"];
+	temp["num"] = obj1["num"];
+	obj1["name"] = obj2["name"];
+	obj1["num"] = obj2["num"];
+	obj2["name"] = temp["name"];
+	obj2["num"] = temp["num"];
+}
+
+function objSort(obj, column)
+{
+	for(i = 0;i < objLength(obj);i = i + 1)
+	{
+		for(j = 0;j < objLength(obj);j = j + 1)
+		{
+			if(obj[i][column] > obj[j][column])
+			{
+				objCopy(obj[i], obj[j]);
+			}
+		}
+	}
+
+}
+
 function renderJobs()
 {
 			var hash = CryptoJS.HmacSHA1(privateKey, "");
@@ -20,36 +59,67 @@ function renderJobs()
 					error: function(XMLHttpRequest, textStatus, errorThrown){
 					    alert(errorThrown);
 					}, success: function(data, textStatus, XMLHttpRequest){
-						  	buildTable(JSON.parse(XMLHttpRequest.responseText));
+						  	buildTable(JSON.parse(XMLHttpRequest.responseText), "name");
 					}
 				    });
 }
 
-function buildTable(results)
+function tableWrapper(obj)
 {
+	buildTable(globalResults, $(obj).html().toLowerCase());
+}
+
+function buildTable(objResults, column)
+{
+	globalResults = objResults;
+
+	if(column)
+	{
+		objResults.sort(function (a, b) {
+
+		    // a and b will be two instances of your object from your list
+
+		    // possible return values
+		    var a1st = -1; // negative value means left item should appear first
+		    var b1st =  1; // positive value means right item should appear first
+		    var equal = 0; // zero means objects are equal
+
+		    // compare your object's property values and determine their order
+		    if (b[column] < a[column]) {
+			return b1st;
+		    }
+		    else if (a[column] < b[column]) {
+			return a1st;
+		    }
+		    else {
+			return equal;
+		    }
+		});
+	}
+
+
 	var table='<table id="jobsTable" name="jobsTable" width="100%" border="0">';
 
 	table+='<tr>';
-	table+='<th><input type="checkbox" id="checkboxMain"/></th>';
-	table+='<th>NAME</th>';       
-	table+='<th>URL</th>';       
-	table+='<th>INTERVAL</th>';       
-	table+='<th>WHEN</th></tr>';       
-	for(var i = 0; i < results.length; i++)
+	table+='<th onclick="javascript:tableWrapper(this);"><input type="checkbox" id="checkboxMain"/></th>';
+	table+='<th onclick="javascript:tableWrapper(this);">NAME</th>';       
+	table+='<th onclick="javascript:tableWrapper(this);">URL</th>';       
+	table+='<th onclick="javascript:tableWrapper(this);">INTERVAL</th>';       
+	table+='<th onclick="javascript:tableWrapper(this);">WHEN</th></tr>';       
+	for(var i = 0; i < objResults.length; i++)
 	{
 		table+='<tr>';
-		table+='<td><input type="checkbox" id="'+results[i]._id+'"/></td>';       
-		table+='<td>'+results[i].name+'</td>';    
-		table+='<td>'+results[i].url+'</td>';    
-		table+='<td>'+results[i].internal+'</td>';    
-		table+='<td>'+results[i].when+'</td>';    
+		table+='<td><input type="checkbox" id="'+objResults[i]._id+'"/></td>';       
+		table+='<td>'+objResults[i].name+'</td>';    
+		table+='<td>'+objResults[i].url+'</td>';    
+		table+='<td>'+objResults[i].internal+'</td>';    
+		table+='<td>'+objResults[i].when+'</td>';    
 		table+='</tr>';
 	}
 	table+='</table>';
 
 
 	$(".tableWrapper").html( table );	
-	$("#jobsTable").tablesorter(); 
 }
 
 function closeJob()
