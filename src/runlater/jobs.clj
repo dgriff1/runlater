@@ -1,7 +1,7 @@
 (ns runlater.jobs
    (:require [clojure.data.json] [monger.collection :as mc] [monger.json] 
    		[monger.joda-time] [runlater.sched :as sched] [runlater.client :as rclient] [runlater.utils] [runlater.valid :as rvalid ] )
-   (:use clojure.data.json clj-time.format runlater.utils clojure.walk [ monger.result :only [ok? has-error?]] )
+   (:use clojure.data.json clj-time.format runlater.utils clojure.walk [ monger.result :only [ok? has-error?]] [clojure.string :only [ lower-case]]  )
     (:import [org.bson.types ObjectId]
                [com.mongodb DB WriteConcern]))
 
@@ -21,6 +21,12 @@
 		rvalid/assert_job
       ) (read-json json_str true) ))
 
+(defn convert_method [ doc  ]
+	(let [k (keyword (lower-case (:method doc))) ]
+		(if (contains? #{ :get :post :put :delete } k )	
+			k
+			(throw (Exception. (str "Invalid method " k))))))
+
 (defn convert_job [doc]
     ((comp 
         (fn [m] (safe_assoc m :_id (ObjectId.)) )
@@ -28,6 +34,7 @@
         (fn [m] (assoc m :interval ( sched/split_into_hash (get m :interval "")))) 
         (fn [m] (assoc m :doctype "job" ) ) 
         (fn [m] (assoc m :status "waiting" ) ) 
+        (fn [m] (assoc m :method (convert_method m)  ) ) 
     ) doc))
 
 
