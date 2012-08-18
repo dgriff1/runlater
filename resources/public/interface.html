@@ -8,12 +8,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>
 		</title>
-  
-		<link href="style.css" rel="stylesheet" type="text/css" />   
-		<link href="include/css/custom-theme/jquery-ui-1.8.20.custom.css" rel="stylesheet" type="text/css" />   
-	</head>
 
-	<body>
 		<script type="text/javascript" src="include/js/jquery-1.7.2.min.js"></script>
 		<script type="text/javascript" src="include/js/jquery-ui-1.8.20.custom.min.js"></script>
 		<script src="http://crypto-js.googlecode.com/svn/tags/3.0.2/build/rollups/hmac-md5.js"></script>
@@ -21,7 +16,15 @@
 		<script src="http://crypto-js.googlecode.com/svn/tags/3.0.2/build/rollups/hmac-sha256.js"></script>
 		<script src="http://crypto-js.googlecode.com/svn/tags/3.0.2/build/rollups/hmac-sha512.js"></script>
 		<script src="http://crypto-js.googlecode.com/svn/tags/3.0.2/build/components/enc-base64-min.js"></script>
+		<script type="text/javascript" src="include/js/jquery.tablesorter.min.js"></script>
+		<script type="text/javascript" src="include/js/jquery.tablesorter.pager.js"></script>
 		<script type="text/javascript" src="include/js/utils.js"></script>
+
+		<link href="style.css" rel="stylesheet" type="text/css" />   
+		<link href="include/css/custom-theme/jquery-ui-1.8.20.custom.css" rel="stylesheet" type="text/css" />   
+	</head>
+
+	<body>
 
 
 		<script language="javascript">
@@ -30,14 +33,12 @@
 			});
 		</script>
 
-		<div class="header">
-			<img  src="header.jpg" alt="runlater.com"/>
-		</div>
 
 		<div class="content">
 
 		<div style="float: left;">
 			<button onclick="javascript:showJobDialog();">Add</button>
+			<button onclick="javascript:showJobDialog();">Add Group</button>
 		</div>		
 
 		<div id="status" name="status" style="padding-left: 2pt;float: left;color: red;font-weight: bold;hidden:first;">&nbsp;

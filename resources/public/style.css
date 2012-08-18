@@ -60,6 +60,7 @@ a.login {
 }
 
 .content {
+	margin-top: 40px;
 	text-align: center;
 	color: #121212;
 	background-color: #FDFDFD;
