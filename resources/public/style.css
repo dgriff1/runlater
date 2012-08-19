@@ -123,9 +123,12 @@ a.login {
 th {
 	background-color: #346734;
 	color: white;
+	padding: 0;
 }
 
 form {
 	padding: 0;
 	margin: 0;
 }
+
+
