@@ -35,6 +35,7 @@ function buildTable(objResults)
 	table+='<th><input type="checkbox" id="checkboxMain"/></th>';
 	table+='<th>NAME</th>';       
 	table+='<th>URL</th>';       
+	table+='<th>METHOD</th>';       
 	table+='<th>INTERVAL</th>';       
 	table+='<th>WHEN</th></tr></thead><tbody>';       
 	for(var i = 0; i < objResults.length; i++)
@@ -43,6 +44,7 @@ function buildTable(objResults)
 		table+='<td><input type="checkbox" id="'+objResults[i]._id+'"/></td>';       
 		table+='<td>'+objResults[i].name+'</td>';    
 		table+='<td>'+objResults[i].url+'</td>';    
+		table+='<td>'+objResults[i].method+'</td>';    
 		table+='<td>'+objResults[i].internal+'</td>';    
 		table+='<td>'+objResults[i].when+'</td>';    
 		table+='</tr>';
