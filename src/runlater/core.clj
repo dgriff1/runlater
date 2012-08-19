@@ -4,6 +4,7 @@
               [monger core util]
               [compojure.handler :as handler]
               [runlater.jobs :as jobs ]
+              [runlater.runner :as runner]
               [runlater.users :as users ] ))
 
 
@@ -49,7 +50,8 @@
 
 
 (defn -main [port]
-  (run-jetty app {:port (Integer. port)}))
+ 	(do (runner/launch_poller)
+  		(run-jetty app {:port (Integer. port)})))
 
 (defn polling_func [] 
   :do_shit )
