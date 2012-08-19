@@ -1,6 +1,6 @@
 (ns runlater.jobs
    (:require [clojure.data.json] [monger.collection :as mc] [monger.json] 
-   		[monger.joda-time] [runlater.sched :as sched] [runlater.client :as rclient] [runlater.utils] [runlater.valid :as rvalid ] )
+   		[monger.joda-time] [runlater.sched :as sched] [runlater.client :as rclient] [runlater.utils] [runlater.valid :as rvalid ] [clj-time.core] )
    (:use clojure.data.json clj-time.format runlater.utils clojure.walk [ monger.result :only [ok? has-error?]] [clojure.string :only [ lower-case]]  )
     (:import [org.bson.types ObjectId]
                [com.mongodb DB WriteConcern]))
@@ -42,8 +42,10 @@
 
 (defn update_job [doc] 
 	(( comp 
-		(fn [m]  (assoc m :editted (parse (formatters :date-time) (get m :when))))
+		(fn [m]  (assoc m :editted (clj-time.core/now)))
+		(fn [m]  (assoc m :when (parse (formatters :date-time) (get m :when))))
 		(fn [m] (assoc m :status "waiting" ) )
+		(fn [m] (assoc m :_id (ObjectId. (:_id m)) ))
 	) doc))
 
 (defn index [userid request body]
