@@ -8,14 +8,16 @@
 (defn watch_run [k v old_state new_state ] 
 	(do
 		(prn "Ran job " new_state " -- " old_state) 
-		(mc/insert "rllogs" { 
-			:jobid (:_id old_state) 
-			:userid (:userid old_state)
-			:runlater_key (:runlater_key old_state)
-			:result new_state
-			:began (:when new_state) 
-			:ended (clj-time.core/now)
-			} ) 
+		(let [end (clj-time.core/now)] 
+			(mc/insert "rllogs" { 
+				:jobid (:_id old_state) 
+				:userid (:userid old_state)
+				:runlater_key (:runlater_key old_state)
+				:result new_state
+				:began (:when new_state) 
+				:ended end
+				} ) 
+		(mc/save "rljobs" (sched/reschedule old_state )))
 		new_state))
 
 (defn run_job [ j ] 
@@ -42,13 +44,14 @@
 	(if (> (count jobs) 0)
 		(let [j (assoc (first jobs) :status "running") j_agent (agent j)  ]
 			(do 
+				(mc/save "rljobs" j)
 				(add-watch j_agent :runner watch_run)
 				(send j_agent run_job) 
 				(launch_jobs (assoc s (:_id j) j_agent ) (rest jobs) )))
 		s))
 
 (defn poll [ s ] 
-	(let [jobs_to_run  (mc/find-maps "rljobs" { :when { "$lt" (java.util.Date.) }}) ]  
+	(let [jobs_to_run  (mc/find-maps "rljobs" { :when { "$lt" (java.util.Date.) } :status "waiting" }) ]  
 			(launch_jobs s jobs_to_run)
 		))
 

@@ -1,11 +1,28 @@
 (ns runlater.sched
   (:use [clojure.string :only [split lower-case] ] )
+  (:require [clj-time.core])
   (:import (java.util.regex Pattern) ( clojure.lang IPersistentMap ISeq)  ))
 
 
+(defn next_run [ current interval ] 
+	(let [ next_time (clj-time.core/plus current 
+		(clj-time.core/secs  (get interval :seconds 0)) 	
+		(clj-time.core/minutes  (get interval :minutes 0)) 	
+		(clj-time.core/hours  (get interval :hours 0)) 	
+		(clj-time.core/days (get interval :days 0)) 	
+		(clj-time.core/weeks (get interval :weeks 0)) 	
+		(clj-time.core/months (get interval :months 0)) 	)]
+		(do 
+			(prn "Next Time " next_time)
+			(if (clj-time.core/before? next_time (clj-time.core/now) ) 
+				(next_run next_time interval)
+				next_time
+		 	))))
 
-(defn next_run [now interval]
-  "OK" 
+(defn reschedule [j]
+	(-> 
+		(assoc j :status "waiting") 
+		(assoc :when (next_run (:when j) (:interval j))))
     )
 
 (def SPACEREGEX (Pattern/compile " "))
