@@ -27,13 +27,15 @@
 			k
 			(throw (Exception. (str "Invalid method " k))))))
 
-(defn convert_job [doc]
+(defn convert_job [doc userid headers]
     ((comp 
         (fn [m] (safe_assoc m :_id (ObjectId.)) )
         (fn [m] (assoc m :when (parse (formatters :date-time) (get m :when))))
         (fn [m] (assoc m :interval ( sched/split_into_hash (get m :interval "")))) 
         (fn [m] (assoc m :doctype "job" ) ) 
         (fn [m] (assoc m :status "waiting" ) ) 
+        (fn [m] (assoc m :userid userid ) ) 
+        (fn [m] (assoc m :runlater_key (:runlater_key headers) )) 
         (fn [m] (assoc m :method (convert_method m)  ) ) 
     ) doc))
 
@@ -49,7 +51,7 @@
 
 (defn create [userid req body]
       (do 
-        (try (let [doc (convert_job (new_doc (slurp body) userid (:headers (keywordize-keys req))  )) ] 
+        (try (let [ headers (:headers (keywordize-keys req)) doc (convert_job (new_doc (slurp body) userid headers ) userid headers ) ] 
               (mc/insert "rljobs" doc)
             {:status 201 :body (json-str doc ) })
         (catch Exception e 
