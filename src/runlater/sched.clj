@@ -20,12 +20,14 @@
 		 	))))
 
 (defn reschedule [j]
-	( if (= ((:interval j) {})) 
+	(do 
+		(prn "J " (:interval j) " -- " (= ((:interval j) {})))
+	( if (= (:interval j) {}) 
 		(assoc j :status "completed")
 		(-> 
 			(assoc j :status "waiting") 
 			(assoc :when (next_run (:when j) (:interval j))))
-    ))
+    )))
 
 (def SPACEREGEX (Pattern/compile " "))
 
