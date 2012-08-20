@@ -74,14 +74,14 @@ assert "_id" in JOB
 assert "url" in JOB
 assert isinstance(JOB["interval"], dict)
 
-JOB["url"] = "www.facebook.com" 
+JOB["url"] = "http://www.facebook.com" 
 json_data = json.dumps(JOB)
 spec_headers = { "runlater_key" : api_public_key, "runlater_hash" : base64.b64encode( hmac.new(str(api_private_key), json_data, hashlib.sha1).digest()) , "Content-Type" : "application/json" } 
 conn.request("PUT", "/users/"+ USER_ID + "/jobs/" + JOB["_id"], json_data, spec_headers )
 response = conn.getresponse()
 JOB = json.loads(response.read())
 #print "Edit a job ", response.status, response.reason, JOB
-assert JOB["url"] == "www.facebook.com"
+assert JOB["url"] == "http://www.facebook.com"
 
 conn.request("GET", "/users/" + USER_ID + "/jobs/" , headers = spec_headers)
 response = conn.getresponse()
@@ -94,3 +94,11 @@ response = conn.getresponse()
 j_list = json.loads( response.read() )
 print "Jobs List ", j_list
 
+data = { "name" : "Run Once", "when" : "2012-05-06T06:15:42.215Z", "interval" : "", "url" : "http://bing.com", "method" : "GET", "headers" : {}  }
+json_data = json.dumps(data)
+
+
+spec_headers = { "runlater_key" : api_public_key, "runlater_hash" : base64.b64encode( hmac.new(str(api_private_key), json_data, hashlib.sha1).digest()) , "Content-Type" : "application/json" } 
+conn.request("PUT", "/users/"+ USER_ID + "/jobs/", json_data, spec_headers )
+response = conn.getresponse()
+JOB = json.loads(response.read())

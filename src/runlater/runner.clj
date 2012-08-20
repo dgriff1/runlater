@@ -22,7 +22,7 @@
 
 (defn run_job [ j ] 
 	(try 
-		(if (= (:method j) :get)  
+		(if (= (keyword (:method j)) :get)  
 			(client/request 
 				{ 
 					:url	(:url j)  
