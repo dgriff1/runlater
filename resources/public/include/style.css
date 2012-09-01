@@ -64,7 +64,7 @@ a.login {
 	text-align: center;
 	color: #121212;
 	background-color: #FDFDFD;
-	padding-top: 20px;
+	padding-top: 0px;
 	padding-left: 10px;
 	padding-right: 10px;
 	width: 1000px;
@@ -111,7 +111,6 @@ a.login {
 
 .welcome {
 	float: right;
-	padding-bottom: 5px;
 }
 
 .addJobDialog {
