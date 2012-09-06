@@ -154,10 +154,10 @@ img#logo {margin-left: 18px; }
 					ul.nav > li.current_page_item > a, ul.nav > li.current-cat > a, ul.nav > li.current_page_item > a#homelink > span { background: url("../image/active-arrow.png") no-repeat bottom center; }
 					
 					#last-white {padding-right: 10px;}
-					#yellow { background: url(../image/menu-bg-yellow.png); margin-top: -3px; padding-top: 4px; margin-left: 1px; font-weight: bold; color: #03F; height: 32px; margin-left: -2px;" }
+					#yellow { background: url(../image/menu-bg-yellow.png); margin-top: -3px; padding-top: 4px; margin-left: 1px; font-weight: bold; color: #03F; height: 32px; margin-left: -2px; }
 					#yellow a{ font-weight: bold; color: #06C; text-decoration: none; }
 					#yellow a:hover{ font-weight: bold; color: #09C; text-decoration: none; }
-					#yellow2 { background: url(../image/menu-bg-yellow.png); margin-top: -3px; padding-top: 4px; margin-left: 1px; font-weight: bold; color: #09F; height: 32px; margin-left: 1px;" }
+					#yellow2 { background: url(../image/menu-bg-yellow.png); margin-top: -3px; padding-top: 4px; margin-left: 1px; font-weight: bold; color: #09F; height: 32px; margin-left: 1px; }
 					#yellow2 a{ font-weight: bold; color: #06C; text-decoration: none; }
 					#yellow2 a:hover{ font-weight: bold; color: #09C; text-decoration: none; }
 					
