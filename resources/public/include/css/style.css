@@ -125,6 +125,9 @@ img#logo {margin-left: 18px; }
 											.service h3.title a:hover { color: #000000; text-decoration: none; }
 									.service img.icon { position: absolute; top: 31px; left: 16px; }
 									
+									.service ul { margin: 0;margin-left: 0;padding-left: 0; }
+									.service li { color: #7f7f7f; }
+
 									a.readmore { padding-right: 17px; background: url(../image/readmore-bg.png) bottom right no-repeat; height: 31px; line-height: 31px; float: right; color: #ffffff; font-size: 11px; text-shadow: -1px -1px 1px #000000; }
 										a.readmore span { padding-left: 18px; background: url(../image/readmore-bg.png) no-repeat; display: block; height: 31px; }
 										a.readmore:hover { color: #eeeeee; }
