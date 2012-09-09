@@ -4,7 +4,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 	<head>
-
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>
 		</title>
@@ -36,17 +35,18 @@
 
 		<div class="content">
 
-		<div style="float: left;">
-			<button onclick="javascript:showJobDialog();">Add</button>
-			<button onclick="javascript:showJobDialog();">Add Group</button>
+		<div style="clear: both;float: left;">
+			<button onclick="javascript:showJobDialog();">Add Job</button>
+			<a href="">View Jobs</a>
+			<a href="">View Logs</a>
+		</div>	
+		<div class="welcome">
+			Welcome, <a href="">User</a>!
 		</div>		
 
 		<div id="status" name="status" style="padding-left: 2pt;float: left;color: red;font-weight: bold;hidden:first;">&nbsp;
 		</div>	
 	
-		<div class="welcome">
-			Welcome, User!
-		</div>		
 
 			<div style="clear: both;" class="tableWrapper">
 
@@ -61,12 +61,13 @@
 				</div>
 				<div style="padding: 5px;float: left;">
 					<input name="name" type="text"/><br/>
-					 <input name="url" type="text"/>
+					<input name="url" type="text"/>
 				</div>
 				<div align="center" style="clear: both;">
 					<button onclick="javascript:addJob();">Save</button>
 					<button onclick="javascript:closeJob();">Cancel</button>
 				</div>
+
 		</div>
 
 	</body>

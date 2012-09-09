@@ -31,7 +31,7 @@ function buildTable(objResults)
 
 	var table='<table class="tablesorter" id="jobsTable" name="jobsTable" width="100%" border="0">';
 
-	table+='<thead><tr>';
+	table+='<thead><tr style="height: 20px;">';
 	table+='<th><input type="checkbox" id="checkboxMain"/></th>';
 	table+='<th>NAME</th>';       
 	table+='<th>URL</th>';       
