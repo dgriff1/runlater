@@ -49,7 +49,7 @@
 	) doc))
 
 (defn index [userid request body]
-    {:status 200 :body (to-json (mc/find-maps "rljobs"))} )
+    {:status 200 :body (to-json (mc/find-maps "rljobs" { :userid userid } ))} )
 
 (defn create [userid req body]
       (do 

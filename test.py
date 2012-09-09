@@ -3,6 +3,8 @@ import json
 import hmac
 import hashlib
 import base64
+import pyrunlater 
+import time
 
 headers = {"Content-type": "application/json",
     "Accept": "application/json"}
@@ -58,49 +60,46 @@ assert response.status == 200
 assert "_id" in api_resp
 
 
+######### 
+# MAKE A JOB USING RUNLATER.py
+#
+#
+#########
+print "Server ", pyrunlater.ServerConnection
+SERVER = pyrunlater.ServerConnection( USER_ID, api_public_key, api_private_key)
+
+# test creating a job
 data = { "name" : "Daily Backup", "when" : "2012-05-06T06:15:42.215Z", "interval" : "2 hours", "url" : "http://google.com", "method" : "POST", "headers" : {}  }
-json_data = json.dumps(data)
+job = SERVER.createJob("Daily Backup", "2012-05-06T06:15:42.215Z", "2 hours", "http://google.com", "POST", {})
 
-#print "SHA1 ", base64.b64encode( hmac.new(str( api_private_key ), json_data, hashlib.sha1).digest() )
-#print "EMPTY SHA1 ", base64.b64encode( hmac.new(str( api_private_key ) , "", hashlib.sha1).digest() )
-
-
-spec_headers = { "runlater_key" : api_public_key, "runlater_hash" : base64.b64encode( hmac.new(str(api_private_key), json_data, hashlib.sha1).digest()) , "Content-Type" : "application/json" } 
-conn.request("PUT", "/users/"+ USER_ID + "/jobs/", json_data, spec_headers )
-response = conn.getresponse()
-JOB = json.loads(response.read())
-#print "Create a job ", response.status, response.reason, JOB
-assert "_id" in JOB
-assert "url" in JOB
-assert isinstance(JOB["interval"], dict)
-
-JOB["url"] = "www.facebook.com" 
-json_data = json.dumps(JOB)
-spec_headers = { "runlater_key" : api_public_key, "runlater_hash" : base64.b64encode( hmac.new(str(api_private_key), json_data, hashlib.sha1).digest()) , "Content-Type" : "application/json" } 
-conn.request("PUT", "/users/"+ USER_ID + "/jobs/" + JOB["_id"], json_data, spec_headers )
-response = conn.getresponse()
-JOB = json.loads(response.read())
-#print "Edit a job ", response.status, response.reason, JOB
-assert JOB["url"] == "www.facebook.com"
-
-conn.request("GET", "/users/" + USER_ID + "/jobs/" , headers = spec_headers)
-response = conn.getresponse()
-j_list = json.loads( response.read() )
-#print "Jobs List ", j_list
+assert job.name == "Daily Backup"
+assert job.when == "2012-05-06T06:15:42.215Z"
+print "Interval ", job.method
+assert job.interval == {"hours" : 2}
+assert job.url == "http://google.com"
+assert job.method == "post"
+assert job.headers == {}
 
 
-DELETE_URL =  "/users/" + USER_ID + "/jobs/"+ JOB["_id"]
-print "Delete URL ", DELETE_URL
-spec_headers = { "runlater_key" : api_public_key, "runlater_hash" : base64.b64encode( hmac.new(str(api_private_key),  DELETE_URL, hashlib.sha1).digest()) , "Content-Type" : "application/json" } 
-conn.request("DELETE", DELETE_URL , headers = spec_headers)
-response = conn.getresponse()
-as_str = response.read()
-print "Delete Job ", as_str
+job.url = "www.facebook.com"
 
-conn.request("GET", "/users/" + USER_ID + "/jobs/" , headers = spec_headers)
-response = conn.getresponse()
-j_list = json.loads( response.read() )
-print "Jobs List ", j_list
+# Test updating job
+SERVER.updateJob(job)
+assert job.url == "www.facebook.com"
+
+# Test  that the job is listed
+jobs = SERVER.viewJobs()
+assert len(jobs) == 1
+j = jobs[0]
+assert j.name == job.name
+
+time.sleep(1)
+
+
+# test deleting a job
+SERVER.deleteJob(job)
+jobs = SERVER.viewJobs()
+assert len(jobs) == 0
 
 conn.request("DELETE", "/users/" + USER_ID + "/apikeys/"+api_public_key, "", headers)
 response = conn.getresponse()
