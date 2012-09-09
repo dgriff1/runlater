@@ -134,8 +134,8 @@
 ;
 ; Delete  an API key
 ; 
-(defn delete_apikey [id keyw req body]
-    (let [ doc (keywordize-keys (mc/find-one-as-map "rlusers" {:_id (ObjectId. id) } ))   ]
+(defn delete_apikey [id k req body]
+    (let [ doc (keywordize-keys (mc/find-one-as-map "rlusers" {:_id (ObjectId. id) } )) keyw (keyword k)  ]
 		(if (contains? (:apikeys doc) keyw )
 			(last [ 
 				(mc/save "rlusers" (assoc doc :apikeys (dissoc (:apikeys doc) keyw)))

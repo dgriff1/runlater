@@ -15,7 +15,7 @@
   (PUT "/users/:userid/jobs/" { {userid :userid} :params  body :body :as request}  (jobs/create userid request body ) )
   (GET "/users/:userid/jobs/" { {userid :userid} :params  body :body :as request} (jobs/index userid request body) )
   ; logs
-  (GET "/users/:userid/logs/:apikey" { {userid :userid} :params {id :apikey} :params  body :body :as request }  (logs/view id userid request body) )
+  (GET "/users/:userid/logs/:apikey" { {userid :userid} :params {apikey :apikey} :params  body :body :as request }  (logs/view userid apikey request body) )
   ; resource actions 
   (GET "/users/:userid/jobs/:jobid" { {userid :userid} :params {id :jobid} :params  body :body :as request }  (jobs/lookup id userid request body) )
   (PUT "/users/:userid/jobs/:jobid" { {userid :userid} :params {id :jobid} :params  body :body :as request }  (jobs/edit id userid request body) )

@@ -45,7 +45,7 @@ class Job(object):
 
 class Log(object):
 	def __init__(self, **kwargs):
-		for k, v in kwargs:
+		for k, v in kwargs.items():
 			setattr(self, k, v)
 
 class ServerConnection(object):
@@ -69,7 +69,7 @@ class ServerConnection(object):
 		return ret
 
 	def createJob(self, name, when, interval, url, method, headers ):
-		data = { "name" : "Daily Backup", "when" : "2012-05-06T06:15:42.215Z", "interval" : "2 hours", "url" : "http://google.com", "method" : "POST", "headers" : {}  }
+		data = { "name" : name, "when" : when, "interval" : interval, "url" : url, "method" : method, "headers" : headers}
 		json_data = json.dumps(data)
 		self.conn.request("PUT", "/users/"+ str(self.userid) + "/jobs/", json_data, self.genHeaders(json_data) )
 		response = self.conn.getresponse()
@@ -82,7 +82,6 @@ class ServerConnection(object):
 		json_data = json.dumps(data)
 		self.conn.request("PUT", "/users/"+ str(self.userid) + "/jobs/" + job._id, json_data, self.genHeaders(json_data) )
 		response = self.conn.getresponse()
-		print "Response "
 		return job.update(**json.loads(response.read()))
 
 	def deleteJob(self, job):
@@ -93,4 +92,13 @@ class ServerConnection(object):
 		response = self.conn.getresponse()
 		as_str = response.read()
 
-
+	def getLogs(self):
+		VIEW_URL = "/users/" + self.userid + "/logs/" + self.apikey
+		self.conn.request("GET", VIEW_URL , headers = self.genHeaders(VIEW_URL)  )
+		response = self.conn.getresponse()
+		r = response.read()
+		l_list = json.loads( r )
+		ret = []
+		for l in l_list:
+			ret.append(Log(**l))
+		return ret	

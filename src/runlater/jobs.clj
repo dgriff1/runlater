@@ -53,6 +53,7 @@
 
 (defn create [userid req body]
       (do 
+	  	(prn "UserID " userid)
         (try (let [ headers (:headers (keywordize-keys req)) doc (convert_job (new_doc (slurp body) userid headers ) userid headers ) ] 
               (mc/insert "rljobs" doc)
             {:status 201 :body (json-str doc ) })

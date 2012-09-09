@@ -69,23 +69,22 @@ print "Server ", pyrunlater.ServerConnection
 SERVER = pyrunlater.ServerConnection( USER_ID, api_public_key, api_private_key)
 
 # test creating a job
-data = { "name" : "Daily Backup", "when" : "2012-05-06T06:15:42.215Z", "interval" : "2 hours", "url" : "http://google.com", "method" : "POST", "headers" : {}  }
-job = SERVER.createJob("Daily Backup", "2012-05-06T06:15:42.215Z", "2 hours", "http://google.com", "POST", {})
+job = SERVER.createJob("Daily Backup", "2012-09-08T06:15:42.215Z", "2 hours", "http://google.com", "POST", {})
 
+print "Interval ", job.when
 assert job.name == "Daily Backup"
-assert job.when == "2012-05-06T06:15:42.215Z"
-print "Interval ", job.method
+assert job.when == "2012-09-08T06:15:42.215Z"
 assert job.interval == {"hours" : 2}
 assert job.url == "http://google.com"
 assert job.method == "post"
 assert job.headers == {}
 
 
-job.url = "www.facebook.com"
+job.url = "http://www.facebook.com"
 
 # Test updating job
 SERVER.updateJob(job)
-assert job.url == "www.facebook.com"
+assert job.url == "http://www.facebook.com"
 
 # Test  that the job is listed
 jobs = SERVER.viewJobs()
@@ -93,8 +92,14 @@ assert len(jobs) == 1
 j = jobs[0]
 assert j.name == job.name
 
-time.sleep(1)
+time.sleep(3)
 
+logs = SERVER.getLogs()
+assert len(logs) == 1
+log = logs[0]
+assert log.jobid == j._id
+assert log.userid == USER_ID
+assert log.runlater_key == api_public_key
 
 # test deleting a job
 SERVER.deleteJob(job)
@@ -105,9 +110,12 @@ conn.request("DELETE", "/users/" + USER_ID + "/apikeys/"+api_public_key, "", hea
 response = conn.getresponse()
 api_resp = response.read()
 print "DELETE API Key ", response.status, response.reason, api_resp
+assert response.status == 200 
+assert "Deleted" in api_resp
 
 conn.request("GET", "/users/" + USER_ID + "/apikeys/", "", headers)
 response = conn.getresponse()
 api_resp = response.read()
 print "Deleted API Keys  ", response.status, response.reason, api_resp
-
+assert response.status == 200
+assert api_resp == "[]"
