@@ -1,5 +1,5 @@
 (ns runlater.core
- (:use compojure.core [ring.adapter.jetty :only [run-jetty]] )
+ (:use compojure.core [ring.adapter.jetty :only [run-jetty]] [clojure.walk :only [keywordize-keys]] )
     (:require [compojure.route :as route]
               [monger core util]
               [compojure.handler :as handler]
@@ -12,17 +12,17 @@
 
 (defroutes main-routes
   ; what's going on
-  (PUT "/users/:userid/jobs/" { {userid :userid} :params  body :body :as request}  (jobs/create userid request body ) )
-  (GET "/users/:userid/jobs/" { {userid :userid} :params  body :body :as request} (jobs/index userid request body) )
+  (PUT "/users/:userid/jobs/" { {userid :userid} :params  body :body :as request}  (jobs/create userid (keywordize-keys request)  body ) )
+  (GET "/users/:userid/apikey/:apikey/jobs/" { {userid :userid} :params  {apikey :apikey} :params  body :body :as request} (jobs/index userid apikey (keywordize-keys request) body) )
   ; logs
-  (GET "/users/:userid/logs/:apikey" { {userid :userid} :params {apikey :apikey} :params  body :body :as request }  (logs/view userid apikey request body) )
+  (GET "/users/:userid/logs/:apikey" { {userid :userid} :params {apikey :apikey} :params  body :body :as request }  (logs/view userid apikey (keywordize-keys request) body) )
   ; resource actions 
-  (GET "/users/:userid/jobs/:jobid" { {userid :userid} :params {id :jobid} :params  body :body :as request }  (jobs/lookup id userid request body) )
-  (PUT "/users/:userid/jobs/:jobid" { {userid :userid} :params {id :jobid} :params  body :body :as request }  (jobs/edit id userid request body) )
-  (DELETE "/users/:userid/jobs/:jobid" { {userid :userid} :params {id :jobid} :params  body :body :as request }  (jobs/delete id userid request body) )
+  (GET "/users/:userid/jobs/:jobid" { {userid :userid} :params {id :jobid} :params  body :body :as request }  (jobs/lookup id userid (keywordize-keys request) body) )
+  (PUT "/users/:userid/jobs/:jobid" { {userid :userid} :params {id :jobid} :params  body :body :as request }  (jobs/edit id userid (keywordize-keys request) body) )
+  (DELETE "/users/:userid/jobs/:jobid" { {userid :userid} :params {id :jobid} :params  body :body :as request }  (jobs/delete id userid (keywordize-keys request) body) )
 
   (GET "/users" [] (users/index) )
-  (PUT "/users/" { body :body :as request}  (users/create request body ) )
+  (PUT "/users/" { body :body :as request}  (users/create (keywordize-keys request) body ) )
   ; resource actions 
   (GET "/users/:id" { {id :id} :params  params :params  body :body }  (users/lookup id params body) )
   (PUT "/users/:id" { {id :id} :params  params :params  body :body }  (users/edit id params body) )

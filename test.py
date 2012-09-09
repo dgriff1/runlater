@@ -92,6 +92,18 @@ assert len(jobs) == 1
 j = jobs[0]
 assert j.name == job.name
 
+# test viewing an individual job
+j2 = SERVER.viewJob(job._id)
+assert j2._id == j._id
+assert j2.name == j.name
+
+try:
+	j2 = SERVER.viewJob("504cc30f30049e1c0a3326f6")
+	assert False # should raise exception
+except Exception, e:
+	assert "error" in str(e)
+	pass
+
 time.sleep(3)
 
 logs = SERVER.getLogs()

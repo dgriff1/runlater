@@ -59,20 +59,33 @@ class ServerConnection(object):
 		return { "runlater_key" : self.apikey, "runlater_hash" : base64.b64encode( hmac.new(str(self.apisecret), json_data, hashlib.sha1).digest()) , "Content-Type" : "application/json" }
 
 	def viewJobs(self):
-		VIEW_URL = "/users/" + self.userid + "/jobs/"
+		VIEW_URL = "/users/" + self.userid + "/apikey/" + self.apikey + "/jobs/"
 		self.conn.request("GET", VIEW_URL , headers = self.genHeaders(VIEW_URL)  )
 		response = self.conn.getresponse()
+		if response.status != 200:
+			raise Exception("Failed to View Jobs " + response.read() )
 		j_list = json.loads( response.read() )
 		ret = []
 		for j in j_list:
 			ret.append(Job(**j))
 		return ret
+	
+	def viewJob(self, jobid):
+		VIEW_URL = "/users/" + self.userid + "/jobs/" + str(jobid)
+		self.conn.request("GET", VIEW_URL , headers = self.genHeaders(VIEW_URL)  )
+		response = self.conn.getresponse()
+		if response.status != 200:
+			raise Exception("Failed to Find Job " + response.read() )
+		j = json.loads( response.read() )
+		return Job(**j)
 
 	def createJob(self, name, when, interval, url, method, headers ):
 		data = { "name" : name, "when" : when, "interval" : interval, "url" : url, "method" : method, "headers" : headers}
 		json_data = json.dumps(data)
 		self.conn.request("PUT", "/users/"+ str(self.userid) + "/jobs/", json_data, self.genHeaders(json_data) )
 		response = self.conn.getresponse()
+		if response.status != 201:
+			raise Exception("Failed to Create Job " + response.read())
 		return Job(**json.loads(response.read()))
 	
 	def updateJob(self, job):
@@ -82,6 +95,8 @@ class ServerConnection(object):
 		json_data = json.dumps(data)
 		self.conn.request("PUT", "/users/"+ str(self.userid) + "/jobs/" + job._id, json_data, self.genHeaders(json_data) )
 		response = self.conn.getresponse()
+		if response.status != 200:
+			raise Exception("Failed to Update Job " + response.read())
 		return job.update(**json.loads(response.read()))
 
 	def deleteJob(self, job):
@@ -90,6 +105,8 @@ class ServerConnection(object):
 		DELETE_URL =  "/users/" + self.userid + "/jobs/"+ job._id
 		self.conn.request("DELETE", DELETE_URL , headers = self.genHeaders(DELETE_URL) )
 		response = self.conn.getresponse()
+		if response.status != 200:
+			raise Exception("Failed to Delete Job " + response.read())
 		as_str = response.read()
 
 	def getLogs(self):

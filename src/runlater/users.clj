@@ -110,7 +110,7 @@
     (let [doc (mc/find-one-as-map "rlusers" {:_id (ObjectId. id) })]
       (if (or (nil? doc) (= (count (:apikeys doc)) 0 ))
 	  	{:status 200 :body (json-str []) }  
-		{:status 200 :body (json-str (:apikeys doc))}   )))
+		{:status 200 :body (json-str (keys (:apikeys doc)))}   )))
 
 ;
 ; Create an API key
@@ -142,7 +142,7 @@
     			{:status 200 :body "API Key Deleted " }
 				]
 			)
-    	{:status 400 :body (str "API Key " keyw " Not Found " (:apikeys doc))  } )))
+    	{:status 400 :body (str "API Key " keyw " Not Found " (keys (:apikeys doc)) )  } )))
 
 
 

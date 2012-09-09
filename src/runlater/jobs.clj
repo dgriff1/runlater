@@ -1,7 +1,7 @@
 (ns runlater.jobs
    (:require [clojure.data.json] [monger.collection :as mc] [monger.json] 
    		[monger.joda-time] [runlater.sched :as sched] [runlater.client :as rclient] [runlater.utils] [runlater.valid :as rvalid ] [clj-time.core] )
-   (:use clojure.data.json clj-time.format runlater.utils clojure.walk [ monger.result :only [ok? has-error?]] [clojure.string :only [ lower-case]]  )
+   (:use clojure.data.json clj-time.format runlater.utils [ monger.result :only [ok? has-error?]] [clojure.string :only [ lower-case]]  )
     (:import [org.bson.types ObjectId]
                [com.mongodb DB WriteConcern]))
 
@@ -48,13 +48,20 @@
 		(fn [m] (assoc m :_id (ObjectId. (:_id m)) ))
 	) doc))
 
-(defn index [userid request body]
-    {:status 200 :body (to-json (mc/find-maps "rljobs" { :userid userid } ))} )
+(defn index [userid apikey request body]
+	(do 
+	(prn "Userid " userid ,  " api key " apikey " URL  " (:uri request) " headers " (:headers request) )
+	(try (rvalid/valid_hmac userid (:uri request) (:headers request) {} )
+    	{:status 200 :body (to-json (mc/find-maps "rljobs" { :userid userid :runlater_key apikey } ))} 
+        (catch Exception e 
+			(do (prn "Exception is " e " trace " (.printStackTrace e)) 
+            {:status 400 :body (json-str { :error (.getLocalizedMessage e ) } ) }   ))
+		)))
 
 (defn create [userid req body]
       (do 
 	  	(prn "UserID " userid)
-        (try (let [ headers (:headers (keywordize-keys req)) doc (convert_job (new_doc (slurp body) userid headers ) userid headers ) ] 
+        (try (let [ headers (:headers req) doc (convert_job (new_doc (slurp body) userid headers ) userid headers ) ] 
               (mc/insert "rljobs" doc)
             {:status 201 :body (json-str doc ) })
         (catch Exception e 
@@ -63,7 +70,7 @@
              )  ))
 
 (defn edit [id userid req body]
-    (try (let [doc (update_job (edit_doc (slurp body) userid (:headers (keywordize-keys req))  )) ] 
+    (try (let [doc (update_job (edit_doc (slurp body) userid (:headers req)  )) ] 
 		(mc/save "rljobs" doc)
     	{:status 200 :body (json-str doc) } )
 	(catch Exception e 
@@ -73,8 +80,7 @@
 
 (defn delete [id userid req body]
 	(try (do 
-		(prn "REq " (:uri req))
-		(rvalid/valid_hmac userid (:uri req) (:headers (keywordize-keys req)) {})  
+		(rvalid/valid_hmac userid (:uri req) (:headers req) {})  
 			(if (ok? (mc/remove "rljobs" {:_id (ObjectId. id)}))
     			{:status 200 :body (str "Delete " id " " ( mc/remove "rljobs" { :_id (ObjectId. id) })) }  
 				(throw (Exception. "Unable to delete, is the ID valid?"))))
@@ -85,7 +91,17 @@
 
 
 (defn lookup [id userid req body]
-    {:status 200 :body (str "Lookup " id " req " req " --" (read-json (slurp body )) ) } )
+	(try (do 
+		(rvalid/valid_hmac userid (:uri req) (:headers req) {} ) 
+		(let [ job (mc/find-one-as-map "rljobs" { :userid userid :_id (ObjectId. id)  :runlater_key (:runlater_key (:headers req)) } ) ]
+			(if  job
+    			{:status 200 :body (to-json job)  }
+				{:status 400 :body (to-json {:error "No Job Found" }) } )))
+	(catch Exception e 
+		(do (prn "Exception is " e " trace " (.printStackTrace e)) 
+        	{:status 400 :body (json-str { :error (.getLocalizedMessage e ) } ) }   ))
+		))
+	
 
 
 
