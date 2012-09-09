@@ -7,6 +7,12 @@
     (let [doc (mc/find-one-as-map "rlusers" { "$and" [ {(str "apikeys." (:runlater_key headers)) { "$exists" true}}  { :_id (ObjectId. userid)  } ] }) ]
 		(get  (:apikeys doc ) (keyword (:runlater_key headers) )) ))
 
+(defn lookup_user [ userid ]
+    (let [doc (mc/find-one-as-map "rlusers" { :_id (ObjectId. userid) } ) ]
+		(if doc 
+			doc
+		(throw (Exception. "Unable to find user" )))))
+
 (defn no_id [doc] 
 	(if (contains? doc :_id ) (throw (Exception. "Do not specify _id")) doc ))
 
@@ -18,6 +24,13 @@
 				doc
 			(throw (Exception. (str "Invalid HMAC Hash" ) )))
 		(throw (Exception. (str "Must supply valid runlater_key and runlater_hash in headers" ) ) ))) )
+
+(defn check_auth [userid headers] 
+	(let [user (lookup_user userid) ]
+		(prn "Password " (:password user) " -- " (rclient/gensha (str rclient/rlsalt (:runlater_password headers)  ) ) " -- " (:runlater_password headers) " -- " headers )
+		(if (= (:password user) (rclient/gensha (str rclient/rlsalt (:runlater_password headers)  ) ))
+			user
+			(throw (Exception. (str "Invalid password"))))))
 
 (defn has_runlater_key [headers doc] 
 	(if (contains? headers :runlater_key)

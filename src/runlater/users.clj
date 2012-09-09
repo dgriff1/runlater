@@ -1,5 +1,12 @@
 (ns runlater.users
-   (:require [clojure.data.json] [monger.collection :as mc] [monger.json] [monger.joda-time] [runlater.sched :as sched] [runlater.client :as rclient] [clj-time.core :as clj-time] )
+   (:require 	[clojure.data.json] 
+   				[monger.collection :as mc] 
+				[monger.json] 
+				[monger.joda-time] 
+				[runlater.sched :as sched] 
+				[runlater.client :as rclient] 
+				[clj-time.core :as clj-time] 
+				[runlater.valid :as rvalid ] )
    (:use clojure.data.json validateur.validation clj-time.format runlater.utils clojure.walk )
     (:import [org.bson.types ObjectId]
                [com.mongodb DB WriteConcern]))
@@ -74,15 +81,17 @@
 ;
 ; Edit a user's info
 ;
-(defn edit [id req body]
-    {:status 200 :body (str "Edit " id " req " req " --" (read-json (slurp body )) ) } )
+(defn edit [id body req]
+	(do 
+		(rvalid/check_auth id (:headers req))
+    	{:status 200 :body (str "Edit " id " req " req " --" (read-json (slurp body )) ) } ))
 
 
 ;
 ;Delete a user equiv to cancel account
 ;
-(defn delete [id req body]
-  (try (let [doc (delete_convert (slurp body) req)]
+(defn delete [id req]
+  (try (let [doc (rvalid/check_auth id (:headers req)) ]
     {:status 200 :body (str "Delete " id " " ( mc/remove "rlusers" { :_id (ObjectId. id) })) }  )
   (catch Exception e 
     {:status 400 :body (.getLocalizedMessage e) } )))
@@ -99,15 +108,15 @@
 ;
 ; Lookup a User
 ; 
-(defn lookup [id req body]
-    (let [doc (mc/find-one-as-map "rlusers" {:_id (ObjectId. id) })]
+(defn lookup [id req]
+    (let [doc (rvalid/check_auth id (:headers req)) ]
       {:status 200 :body (json-str (sanitize_user doc)) } ))
 
 ;
 ; Lookup a Users API keys
 ; 
-(defn lookup_apikeys [id req body]
-    (let [doc (mc/find-one-as-map "rlusers" {:_id (ObjectId. id) })]
+(defn lookup_apikeys [userid req]
+    (let [doc (rvalid/check_auth userid (:headers req)) ]
       (if (or (nil? doc) (= (count (:apikeys doc)) 0 ))
 	  	{:status 200 :body (json-str []) }  
 		{:status 200 :body (json-str (keys (:apikeys doc)))}   )))
@@ -115,8 +124,8 @@
 ;
 ; Create an API key
 ; 
-(defn create_apikey [id keyw req body]
-    (let [ doc (keywordize-keys (mc/find-one-as-map "rlusers" {:_id (ObjectId. id) } ))     ]
+(defn create_apikey [id keyw body req]
+    (let [ doc (rvalid/check_auth id (:headers req)) ]
 		(if (contains? (:apikeys doc) keyw )
 				{:status 400 :body (str "API key " keyw " already created") }
 		(let [up_doc (assoc doc :apikeys (assoc (:apikeys doc) keyw (rclient/random-string 12) ))]  
@@ -134,8 +143,8 @@
 ;
 ; Delete  an API key
 ; 
-(defn delete_apikey [id k req body]
-    (let [ doc (keywordize-keys (mc/find-one-as-map "rlusers" {:_id (ObjectId. id) } )) keyw (keyword k)  ]
+(defn delete_apikey [id k body req]
+    (let [ doc (rvalid/check_auth id (:headers req))  keyw (keyword k)  ]
 		(if (contains? (:apikeys doc) keyw )
 			(last [ 
 				(mc/save "rlusers" (assoc doc :apikeys (dissoc (:apikeys doc) keyw)))
@@ -143,10 +152,4 @@
 				]
 			)
     	{:status 400 :body (str "API Key " keyw " Not Found " (keys (:apikeys doc)) )  } )))
-
-
-
-
-
-
 

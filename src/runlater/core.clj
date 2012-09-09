@@ -24,13 +24,13 @@
   (GET "/users" [] (users/index) )
   (PUT "/users/" { body :body :as request}  (users/create (keywordize-keys request) body ) )
   ; resource actions 
-  (GET "/users/:id" { {id :id} :params  params :params  body :body }  (users/lookup id params body) )
-  (PUT "/users/:id" { {id :id} :params  params :params  body :body }  (users/edit id params body) )
-  (DELETE "/users/:id" { {id :id} :params  params :params  body :body }  (users/delete id params body) )
+  (GET "/users/:id" { {id :id} :params  :as req }  (users/lookup id (keywordize-keys req)) )
+  (PUT "/users/:id" { {id :id} :params  body :body :as req }  (users/edit id body (keywordize-keys req)) )
+  (DELETE "/users/:id" { {id :id} :params  :as req}  (users/delete id (keywordize-keys req)) )
 
-  (GET "/users/:id/apikeys/" { {id :id} :params  params :params  body :body }  (users/lookup_apikeys id params body) )
-  (PUT "/users/:id/apikeys/:apikeyname" { {id :id} :params {apikeyname :apikeyname } :params params :params  body :body }  (users/create_apikey id apikeyname params body) )
-  (DELETE "/users/:id/apikeys/:otherid" { {id :id} :params {keyname :otherid} :params params :params  body :body }  (users/delete_apikey id keyname params body) )
+  (GET "/users/:id/apikeys/" { {id :id} :params  :as req }  (users/lookup_apikeys id (keywordize-keys req) ) )
+  (PUT "/users/:id/apikeys/:apikeyname" { {id :id} :params {apikeyname :apikeyname } :params body :body :as req}  (users/create_apikey id apikeyname body (keywordize-keys req) ) )
+  (DELETE "/users/:id/apikeys/:otherid" { {id :id} :params {keyname :otherid} :params body :body :as req}  (users/delete_apikey id keyname body (keywordize-keys req)) )
 
   
   ; fall backs 
