@@ -4,6 +4,7 @@ import hmac
 import hashlib
 import base64
 import pyrunlater 
+from datetime import datetime
 import time
 
 headers = {"Content-type": "application/json",
@@ -113,6 +114,10 @@ log = logs[0]
 assert log.jobid == j._id
 assert log.userid == USER_ID
 assert log.runlater_key == api_public_key
+began  = datetime.strptime( log.began, "%Y-%m-%dT%H:%M:%S.%f-06:00" ) 
+ended = datetime.strptime( log.ended, "%Y-%m-%dT%H:%M:%S.%f-06:00" ) 
+assert began < ended
+assert log.scheduled == j.when
 
 # test deleting a job
 SERVER.deleteJob(job)

@@ -12,12 +12,10 @@
 		(clj-time.core/days (get interval :days 0)) 	
 		(clj-time.core/weeks (get interval :weeks 0)) 	
 		(clj-time.core/months (get interval :months 0)) 	)]
-		(do 
-			(prn "Next Time " next_time)
-			(if (clj-time.core/before? next_time (clj-time.core/now) ) 
-				(next_run next_time interval)
+		(if (clj-time.core/before? next_time (clj-time.core/now) ) 
+			(recur next_time interval)
 				next_time
-		 	))))
+		 	)))
 
 (defn reschedule [j]
 	(do 

@@ -13,8 +13,9 @@
 				:jobid (:_id old_state) 
 				:userid (:userid old_state)
 				:runlater_key (:runlater_key old_state)
-				:result new_state
-				:began (:when new_state) 
+				:result (:resp new_state)
+				:began (:began new_state) 
+				:scheduled (:when old_state) 
 				:ended end
 				} ) 
 		(mc/save "rljobs" (sched/reschedule old_state )))
@@ -22,20 +23,21 @@
 
 (defn run_job [ j ] 
 	(try 
+		(let [ began (clj-time.core/now) ] 
 		(if (= (keyword (:method j)) :get)  
-			(client/request 
+			{ :began began :resp (client/request 
 				{ 
 					:url	(:url j)  
 					:method :get
 					:headers (get j :headers {})
-			})
-			(client/request
+			})}
+			{ :began began :resp (client/request
 				{
 					:url	(:url j)  
 					:method (keyword (get j :method :post) )
 					:body (get :body j "") 
 					:headers (get j :headers {})
-			}))
+			})} )) 
 		(catch Exception e  
 			(str e) ))
 		)

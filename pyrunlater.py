@@ -6,18 +6,18 @@ import base64
 
 class Job(object):
 	def __init__(self, **kwargs):
-		self.name = kwargs.pop("name", "")
-		self._id = kwargs.pop("_id", "")
-		self.when = kwargs.pop("when", "")
-		self.interval = kwargs.pop("interval", "")
-		self.url = kwargs.pop("url", "")
-		self.method = kwargs.pop("method", "")
-		self.headers = kwargs.pop("headers", {} )
-		self.status = kwargs.pop("status", {} )
-		self.userid = kwargs.pop("userid", {} )
-		self.doctype = kwargs.pop("doctype", {} )
-		self.runlater_key = kwargs.pop("runlater_key", {} )
-		self.editted = kwargs.pop("editted", {} )
+		self.name = kwargs.pop("name", "") # a string
+		self._id = kwargs.pop("_id", "") # runlater will generate this
+		self.when = kwargs.pop("when", "") # a string repr of the next run time
+		self.interval = kwargs.pop("interval", "") # on create can be a string like "2 hours 4 minutes" afterwards will be { "hours" : 2, "minutes" : 4 }
+		self.url = kwargs.pop("url", "") # the URL to call
+		self.method = kwargs.pop("method", "") # post/get/delete/put
+		self.headers = kwargs.pop("headers", {} ) # HTTP headers to send
+		self.status = kwargs.pop("status", {} ) # tracking for runlater
+		self.userid = kwargs.pop("userid", {} ) # user who owns this job
+		self.doctype = kwargs.pop("doctype", {} ) # always job
+		self.runlater_key = kwargs.pop("runlater_key", {} ) # the api key that owns this job
+		self.editted = kwargs.pop("editted", {} ) # last edit date can be null for new jobs
 		if len(kwargs):
 			raise Exception("To many arguments to job : ", kwargs)
 
