@@ -8,6 +8,9 @@ from datetime import datetime
 import time
 
 import pymongo
+
+print "Running RunLater Tests"
+
 conn = pymongo.Connection("localhost", 27017 )
 conn.runlater.rlusers.remove({})
 conn.runlater.rljobs.remove({})
@@ -88,6 +91,14 @@ assert response.status == 201
 api_public_key  = api_resp["public"]
 api_private_key  = api_resp["private"]
 
+# test_create_duplicate_api_key
+conn.request("PUT", "/users/" + USER_ID + "/apikeys/prodkey", "", headers)
+response = conn.getresponse()
+api_resp = json.loads(response.read())
+assert response.status == 400, api_resp
+assert "already created" in api_resp["error"], api_resp
+
+
 # test_find_created_key
 conn.request("GET", "/users/" + USER_ID + "/apikeys/", "", headers)
 response = conn.getresponse()
@@ -106,18 +117,11 @@ assert response.status == 200
 assert "_id" in api_resp
 
 
-######### 
-# MAKE A JOB USING RUNLATER.py
-#
-#
-#########
-print "Server ", pyrunlater.ServerConnection
 SERVER = pyrunlater.ServerConnection( USER_ID, api_public_key, api_private_key)
 
-# test creating a job
+# test_create_job
 job = SERVER.createJob("Daily Backup", "2012-09-08T06:15:42.215Z", "2 hours", "http://google.com", "POST", {})
 
-print "Interval ", job.when
 assert job.name == "Daily Backup"
 assert job.when == "2012-09-08T06:15:42.215Z"
 assert job.interval == {"hours" : 2}
@@ -172,16 +176,24 @@ SERVER.deleteJob(job)
 jobs = SERVER.viewJobs()
 assert len(jobs) == 0
 
+# test_delete_api_key_bad_key
+conn.request("DELETE", "/users/" + USER_ID + "/apikeys/"+"fake_api_key", "", headers)
+response = conn.getresponse()
+js = json.loads(response.read())
+assert response.status == 400, js
+assert "Not Found" in js["error"], js
+
+# test_delete_api_key
 conn.request("DELETE", "/users/" + USER_ID + "/apikeys/"+api_public_key, "", headers)
 response = conn.getresponse()
-api_resp = response.read()
-print "DELETE API Key ", response.status, response.reason, api_resp
+resp = response.read()
+js = json.loads(resp)
 assert response.status == 200 
-assert "Deleted" in api_resp
 
 conn.request("GET", "/users/" + USER_ID + "/apikeys/", "", headers)
 response = conn.getresponse()
 api_resp = response.read()
-print "Deleted API Keys  ", response.status, response.reason, api_resp
 assert response.status == 200
 assert api_resp == "[]"
+
+print "All assertions passed"

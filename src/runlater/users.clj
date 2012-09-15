@@ -132,12 +132,12 @@
 (defn create_apikey [id keyw body req]
     (try 
 	(let [ doc (rvalid/check_auth id (:headers req)) ]
-		(if (contains? (:apikeys doc) keyw )
-				{:status 400 :body (str "API key " keyw " already created") }
+		(if (contains? (:apikeys doc) (keyword keyw ))
+				{:status 400 :body (json-str {:error (str "API key " keyw " already created") } ) }
 		(let [up_doc (assoc doc :apikeys (assoc (:apikeys doc) keyw (rclient/random-string 12) ))]  
 			(last [ 
 					(mc/save "rlusers" up_doc)
-					{:status 201 :body (json-str { "public" keyw "private" (get (:apikeys up_doc) keyw ) } ) }
+					{:status 201 :body (json-str { "public" (name keyw) "private" (get (:apikeys up_doc) keyw ) } ) }
 				  ]
 			)
 			)
@@ -158,10 +158,10 @@
 			(if (contains? (:apikeys doc) keyw )
 				(last [ 
 					(mc/save "rlusers" (assoc doc :apikeys (dissoc (:apikeys doc) keyw)))
-    				{:status 200 :body "API Key Deleted " }
+    				{:status 200 :body (json-str { :message "API Key Deleted "}) }
 					]
 				)
-    		{:status 400 :body (str "API Key " keyw " Not Found " (keys (:apikeys doc)) )  } ))
+    		{:status 400 :body (json-str { :error  (str "API Key " (name keyw) " Not Found "  ) }) } ))
 	(catch Exception e 
 		{:status 400 :body (json-str { :error (.getLocalizedMessage e) })}
 		))
