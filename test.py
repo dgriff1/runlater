@@ -190,6 +190,14 @@ resp = response.read()
 js = json.loads(resp)
 assert response.status == 200 
 
+# test_double_delete_api_key
+conn.request("DELETE", "/users/" + USER_ID + "/apikeys/"+api_public_key, "", headers)
+response = conn.getresponse()
+resp = response.read()
+js = json.loads(resp)
+assert response.status == 400 
+assert "Not Found" in js["error"]
+
 conn.request("GET", "/users/" + USER_ID + "/apikeys/", "", headers)
 response = conn.getresponse()
 api_resp = response.read()
