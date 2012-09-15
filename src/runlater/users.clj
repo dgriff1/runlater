@@ -45,6 +45,7 @@
               (rclient/gensha (str rclient/rlsalt (:password m)  ) )
               (throw (Exception. "Invalid password")))))
         (fn [m] (safe_assoc m :_id (ObjectId.) ))
+        (fn [m] (if (rvalid/unique_email (get m :email) ) m ))
         (fn [m] (if (assert_user m) m (throw (Exception. "Missing Keys")) )))
     doc))
 
@@ -76,7 +77,7 @@
               (mc/insert "rlusers" doc)
             {:status 201 :body (json-str doc ) })
         (catch Exception e 
-            {:status 400 :body (.getLocalizedMessage e ) } )
+            {:status 400 :body (json-str { :error (.getLocalizedMessage e ) } ) } )
              ))
 ;
 ; Edit a user's info
@@ -94,7 +95,7 @@
   (try (let [doc (rvalid/check_auth id (:headers req)) ]
     {:status 200 :body (str "Delete " id " " ( mc/remove "rlusers" { :_id (ObjectId. id) })) }  )
   (catch Exception e 
-    {:status 400 :body (.getLocalizedMessage e) } )))
+    {:status 400 :body (json-str { :error (.getLocalizedMessage e) }) } )))
 
 
 (defn sanitize_user [ doc ] 
@@ -116,16 +117,21 @@
 ; Lookup a Users API keys
 ; 
 (defn lookup_apikeys [userid req]
+	(try 
     (let [doc (rvalid/check_auth userid (:headers req)) ]
       (if (or (nil? doc) (= (count (:apikeys doc)) 0 ))
 	  	{:status 200 :body (json-str []) }  
-		{:status 200 :body (json-str (keys (:apikeys doc)))}   )))
+		{:status 200 :body (json-str (keys (:apikeys doc)))}   ))
+	(catch Exception e 
+		{:status 400 :body (json-str { :error (.getLocalizedMessage e) })}
+		)))
 
 ;
 ; Create an API key
 ; 
 (defn create_apikey [id keyw body req]
-    (let [ doc (rvalid/check_auth id (:headers req)) ]
+    (try 
+	(let [ doc (rvalid/check_auth id (:headers req)) ]
 		(if (contains? (:apikeys doc) keyw )
 				{:status 400 :body (str "API key " keyw " already created") }
 		(let [up_doc (assoc doc :apikeys (assoc (:apikeys doc) keyw (rclient/random-string 12) ))]  
@@ -137,6 +143,9 @@
 			)
 		)
 	)
+	(catch Exception e 
+		{:status 400 :body (json-str { :error (.getLocalizedMessage e) })}
+		))
 )
 
 
@@ -144,12 +153,17 @@
 ; Delete  an API key
 ; 
 (defn delete_apikey [id k body req]
-    (let [ doc (rvalid/check_auth id (:headers req))  keyw (keyword k)  ]
-		(if (contains? (:apikeys doc) keyw )
-			(last [ 
-				(mc/save "rlusers" (assoc doc :apikeys (dissoc (:apikeys doc) keyw)))
-    			{:status 200 :body "API Key Deleted " }
-				]
-			)
-    	{:status 400 :body (str "API Key " keyw " Not Found " (keys (:apikeys doc)) )  } )))
+	(try
+    	(let [ doc (rvalid/check_auth id (:headers req))  keyw (keyword k)  ]
+			(if (contains? (:apikeys doc) keyw )
+				(last [ 
+					(mc/save "rlusers" (assoc doc :apikeys (dissoc (:apikeys doc) keyw)))
+    				{:status 200 :body "API Key Deleted " }
+					]
+				)
+    		{:status 400 :body (str "API Key " keyw " Not Found " (keys (:apikeys doc)) )  } ))
+	(catch Exception e 
+		{:status 400 :body (json-str { :error (.getLocalizedMessage e) })}
+		))
+		)
 

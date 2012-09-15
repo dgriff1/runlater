@@ -16,6 +16,13 @@
 (defn no_id [doc] 
 	(if (contains? doc :_id ) (throw (Exception. "Do not specify _id")) doc ))
 
+(defn unique_email [ email ] 
+	(do (prn "Email ", email, " -- ", (re-matcher #"^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$" email), " -- ", (mc/find-one-as-map "rlusers" { :email email } )  )
+	(if (and email (re-matcher #"^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$" email) 
+		(= nil (mc/find-one-as-map "rlusers" { :email email } ) ))
+		email	
+		(throw (Exception. "Invalid or duplicated email address"))
+		)))
 
 (defn valid_hmac [userid json_str headers doc] 
 	(let [hkey (lookup_key userid headers)]

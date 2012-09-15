@@ -7,32 +7,75 @@ import pyrunlater
 from datetime import datetime
 import time
 
+import pymongo
+conn = pymongo.Connection("localhost", 27017 )
+conn.runlater.rlusers.remove({})
+conn.runlater.rljobs.remove({})
+conn.rulnlater.rllogs.remove({})
+
+
 headers = {"Content-type": "application/json",
     "Accept": "application/json"}
 
 conn = httplib.HTTPConnection("localhost", 5000)
 
+# test_invalid_password
+data = { "first" : "Dan", "last" : "Griffin", "email" : "test@runlater.com", "password" : "", "company" : "runlater" } 
+json_data = json.dumps(data)
+conn.request("PUT", "/users/", json_data, headers )
+response = conn.getresponse()
+json_resp = response.read()
+js = json.loads(json_resp)
+assert response.status == 400, js
+assert "error" in js, js
+assert "Invalid password" in js["error"], js 
+
+
+
+# test_create_user
 data = { "first" : "Dan", "last" : "Griffin", "email" : "test@runlater.com", "password" : "pass", "company" : "runlater" } 
 json_data = json.dumps(data)
 conn.request("PUT", "/users/", json_data, headers )
 response = conn.getresponse()
 json_resp = response.read()
 js = json.loads(json_resp)
-#print "Create a user ", response.status, response.reason, json_resp
-
-assert response.status == 201
-assert "_id" in js
+assert response.status == 201, js
+assert "_id" in js, js
 
 USER_ID = js["_id"] 
 
+
+# test_dup_user
+json_data = json.dumps(data)
+conn.request("PUT", "/users/", json_data, headers )
+response = conn.getresponse()
+json_resp = response.read()
+js = json.loads(json_resp)
+assert response.status == 400
+assert "error" in js.keys()
+assert "duplicated email" in js["error"]
+
+
+# test_no_password
+#headers["runlater_password"] = "pass"
+conn.request("GET", "/users/" + USER_ID + "/apikeys/", "", headers)
+response = conn.getresponse()
+js = json.loads(response.read())
+#print "Empty API Keys  ", response.status, response.reason, api_resp
+assert response.status == 400, js
+assert  "error" in js, js 
+assert "Invalid password" in js["error"], js
+
+# test_no_api_keys
 headers["runlater_password"] = "pass"
 conn.request("GET", "/users/" + USER_ID + "/apikeys/", "", headers)
 response = conn.getresponse()
-api_resp = json.loads(response.read())
+js = json.loads(response.read())
 #print "Empty API Keys  ", response.status, response.reason, api_resp
-assert  api_resp == []
-assert response.status == 200
+assert response.status == 200, js
+assert  js == [], js 
 
+# test_create_api_key
 conn.request("PUT", "/users/" + USER_ID + "/apikeys/prodkey", "", headers)
 response = conn.getresponse()
 api_resp = json.loads(response.read())
@@ -45,13 +88,14 @@ assert response.status == 201
 api_public_key  = api_resp["public"]
 api_private_key  = api_resp["private"]
 
+# test_find_created_key
 conn.request("GET", "/users/" + USER_ID + "/apikeys/", "", headers)
 response = conn.getresponse()
-api_resp = response.read()
+js = json.loads(response.read())
 # print "List all API Keys ", response.status, response.reason, api_resp
-assert len(api_resp) > 0 
-assert "prodkey" in api_resp
-assert response.status == 200
+assert len(js) > 0, js
+assert api_public_key in js, js
+assert response.status == 200, js 
 
 json_data = json.dumps(data)
 conn.request("GET", "/users/"+ USER_ID , json_data, headers )
@@ -106,9 +150,13 @@ except Exception, e:
 	assert "error" in str(e)
 	pass
 
-time.sleep(3)
 
-logs = SERVER.getLogs()
+for i in range(5):
+	logs = SERVER.getLogs()
+	if len(logs):
+		break
+	time.sleep(1)
+	
 assert len(logs) == 1
 log = logs[0]
 assert log.jobid == j._id
