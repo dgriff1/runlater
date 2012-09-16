@@ -4,11 +4,11 @@
 (:import [org.bson.types ObjectId]) )
 
 (defn lookup_key [ userid headers ]
-    (let [doc (mc/find-one-as-map "rlusers" { "$and" [ {(str "apikeys." (:runlater_key headers)) { "$exists" true}}  { :_id (ObjectId. userid)  } ] }) ]
+    (let [doc (mc/find-one-as-map "rlusers" { "$and" [ {(str "apikeys." (:runlater_key headers)) { "$exists" true}}  { :account userid  } ] }) ]
 		(get  (:apikeys doc ) (keyword (:runlater_key headers) )) ))
 
 (defn lookup_user [ userid ]
-    (let [doc (mc/find-one-as-map "rlusers" { :_id (ObjectId. userid) } ) ]
+    (let [doc (mc/find-one-as-map "rlusers" { :account userid } ) ]
 		(if doc 
 			doc
 		(throw (Exception. "Unable to find user" )))))
@@ -24,13 +24,21 @@
 		(throw (Exception. "Invalid or duplicated email address"))
 		)))
 
+(defn unique_account [ account ] 
+	(do (prn "Account ", account, " -- ", (re-matcher #"^\w*$" account), " -- ", (mc/find-one-as-map "rlusers" { :account account} )  )
+	(if (and account (re-matcher #"^\w*$" account) 
+		(= nil (mc/find-one-as-map "rlusers" { :account account } ) ))
+		account	
+		(throw (Exception. "Invalid or duplicated account name"))
+		)))
+
 (defn valid_hmac [userid json_str headers doc] 
 	(let [hkey (lookup_key userid headers)]
 		(if (and (contains? headers :runlater_hash)  hkey)
 			(if (= (rclient/hmac hkey json_str) (get headers :runlater_hash)) ; replace later with looked up API Account secret
 				doc
 			(throw (Exception. (str "Invalid HMAC Hash" ) )))
-		(throw (Exception. (str "Must supply valid runlater_key and runlater_hash in headers" ) ) ))) )
+		(throw (Exception. (str "Must supply valid runlater_key and runlater_hash in headers " userid ) ) ))) )
 
 (defn check_auth [userid headers] 
 	(let [user (lookup_user userid) ]

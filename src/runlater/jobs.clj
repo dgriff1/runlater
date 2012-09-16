@@ -50,9 +50,11 @@
 
 (defn index [userid apikey request body]
 	(do 
-	(prn "Userid " userid ,  " api key " apikey " URL  " (:uri request) " headers " (:headers request) )
+	(prn "Userid " userid ,  " api key " apikey " URL  " (:uri request) " headers " (:headers request) " user " (rvalid/lookup_user userid) )
 	(try (rvalid/valid_hmac userid (:uri request) (:headers request) {} )
-    	{:status 200 :body (to-json (mc/find-maps "rljobs" { :userid userid :runlater_key apikey } ))} 
+		(do 
+			(prn "USERID " (mc/find-maps "rljobs" { :userid (str (:_id (rvalid/lookup_user userid))) :runlater_key apikey } ))
+    	{:status 200 :body (to-json (mc/find-maps "rljobs" { :userid (str (:_id (rvalid/lookup_user userid))) :runlater_key apikey } ))})
         (catch Exception e 
 			(do (prn "Exception is " e " trace " (.printStackTrace e)) 
             {:status 400 :body (json-str { :error (.getLocalizedMessage e ) } ) }   ))
@@ -61,7 +63,7 @@
 (defn create [userid req body]
       (do 
 	  	(prn "UserID " userid)
-        (try (let [ headers (:headers req) doc (convert_job (new_doc (slurp body) userid headers ) userid headers ) ] 
+        (try (let [ user (rvalid/lookup_user userid) headers (:headers req) doc (convert_job (new_doc (slurp body) userid  headers ) (:_id user) headers ) ] 
               (mc/insert "rljobs" doc)
             {:status 201 :body (json-str doc ) })
         (catch Exception e 
@@ -93,7 +95,7 @@
 (defn lookup [id userid req body]
 	(try (do 
 		(rvalid/valid_hmac userid (:uri req) (:headers req) {} ) 
-		(let [ job (mc/find-one-as-map "rljobs" { :userid userid :_id (ObjectId. id)  :runlater_key (:runlater_key (:headers req)) } ) ]
+		(let [ user (rvalid/lookup_user userid) job (mc/find-one-as-map "rljobs" { :userid (str (:_id user)) :_id (ObjectId. id)  :runlater_key (:runlater_key (:headers req)) } ) ]
 			(if  job
     			{:status 200 :body (to-json job)  }
 				{:status 400 :body (to-json {:error "No Job Found" }) } )))

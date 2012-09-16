@@ -14,7 +14,7 @@ print "Running RunLater Tests"
 conn = pymongo.Connection("localhost", 27017 )
 conn.runlater.rlusers.remove({})
 conn.runlater.rljobs.remove({})
-conn.rulnlater.rllogs.remove({})
+conn.runlater.rllogs.remove({})
 
 
 headers = {"Content-type": "application/json",
@@ -23,7 +23,7 @@ headers = {"Content-type": "application/json",
 conn = httplib.HTTPConnection("localhost", 5000)
 
 # test_invalid_password
-data = { "first" : "Dan", "last" : "Griffin", "email" : "test@runlater.com", "password" : "", "company" : "runlater" } 
+data = { "account" : "runlater_test", "first" : "Dan", "last" : "Griffin", "email" : "test@runlater.com", "password" : "", "company" : "runlater" } 
 json_data = json.dumps(data)
 conn.request("PUT", "/users/", json_data, headers )
 response = conn.getresponse()
@@ -36,7 +36,7 @@ assert "Invalid password" in js["error"], js
 
 
 # test_create_user
-data = { "first" : "Dan", "last" : "Griffin", "email" : "test@runlater.com", "password" : "pass", "company" : "runlater" } 
+data = { "account"  : "runlater_test", "first" : "Dan", "last" : "Griffin", "email" : "test@runlater.com", "password" : "pass", "company" : "runlater" } 
 json_data = json.dumps(data)
 conn.request("PUT", "/users/", json_data, headers )
 response = conn.getresponse()
@@ -44,11 +44,14 @@ json_resp = response.read()
 js = json.loads(json_resp)
 assert response.status == 201, js
 assert "_id" in js, js
+assert "account" in js, js
+assert "email" in js, js
 
+USER_ACCT = js["account"] 
 USER_ID = js["_id"] 
 
 
-# test_dup_user
+# test_dup_user_account
 json_data = json.dumps(data)
 conn.request("PUT", "/users/", json_data, headers )
 response = conn.getresponse()
@@ -56,12 +59,23 @@ json_resp = response.read()
 js = json.loads(json_resp)
 assert response.status == 400
 assert "error" in js.keys()
-assert "duplicated email" in js["error"]
+assert "duplicated account" in js["error"], js
 
+# test_dup_user_email
+d = data.copy()
+d["account"] = "fake"
+json_data = json.dumps(d)
+conn.request("PUT", "/users/", json_data, headers)
+response = conn.getresponse()
+json_resp = response.read()
+js = json.loads(json_resp)
+assert response.status == 400
+assert "error" in js.keys()
+assert "duplicated email" in js["error"], js
 
 # test_no_password
 #headers["runlater_password"] = "pass"
-conn.request("GET", "/users/" + USER_ID + "/apikeys/", "", headers)
+conn.request("GET", "/users/" + USER_ACCT + "/apikeys/", "", headers)
 response = conn.getresponse()
 js = json.loads(response.read())
 #print "Empty API Keys  ", response.status, response.reason, api_resp
@@ -71,7 +85,7 @@ assert "Invalid password" in js["error"], js
 
 # test_no_api_keys
 headers["runlater_password"] = "pass"
-conn.request("GET", "/users/" + USER_ID + "/apikeys/", "", headers)
+conn.request("GET", "/users/" + USER_ACCT + "/apikeys/", "", headers)
 response = conn.getresponse()
 js = json.loads(response.read())
 #print "Empty API Keys  ", response.status, response.reason, api_resp
@@ -79,7 +93,7 @@ assert response.status == 200, js
 assert  js == [], js 
 
 # test_create_api_key
-conn.request("PUT", "/users/" + USER_ID + "/apikeys/prodkey", "", headers)
+conn.request("PUT", "/users/" + USER_ACCT + "/apikeys/prodkey", "", headers)
 response = conn.getresponse()
 api_resp = json.loads(response.read())
 #print "Create API Key ", response.status, response.reason, api_resp
@@ -92,7 +106,7 @@ api_public_key  = api_resp["public"]
 api_private_key  = api_resp["private"]
 
 # test_create_duplicate_api_key
-conn.request("PUT", "/users/" + USER_ID + "/apikeys/prodkey", "", headers)
+conn.request("PUT", "/users/" + USER_ACCT + "/apikeys/prodkey", "", headers)
 response = conn.getresponse()
 api_resp = json.loads(response.read())
 assert response.status == 400, api_resp
@@ -100,7 +114,7 @@ assert "already created" in api_resp["error"], api_resp
 
 
 # test_find_created_key
-conn.request("GET", "/users/" + USER_ID + "/apikeys/", "", headers)
+conn.request("GET", "/users/" + USER_ACCT + "/apikeys/", "", headers)
 response = conn.getresponse()
 js = json.loads(response.read())
 # print "List all API Keys ", response.status, response.reason, api_resp
@@ -109,7 +123,7 @@ assert api_public_key in js, js
 assert response.status == 200, js 
 
 json_data = json.dumps(data)
-conn.request("GET", "/users/"+ USER_ID , json_data, headers )
+conn.request("GET", "/users/"+ USER_ACCT , json_data, headers )
 response = conn.getresponse()
 api_resp = json.loads( response.read() )
 # print "Lookup a user ", response.status, response.reason, api_resp
@@ -117,7 +131,7 @@ assert response.status == 200
 assert "_id" in api_resp
 
 
-SERVER = pyrunlater.ServerConnection( USER_ID, api_public_key, api_private_key)
+SERVER = pyrunlater.ServerConnection( USER_ACCT, api_public_key, api_private_key)
 
 # test_create_job
 job = SERVER.createJob("Daily Backup", "2012-09-08T06:15:42.215Z", "2 hours", "http://google.com", "POST", {})
@@ -138,7 +152,7 @@ assert job.url == "http://www.facebook.com"
 
 # Test  that the job is listed
 jobs = SERVER.viewJobs()
-assert len(jobs) == 1
+assert len(jobs) == 1, jobs
 j = jobs[0]
 assert j.name == job.name
 
@@ -161,7 +175,7 @@ for i in range(5):
 		break
 	time.sleep(1)
 	
-assert len(logs) == 1
+assert len(logs) == 1, len(logs)
 log = logs[0]
 assert log.jobid == j._id
 assert log.userid == USER_ID
@@ -177,28 +191,28 @@ jobs = SERVER.viewJobs()
 assert len(jobs) == 0
 
 # test_delete_api_key_bad_key
-conn.request("DELETE", "/users/" + USER_ID + "/apikeys/"+"fake_api_key", "", headers)
+conn.request("DELETE", "/users/" + USER_ACCT + "/apikeys/"+"fake_api_key", "", headers)
 response = conn.getresponse()
 js = json.loads(response.read())
 assert response.status == 400, js
 assert "Not Found" in js["error"], js
 
 # test_delete_api_key
-conn.request("DELETE", "/users/" + USER_ID + "/apikeys/"+api_public_key, "", headers)
+conn.request("DELETE", "/users/" + USER_ACCT + "/apikeys/"+api_public_key, "", headers)
 response = conn.getresponse()
 resp = response.read()
 js = json.loads(resp)
 assert response.status == 200 
 
 # test_double_delete_api_key
-conn.request("DELETE", "/users/" + USER_ID + "/apikeys/"+api_public_key, "", headers)
+conn.request("DELETE", "/users/" + USER_ACCT + "/apikeys/"+api_public_key, "", headers)
 response = conn.getresponse()
 resp = response.read()
 js = json.loads(resp)
 assert response.status == 400 
 assert "Not Found" in js["error"]
 
-conn.request("GET", "/users/" + USER_ID + "/apikeys/", "", headers)
+conn.request("GET", "/users/" + USER_ACCT + "/apikeys/", "", headers)
 response = conn.getresponse()
 api_resp = response.read()
 assert response.status == 200

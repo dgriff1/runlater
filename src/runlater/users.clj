@@ -14,6 +14,7 @@
 (def user_validator (validation-set 
     (presence-of :first )
     (presence-of :last )
+    (presence-of :account )
     (presence-of :email )
     (presence-of :company )
     (presence-of :password )
@@ -26,7 +27,7 @@
 	(let [headers (:headers (keywordize-keys req))]
 		(if (and (contains? headers :runlater_password)
 				(> 0 (count (:runlater_password headers)))
-					(mc/find-one-as-map "rlusers" { :_id (ObjectId. target) :password (rclient/gensha (str rclient/rlsalt) (:runlater_password headers))  }))
+					(mc/find-one-as-map "rlusers" { :account target :password (rclient/gensha (str rclient/rlsalt) (:runlater_password headers))  }))
 					true 
 			false
 		)))
@@ -46,6 +47,7 @@
               (throw (Exception. "Invalid password")))))
         (fn [m] (safe_assoc m :_id (ObjectId.) ))
         (fn [m] (if (rvalid/unique_email (get m :email) ) m ))
+        (fn [m] (if (rvalid/unique_account (get m :account) ) m ))
         (fn [m] (if (assert_user m) m (throw (Exception. "Missing Keys")) )))
     doc))
 
@@ -93,7 +95,7 @@
 ;
 (defn delete [id req]
   (try (let [doc (rvalid/check_auth id (:headers req)) ]
-    {:status 200 :body (str "Delete " id " " ( mc/remove "rlusers" { :_id (ObjectId. id) })) }  )
+    {:status 200 :body (str "Delete " id " " ( mc/remove "rlusers" { :account id })) }  )
   (catch Exception e 
     {:status 400 :body (json-str { :error (.getLocalizedMessage e) }) } )))
 
