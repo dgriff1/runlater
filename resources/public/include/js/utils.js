@@ -1,21 +1,25 @@
 
-var userID = "501b0ffee4b056f52558715e";
+var account   = "runlater_test";
+var password  = "pass";
 var publicKey = "prodkey";
-var privateKey = "QrF4fHSHWQrM";
 
+var hash = CryptoJS.HmacSHA1(account, "");
+hash.toString(CryptoJS.enc.Base64);	
 
 function renderJobs()
 {
-			var hash = CryptoJS.HmacSHA1(privateKey, "");
-
-			hash.toString(CryptoJS.enc.Base64);	
 			$.ajax({
 					headers: {
 						"runlater_key" : publicKey,
 						"runlater_hash" : hash,
 						"Content-Type" : "application/json"
 					},
-					url: "users/" + userID + "/jobs/",
+					beforeSend: function(xhr) {
+						xhr.setRequestHeader("Content-Type", "application/json");
+						xhr.setRequestHeader("Accept", "application/json");
+						xhr.setRequestHeader("runlater_password", password);
+					     },
+					url: "users/" + account + "/apikeys/",
 					type: "GET",
 					contentType: 'application/json',
 					error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -87,12 +91,11 @@ function addJob()
 
 	$.ajax({
 			beforeSend: function(xhr) {
-				xhr.setRequestHeader("runlater_key", publicKey);
-				xhr.setRequestHeader("runlater_hash", encodeURI(hash2));
 				xhr.setRequestHeader("Content-Type", "application/json");
 				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("runlater_password", password);
 			     },
-			url: "users/" + userID + "/jobs/",
+			url: "users/" + account + "/jobs/",
 			type: "PUT",
 			data: data,
 			dataType: "json",
