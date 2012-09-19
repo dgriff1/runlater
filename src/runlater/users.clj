@@ -123,7 +123,7 @@
     (let [doc (rvalid/check_auth userid (:headers req)) ]
       (if (or (nil? doc) (= (count (:apikeys doc)) 0 ))
 	  	{:status 200 :body (json-str []) }  
-		{:status 200 :body (json-str (keys (:apikeys doc)))}   ))
+		{:status 200 :body (json-str (:apikeys doc))}   ))
 	(catch Exception e 
 		{:status 400 :body (json-str { :error (.getLocalizedMessage e) })}
 		)))
