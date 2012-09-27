@@ -54,6 +54,7 @@ function renderJobs()
 					error: function(XMLHttpRequest, textStatus, errorThrown){
 					    console.log(errorThrown);
 					}, success: function(data, textStatus, XMLHttpRequest){
+							console.log('Jobs', JSON.parse(XMLHttpRequest.responseText));
 						  	buildTable(JSON.parse(XMLHttpRequest.responseText));
 					}
 				    });
@@ -116,9 +117,14 @@ function addJob()
 	data += ' } ';
 
 	var hash = CryptoJS.HmacSHA1(data, privateKey);
-	hash.toString(CryptoJS.enc.Base64);	
+	hash = hash.toString(CryptoJS.enc.Base64);	
 
 	$.ajax({
+			headers: {
+				"runlater_key"  : publicKey,
+				"runlater_hash" : hash,
+				"Content-Type"  : "application/json"
+			},
 			beforeSend: function(xhr) {
 				xhr.setRequestHeader("Content-Type", "application/json");
 				xhr.setRequestHeader("Accept", "application/json");
