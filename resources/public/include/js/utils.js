@@ -4,6 +4,31 @@ var password  = "pass";
 var publicKey = "new";
 var privateKey = "[LkeuKysMk[r";
 
+function addKey(key)
+{
+			var hash = CryptoJS.HmacSHA1(account, "");
+			hash = hash.toString(CryptoJS.enc.Base64);	
+
+			$.ajax({
+					headers: {
+						"Content-Type"  : "application/json"
+					},
+					beforeSend: function(xhr) {
+						xhr.setRequestHeader("Content-Type", "application/json");
+						xhr.setRequestHeader("Accept", "application/json");
+						xhr.setRequestHeader("runlater_password", password);
+					     },
+					url: "users/" + account + "/apikeys/" + key,
+					type: "PUT",
+					contentType: 'application/json',
+					error: function(XMLHttpRequest, textStatus, errorThrown){
+					    console.log(errorThrown);
+					}, success: function(data, textStatus, XMLHttpRequest){
+						console.log(XMLHttpRequest.responseText);
+					},
+				    });
+}
+
 function getKeys()
 {
 			var hash = CryptoJS.HmacSHA1(account, "");
@@ -24,38 +49,43 @@ function getKeys()
 					error: function(XMLHttpRequest, textStatus, errorThrown){
 					    console.log(errorThrown);
 					}, success: function(data, textStatus, XMLHttpRequest){
-						console.log(XMLHttpRequest.responseText);
-						objResults = JSON.parse(XMLHttpRequest.responseText);	
+						response = XMLHttpRequest.responseText;
+						console.log(response);
+						$.each(JSON.parse(response), function(i) 
+						{
+							$('#keys').append(new Option(i, i, true, true));
+						});
 					},
 				    });
 }
 
 function renderJobs()
 {
-			URL = "/users/" + account + "/apikey/" + publicKey + "/jobs/";
+	URL = "/users/" + account + "/apikey/" + publicKey + "/jobs/";
 
-			var hash = CryptoJS.HmacSHA1(URL, privateKey);
-			hash = hash.toString(CryptoJS.enc.Base64);	
+	var hash = CryptoJS.HmacSHA1(URL, privateKey);
+	hash = hash.toString(CryptoJS.enc.Base64);	
 
-			$.ajax({
-					headers: {
-						"runlater_key"  : publicKey,
-						"runlater_hash" : hash,
-					},
-					beforeSend: function(xhr) {
-						xhr.setRequestHeader("runlater_password", password);
-						xhr.setRequestHeader("runlater_key", publicKey);
-						xhr.setRequestHeader("runlater_hash", hash);
-					     },
-					url: URL,
-					type: "GET",
-					error: function(XMLHttpRequest, textStatus, errorThrown){
-					    console.log(errorThrown);
-					}, success: function(data, textStatus, XMLHttpRequest){
-							console.log('Jobs', XMLHttpRequest.responseText);
-						  	buildTable(JSON.parse(XMLHttpRequest.responseText));
-					}
-				    });
+	$.ajax({
+		headers: {
+			"runlater_password" : password,
+			"runlater_key"      : publicKey,
+			"runlater_hash"     : hash,
+		},
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("runlater_password", password);
+			xhr.setRequestHeader("runlater_key", publicKey);
+			xhr.setRequestHeader("runlater_hash", hash);
+		},
+		url: URL,
+		type: "GET",
+		error: function(XMLHttpRequest, textStatus, errorThrown){
+		    console.log(errorThrown);
+		}, success: function(data, textStatus, XMLHttpRequest){
+				console.log('Jobs', XMLHttpRequest.responseText);
+				buildTable(JSON.parse(XMLHttpRequest.responseText));
+		}
+	});
 }
 
 function buildTable(objResults)
@@ -110,7 +140,7 @@ function addJob()
 	data += '"when" : "2012-05-06T06:15:42.215Z", ';
 	data += '"interval" : "2 hours",';
 	data += '"url" : "' + url + '" , ';
-	data += '"method" : "POST" , ';
+	data += '"method" : "PUT" , ';
 	data += '"headers" : {}'; 
 	data += ' } ';
 
@@ -119,9 +149,10 @@ function addJob()
 
 	$.ajax({
 			headers: {
-				"runlater_key"  : publicKey,
-				"runlater_hash" : hash,
-				"Content-Type"  : "application/json"
+				"runlater_key"       : publicKey,
+				"runlater_password"  : password,
+				"runlater_hash"      : hash,
+				"Content-Type"       : "application/json"
 			},
 			beforeSend: function(xhr) {
 				xhr.setRequestHeader("Content-Type", "application/json");
@@ -136,8 +167,9 @@ function addJob()
 			dataType: "json",
 			contentType: 'application/json',
 			error: function(XMLHttpRequest, textStatus, errorThrown){
-			    alert(errorThrown);
+			    console.log(errorThrown);
 			}, success: function(data, textStatus, XMLHttpRequest){
+				alert(XMLHttpRequest.responseText);
 					updateStatus("Job " + name + " added.");
 					closeJob();
 					renderJobs();
