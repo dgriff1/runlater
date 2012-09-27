@@ -4,6 +4,8 @@ var password  = "pass";
 var publicKey = "new";
 var privateKey = "[LkeuKysMk[r";
 
+var lookup = {};
+
 function addKey(key)
 {
 			var hash = CryptoJS.HmacSHA1(account, "");
@@ -51,12 +53,21 @@ function getKeys()
 					}, success: function(data, textStatus, XMLHttpRequest){
 						response = XMLHttpRequest.responseText;
 						console.log(response);
-						$.each(JSON.parse(response), function(i) 
+						lookup = {};
+						for (var k in JSON.parse(response))
 						{
-							$('#keys').append(new Option(i, i, true, true));
-						});
+							lookup[k] = JSON.parse(response)[k];
+							$('#keys').append(new Option(k, k, true, true));
+						}
 					},
 				    });
+}
+
+function keySwitch(ele)
+{
+	privateKey = lookup[ele.value];
+	publicKey = ele.value;
+	renderJobs();
 }
 
 function renderJobs()
