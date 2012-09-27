@@ -180,7 +180,6 @@ function addJob()
 			error: function(XMLHttpRequest, textStatus, errorThrown){
 			    console.log(errorThrown);
 			}, success: function(data, textStatus, XMLHttpRequest){
-				alert(XMLHttpRequest.responseText);
 					updateStatus("Job " + name + " added.");
 					closeJob();
 					renderJobs();
@@ -194,10 +193,6 @@ function showJobDialog()
 	$(".addJobDialog").dialog({"width" : "400px", "title" : "Add Job"});
 }
 
-function testTest()
-{
-	alert("DD");
-}
 
 function addUser()
 {
