@@ -7,7 +7,7 @@ var privateKey = "[LkeuKysMk[r";
 function getKeys()
 {
 			var hash = CryptoJS.HmacSHA1(account, "");
-			hash.toString(CryptoJS.enc.Base64);	
+			hash = hash.toString(CryptoJS.enc.Base64);	
 
 			$.ajax({
 					headers: {
@@ -32,29 +32,27 @@ function getKeys()
 
 function renderJobs()
 {
-			var hash = CryptoJS.HmacSHA1("/users/" + account + "/apikey/" + publicKey + "/jobs/", privateKey);
+			URL = "/users/" + account + "/apikey/" + publicKey + "/jobs/";
+
+			var hash = CryptoJS.HmacSHA1(URL, privateKey);
 			hash = hash.toString(CryptoJS.enc.Base64);	
 
 			$.ajax({
 					headers: {
 						"runlater_key"  : publicKey,
 						"runlater_hash" : hash,
-						"Content-Type"  : "application/json"
 					},
 					beforeSend: function(xhr) {
-						xhr.setRequestHeader("Content-Type", "application/json");
-						xhr.setRequestHeader("Accept", "application/json");
 						xhr.setRequestHeader("runlater_password", password);
 						xhr.setRequestHeader("runlater_key", publicKey);
 						xhr.setRequestHeader("runlater_hash", hash);
 					     },
-					url: "users/" + account + "/apikey/" + publicKey + "/jobs/",
+					url: URL,
 					type: "GET",
-					contentType: 'application/json',
 					error: function(XMLHttpRequest, textStatus, errorThrown){
 					    console.log(errorThrown);
 					}, success: function(data, textStatus, XMLHttpRequest){
-							console.log('Jobs', JSON.parse(XMLHttpRequest.responseText));
+							console.log('Jobs', XMLHttpRequest.responseText);
 						  	buildTable(JSON.parse(XMLHttpRequest.responseText));
 					}
 				    });
