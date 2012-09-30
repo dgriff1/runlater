@@ -23,7 +23,7 @@ headers = {"Content-type": "application/json",
 conn = httplib.HTTPConnection("localhost", 5000)
 
 # test_invalid_password
-data = { "account" : "runlater_test", "first" : "Dan", "last" : "Griffin", "email" : "test@runlater.com", "password" : "", "company" : "runlater" } 
+data = { "account" : "runlater_test", "first" : "Dan", "last" : "Griffin", "email" : "test@runlater.com", "password" : "", "company" : "runlater", "billing" : { "address" : "1965 30th Street" }  } 
 json_data = json.dumps(data)
 conn.request("PUT", "/users/", json_data, headers )
 response = conn.getresponse()
@@ -36,7 +36,7 @@ assert "Invalid password" in js["error"], js
 
 
 # test_create_user
-data = { "account"  : "runlater_test", "first" : "Dan", "last" : "Griffin", "email" : "test@runlater.com", "password" : "pass", "company" : "runlater" } 
+data = { "account"  : "runlater_test", "first" : "Dan", "last" : "Griffin", "email" : "test@runlater.com", "password" : "pass", "company" : "runlater", "billing" : { "address" : "1965 30th street" } } 
 json_data = json.dumps(data)
 conn.request("PUT", "/users/", json_data, headers )
 response = conn.getresponse()
@@ -46,6 +46,8 @@ assert response.status == 201, js
 assert "_id" in js, js
 assert "account" in js, js
 assert "email" in js, js
+assert "billing" in js, js
+assert "address" in js["billing"], js
 
 USER_ACCT = js["account"] 
 USER_ID = js["_id"] 
