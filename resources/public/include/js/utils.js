@@ -193,33 +193,33 @@ function showJobDialog()
 	$(".addJobDialog").dialog({"width" : "400px", "title" : "Add Job"});
 }
 
-
-function addUser()
+function getUser(username, password)
 {
-			var id = false;
+
+}
+
+function addUser(username, password)
+{
 			$.ajax({
+					headers: {
+						"Content-Type"       : "application/json"
+					},
+					beforeSend: function(xhr) {
+						xhr.setRequestHeader("Content-Type", "application/json");
+						xhr.setRequestHeader("Accept", "application/json");
+						xhr.setRequestHeader("runlater_password", password);
+				        },
 					url: "users/",
 					type: "PUT",
 					contentType: 'application/json',
-					data: JSON.stringify(  { "first" : "Dan", "last" : "Griffin", "email" : "test@runlater.com", "password" : "pass", "company" : "runlater" }  ),
+					data: JSON.stringify(  { "account" : username, "first" : "Dan", "last" : "Griffin", "email" : "test@runlater.com", "password" : password, "company" : "runlater" }  ),
 					error: function(XMLHttpRequest, textStatus, errorThrown){
-					    alert(errorThrown);
+					    console.log(errorThrown);
+						account = username;
+						password = password;
+						getKeys();
 					}, success: function(data, textStatus, XMLHttpRequest){
-						    var resp = JSON.parse(XMLHttpRequest.responseText);
-						    var id = (resp["_id"]);
-							$.ajax({
-								url: "users/" + id,
-								type: "GET",
-								contentType: "application/json",
-								error: function(XMLHttpRequest, textStatus, errorThrown){
-								    alert(errorThrown);
-								}, success: function(data, textStatus, XMLHttpRequest){
-									userRecord = JSON.parse(XMLHttpRequest.responseText);
-									alert(userRecord.first);
-								}
-
-							});
-
-					}
+							alert(JSON.parse(XMLHttpRequest.responseText));
+						}
 				    });
 }
