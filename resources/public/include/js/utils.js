@@ -198,28 +198,40 @@ function getUser(username, password)
 
 }
 
-function addUser(username, password)
+function addUser(username, password, email)
 {
 			$.ajax({
 					headers: {
-						"Content-Type"       : "application/json"
+						"Content-Type"       : "application/json",
+						"Accept"       : "application/json"
 					},
 					beforeSend: function(xhr) {
 						xhr.setRequestHeader("Content-Type", "application/json");
 						xhr.setRequestHeader("Accept", "application/json");
-						xhr.setRequestHeader("runlater_password", password);
 				        },
 					url: "users/",
 					type: "PUT",
 					contentType: 'application/json',
-					data: JSON.stringify(  { "account" : username, "first" : "Dan", "last" : "Griffin", "email" : "test@runlater.com", "password" : password, "company" : "runlater" }  ),
+					data: JSON.stringify(  { "account" : username, "first" : "mitt", "last" : "miles", "email" : email, "password" : password, "company" : "President" }  ),
 					error: function(XMLHttpRequest, textStatus, errorThrown){
 					    console.log(errorThrown);
-						account = username;
-						password = password;
-						getKeys();
 					}, success: function(data, textStatus, XMLHttpRequest){
-							alert(JSON.parse(XMLHttpRequest.responseText));
+							userObj  = JSON.parse(XMLHttpRequest.responseText);
+							account = username;
+							password = password;
+							getKeys();
 						}
 				    });
 }
+
+function makeid()
+{
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for( var i=0; i < 5; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
+
