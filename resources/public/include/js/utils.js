@@ -193,6 +193,20 @@ function showJobDialog()
 	$(".addJobDialog").dialog({"width" : "400px", "title" : "Add Job"});
 }
 
+function showLoginDialog()
+{
+	$(".loginDialog").dialog({"width" : "400px", "title" : "Login"});
+}
+
+function Login()
+{
+	account  = $(".loginDialog").find("[name=account]").val("");
+	password = $(".loginDialog").find("[name=password]").val("");
+	$(".loginDialog").dialog('close');
+	$(".content").show();
+	getKeys();
+}
+
 function getUser(username, password)
 {
 
@@ -211,27 +225,47 @@ function addUser(username, password, email)
 				        },
 					url: "users/",
 					type: "PUT",
+					async: false,
 					contentType: 'application/json',
 					data: JSON.stringify(  { "account" : username, "first" : "mitt", "last" : "miles", "email" : email, "password" : password, "company" : "President" }  ),
 					error: function(XMLHttpRequest, textStatus, errorThrown){
 					    console.log(errorThrown);
 					}, success: function(data, textStatus, XMLHttpRequest){
-							userObj  = JSON.parse(XMLHttpRequest.responseText);
-							account = username;
-							password = password;
-							getKeys();
-						}
+						alert("User created!");
+					}
 				    });
 }
 
-function makeid()
+function signUp(ele)
 {
-    var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	account  = $("input[name*=account]").val();
+	password = $("input[name*=password]").val();
+	email    = $("input[name*=email]").val();
 
-    for( var i=0; i < 5; i++ )
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
+	back = true;
+	if(account.length < 1)
+	{
+		$("input[name*=account]").css('background-color', 'red');
+		back = false;
+	}
+	if(password.length < 1)
+	{
+		$("input[name*=password]").css('background-color', 'red');
+		back = false;
+	}
+	if(email.length < 1)
+	{
+		$("input[name*=email]").css('background-color', 'red');
+		back = false;
+	}
 
-    return text;
+	addUser(account, password, email);
+
+	if(back)
+	{
+		window.location = 'interface.html';
+	}
+
+	return back;
 }
 
