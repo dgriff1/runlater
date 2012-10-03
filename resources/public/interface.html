@@ -28,13 +28,15 @@
 
 		<script language="javascript">
 			$(document).ready(function() {
-				getKeys();
-				renderJobs();
+				showLoginDialog();
+
+				//getKeys();
+				//#renderJobs();
 			});
 		</script>
 
 
-		<div class="content">
+		<div name="content" class="content" style="display: none;">
 
 		<div style="clear: both;float: left;">
 			<button onclick="javascript:showJobDialog();">Add Job</button>
@@ -70,6 +72,21 @@
 				<div align="center" style="clear: both;">
 					<button onclick="javascript:addJob();">Save</button>
 					<button onclick="javascript:closeJob();">Cancel</button>
+				</div>
+
+		</div>
+
+				<div name="addJobDialog" class="loginDialog">
+				<div style="padding: 5px;float: left;">
+					Account: <br/>
+					Password:
+				</div>
+				<div style="padding: 5px;float: left;">
+					<input name="account" type="text"/><br/>
+					<input name="password" type="text"/>
+				</div>
+				<div align="center" style="clear: both;">
+					<button onclick="javascript:Login();">Login</button>
 				</div>
 
 		</div>
