@@ -137,6 +137,12 @@ function closeJob()
 	$(".addJobDialog").dialog('close');
 }
 
+function closeKey()
+{
+	$(".addKeyDialog").find("[name=keyname]").val("");
+	$(".addKeyDialog").dialog('close');
+}
+
 function updateStatus(str)
 {
 	$("#status").html(str);
@@ -193,6 +199,14 @@ function showJobDialog()
 	$(".addJobDialog").dialog({"width" : "400px", "title" : "Add Job"});
 }
 
+function showKeysDialog()
+{
+	$(".addKeyDialog").hide();
+	$(".addKeyDialog").css('display', 'inline');
+	$(".addKeyDialog").show();
+	$(".addKeyDialog").dialog({"width" : "400px", "title" : "Add Job"});
+}
+
 function showLoginDialog()
 {
 	$(".loginDialog").dialog({"width" : "400px", "title" : "Login"});
@@ -207,16 +221,11 @@ function Login()
 	getKeys();
 }
 
-function getUser(username, password)
-{
-
-}
-
 function addUser(username, password, email)
 {
 			$.ajax({
 					headers: {
-						"Content-Type"       : "application/json",
+						"Content-Type" : "application/json",
 						"Accept"       : "application/json"
 					},
 					beforeSend: function(xhr) {
