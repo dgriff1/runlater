@@ -200,8 +200,8 @@ function showLoginDialog()
 
 function Login()
 {
-	account  = $(".loginDialog").find("[name=account]").val("");
-	password = $(".loginDialog").find("[name=password]").val("");
+	account  = $(".loginDialog").find("[name=account]").val();
+	password = $(".loginDialog").find("[name=password]").val();
 	$(".loginDialog").dialog('close');
 	$(".content").show();
 	getKeys();
