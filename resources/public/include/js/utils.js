@@ -1,12 +1,8 @@
 
-var account   = "runlater_test";
-var password  = "pass";
-var publicKey = "new";
-var privateKey = "[LkeuKysMk[r";
 
 var lookup = {};
 
-function addKey(key)
+function addKey()
 {
 			var hash = CryptoJS.HmacSHA1(account, "");
 			hash = hash.toString(CryptoJS.enc.Base64);	
@@ -20,13 +16,15 @@ function addKey(key)
 						xhr.setRequestHeader("Accept", "application/json");
 						xhr.setRequestHeader("runlater_password", password);
 					     },
-					url: "users/" + account + "/apikeys/" + key,
+					url: "users/" + account + "/apikeys/" + $("div[name*=addKeyDialog]").find("[name=keyname]").val(""),
 					type: "PUT",
 					contentType: 'application/json',
 					error: function(XMLHttpRequest, textStatus, errorThrown){
 					    console.log(errorThrown);
 					}, success: function(data, textStatus, XMLHttpRequest){
-						console.log(XMLHttpRequest.responseText);
+						updateStatus("Key " + name + " added.");
+						closeKey();
+						renderJobs();
 					},
 				    });
 }
@@ -49,6 +47,7 @@ function getKeys()
 					type: "GET",
 					contentType: 'application/json',
 					error: function(XMLHttpRequest, textStatus, errorThrown){
+					    showLoginDialog();
 					    console.log(errorThrown);
 					}, success: function(data, textStatus, XMLHttpRequest){
 						response = XMLHttpRequest.responseText;
@@ -132,15 +131,15 @@ function buildTable(objResults)
 
 function closeJob()
 {
-	$(".addJobDialog").find("[name=name]").val("");
-	$(".addJobDialog").find("[name=url]").val("");
-	$(".addJobDialog").dialog('close');
+	$("div[name*=addJobDialog]").find("[name=name]").val("");
+	$("div[name*=addJobDialog]").find("[name=url]").val("");
+	$("div[name*=addJobDialog]").dialog('close');
 }
 
 function closeKey()
 {
-	$(".addKeyDialog").find("[name=keyname]").val("");
-	$(".addKeyDialog").dialog('close');
+	$("div[name*=addKeyDialog]").find("[name=keyname]").val("");
+	$("div[name*=addKeyDialog]").dialog('close');
 }
 
 function updateStatus(str)
@@ -196,27 +195,31 @@ function addJob()
 
 function showJobDialog()
 {
-	$(".addJobDialog").dialog({"width" : "400px", "title" : "Add Job"});
+	$("div[name*=addJobDialog]").dialog({"width" : "400px", "title" : "Add Job", "modal" : true, "resizable" : false});
 }
 
 function showKeysDialog()
 {
-	$(".addKeyDialog").hide();
-	$(".addKeyDialog").css('display', 'inline');
-	$(".addKeyDialog").show();
-	$(".addKeyDialog").dialog({"width" : "400px", "title" : "Add Job"});
+	$("div[name*=addKeyDialog]").css('display', 'inline');
+	$("div[name*=addKeyDialog]").dialog({
+					"width"     : "420px",
+				       	"title"     : "Add Keys", 
+					"modal"     : true, 
+					"resizable" : false,
+				  });
 }
 
 function showLoginDialog()
 {
-	$(".loginDialog").dialog({"width" : "400px", "title" : "Login"});
+	$(".content").hide();
+	$("div[name*=loginDialog]").dialog({"width" : "400px", "title" : "Login", "modal" : true, "resizable" : false});
 }
 
 function Login()
 {
-	account  = $(".loginDialog").find("[name=account]").val();
-	password = $(".loginDialog").find("[name=password]").val();
-	$(".loginDialog").dialog('close');
+	account  = $("div[name*=loginDialog]").find("[name=account]").val();
+	password = $("div[name*=loginDialog]").find("[name=password]").val();
+	$("div[name*=loginDialog]").dialog('close');
 	$(".content").show();
 	getKeys();
 }
@@ -277,4 +280,5 @@ function signUp(ele)
 
 	return back;
 }
+
 
