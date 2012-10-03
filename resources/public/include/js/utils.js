@@ -9,14 +9,15 @@ function addKey()
 
 			$.ajax({
 					headers: {
-						"Content-Type"  : "application/json"
+						"Content-Type"  : "application/json",
+						"Accept-Type"  : "application/json"
 					},
 					beforeSend: function(xhr) {
 						xhr.setRequestHeader("Content-Type", "application/json");
 						xhr.setRequestHeader("Accept", "application/json");
 						xhr.setRequestHeader("runlater_password", password);
 					     },
-					url: "users/" + account + "/apikeys/" + $("div[name*=addKeyDialog]").find("[name=keyname]").val(""),
+					url: "users/" + account + "/apikeys/" + $("div[name*=addKeyDialog]").find("[name=keyname]").val(),
 					type: "PUT",
 					contentType: 'application/json',
 					error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -31,12 +32,11 @@ function addKey()
 
 function getKeys()
 {
-			var hash = CryptoJS.HmacSHA1(account, "");
-			hash = hash.toString(CryptoJS.enc.Base64);	
 
 			$.ajax({
 					headers: {
-						"Content-Type"  : "application/json"
+						"Content-Type"  : "application/json",
+						"Accept-Type"  : "application/json"
 					},
 					beforeSend: function(xhr) {
 						xhr.setRequestHeader("Content-Type", "application/json");
@@ -52,11 +52,12 @@ function getKeys()
 					}, success: function(data, textStatus, XMLHttpRequest){
 						response = XMLHttpRequest.responseText;
 						console.log(response);
+						console.log(data);
 						lookup = {};
 						for (var k in JSON.parse(response))
 						{
 							lookup[k] = JSON.parse(response)[k];
-							$('#keys').append(new Option(k, k, true, true));
+							$('select[name*=keys]').append(new Option(k, k, true, true));
 						}
 						renderJobs();
 					},
