@@ -58,6 +58,7 @@ function getKeys()
 							lookup[k] = JSON.parse(response)[k];
 							$('#keys').append(new Option(k, k, true, true));
 						}
+						renderJobs();
 					},
 				    });
 }
@@ -71,6 +72,9 @@ function keySwitch(ele)
 
 function renderJobs()
 {
+	publicKey = $("select[name*=keys]").val();
+	privateKey = lookup[privateKey = $("select[name*=keys]").val()];
+	
 	URL = "/users/" + account + "/apikey/" + publicKey + "/jobs/";
 
 	var hash = CryptoJS.HmacSHA1(URL, privateKey);
@@ -159,6 +163,9 @@ function addJob()
 	data += '"method" : "PUT" , ';
 	data += '"headers" : {}'; 
 	data += ' } ';
+
+	publicKey = $("select[name*=keys]").val();
+	privateKey = lookup[privateKey = $("select[name*=keys]").val()];
 
 	var hash = CryptoJS.HmacSHA1(data, privateKey);
 	hash = hash.toString(CryptoJS.enc.Base64);	
