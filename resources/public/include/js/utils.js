@@ -30,7 +30,7 @@ function addKey()
 					}, success: function(data, textStatus, XMLHttpRequest){
 						updateStatus("Key " + name + " added.");
 						closeKey();
-						renderJobs();
+						getKeys();
 					},
 				    });
 }
@@ -57,8 +57,8 @@ function getKeys()
 					}, success: function(data, textStatus, XMLHttpRequest){
 						response = XMLHttpRequest.responseText;
 						console.log(response);
-						console.log(data);
 						lookup = {};
+						$('select[name*=]').html("");
 						for (var k in JSON.parse(response))
 						{
 							lookup[k] = JSON.parse(response)[k];
