@@ -120,8 +120,10 @@ function buildTable(objResults)
 	table+='<th>METHOD</th>';       
 	table+='<th>INTERVAL</th>';       
 	table+='<th>WHEN</th></tr></thead><tbody>';       
+	beenHere = false;
 	for(var i = 0; i < objResults.length; i++)
 	{
+		beenHere = True;
 		table+='<tr>';
 		table+='<td><input type="checkbox" id="'+objResults[i]._id+'"/></td>';       
 		table+='<td>'+objResults[i].name+'</td>';    
@@ -130,6 +132,10 @@ function buildTable(objResults)
 		table+='<td>'+objResults[i].internal+'</td>';    
 		table+='<td>'+objResults[i].when+'</td>';    
 		table+='</tr>';
+	}
+	if(!beenHere)
+	{
+		table+='<tr><td>No Jobs</td></tr>'
 	}
 	table+='</tbody></table>';
 
