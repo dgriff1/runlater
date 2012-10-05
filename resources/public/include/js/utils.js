@@ -102,8 +102,9 @@ function renderJobs()
 		error: function(XMLHttpRequest, textStatus, errorThrown){
 		    console.log(errorThrown);
 		}, success: function(data, textStatus, XMLHttpRequest){
-				console.log('Jobs', XMLHttpRequest.responseText);
-				buildTable(JSON.parse(XMLHttpRequest.responseText));
+				response = XMLHttpRequest.responseText;
+				console.log('Jobs', response);
+				buildTable(JSON.parse(response));
 		}
 	});
 }
@@ -165,8 +166,8 @@ function updateStatus(str)
 
 function addJob()
 {
-	var name = $(".addJobDialog").find("[name=name]").val();
-	var url = $(".addJobDialog").find("[name=url]").val();
+	var name = $("div[name*=addJobDialog]").find("[name=name]").val();
+	var url = $("div[name*=addJobDialog]").find("[name=url]").val();
 	data = ' { ';
 	data += '"name" : "' + name + '" , ';
 	data += '"when" : "2012-05-06T06:15:42.215Z", ';
