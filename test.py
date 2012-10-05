@@ -154,6 +154,7 @@ assert job.url == "http://www.facebook.com"
 
 # Test  that the job is listed
 jobs = SERVER.viewJobs()
+print "JOBS LIST ", jobs
 assert len(jobs) == 1, jobs
 j = jobs[0]
 assert j.name == job.name

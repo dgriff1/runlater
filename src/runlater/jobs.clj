@@ -34,7 +34,7 @@
         (fn [m] (assoc m :interval ( sched/split_into_hash (get m :interval "")))) 
         (fn [m] (assoc m :doctype "job" ) ) 
         (fn [m] (assoc m :status "waiting" ) ) 
-        (fn [m] (assoc m :userid userid ) ) 
+        (fn [m] (assoc m :userid (str userid) ) ) 
         (fn [m] (assoc m :runlater_key (:runlater_key headers) )) 
         (fn [m] (assoc m :method (convert_method m)  ) ) 
     ) doc))
