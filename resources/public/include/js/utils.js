@@ -123,7 +123,7 @@ function buildTable(objResults)
 	beenHere = false;
 	for(var i = 0; i < objResults.length; i++)
 	{
-		beenHere = True;
+		beenHere = true;
 		table+='<tr>';
 		table+='<td><input type="checkbox" id="'+objResults[i]._id+'"/></td>';       
 		table+='<td>'+objResults[i].name+'</td>';    
