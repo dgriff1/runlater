@@ -41,10 +41,12 @@
 		<div style="clear: both;float: left;">
 			<button onclick="javascript:showJobDialog();">Add Job</button>
 			Product Keys: <select id="keys" name="keys" onchange="keySwitch(this);">
-
+			
 			</select>
+			<button onclick="javascript:showKeysDialog();">New Key</button>
 			<a href="">View Jobs</a>
 			<a href="">View Logs</a>
+			<a href="javascript:renderJobs();">Refresh</a>
 		</div>	
 		<div class="welcome">
 			Welcome, <a href="javascript:window.location='settings.html';">User</a>!
@@ -58,10 +60,24 @@
 
 			</div>
 
+		</div> <!-- End content Div -->
+
+		<div name="addKeyDialog" style="display: none;">
+				<div style="text-align: left;padding: 5px;float: left;">
+					Key Name: 
+				</div>
+				<div style="padding: 5px;float: left;">
+					<input style="z-index: 1;" name="keyname" type="text"/>
+				</div>
+				<div align="center" style="clear: both;">
+					<button onclick="javascript:addKey();">Save</button>
+					<button onclick="javascript:closeKey();">Cancel</button>
+				</div>
+
 		</div>
 
-		<div name="addJobDialog" class="addJobDialog">
-				<div style="padding: 5px;float: left;">
+		<div name="addJobDialog" style="display: none;">
+				<div style="text-align: left;padding: 5px;float: left;">
 					Name: <br/>
 					URL:
 				</div>
@@ -76,8 +92,8 @@
 
 		</div>
 
-				<div name="addJobDialog" class="loginDialog">
-				<div style="padding: 5px;float: left;">
+		<div name="loginDialog">
+				<div style="text-align: left;padding: 5px;float: left;">
 					Account: <br/>
 					Password:
 				</div>
@@ -90,6 +106,8 @@
 				</div>
 
 		</div>
+
+
 
 	</body>
 

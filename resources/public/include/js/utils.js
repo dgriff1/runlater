@@ -1,44 +1,47 @@
 
-var account   = "runlater_test";
-var password  = "pass";
-var publicKey = "new";
-var privateKey = "[LkeuKysMk[r";
+$.ajaxSetup ({
+    // Disable caching of AJAX responses
+    cache: false
+});
+
 
 var lookup = {};
 
-function addKey(key)
+function addKey()
 {
 			var hash = CryptoJS.HmacSHA1(account, "");
 			hash = hash.toString(CryptoJS.enc.Base64);	
 
 			$.ajax({
 					headers: {
-						"Content-Type"  : "application/json"
+						"Content-Type"  : "application/json",
+						"Accept-Type"  : "application/json"
 					},
 					beforeSend: function(xhr) {
 						xhr.setRequestHeader("Content-Type", "application/json");
 						xhr.setRequestHeader("Accept", "application/json");
 						xhr.setRequestHeader("runlater_password", password);
 					     },
-					url: "users/" + account + "/apikeys/" + key,
+					url: "users/" + account + "/apikeys/" + $("div[name*=addKeyDialog]").find("[name=keyname]").val(),
 					type: "PUT",
 					contentType: 'application/json',
 					error: function(XMLHttpRequest, textStatus, errorThrown){
 					    console.log(errorThrown);
 					}, success: function(data, textStatus, XMLHttpRequest){
-						console.log(XMLHttpRequest.responseText);
+						updateStatus("Key " + name + " added.");
+						closeKey();
+						getKeys();
 					},
 				    });
 }
 
 function getKeys()
 {
-			var hash = CryptoJS.HmacSHA1(account, "");
-			hash = hash.toString(CryptoJS.enc.Base64);	
 
 			$.ajax({
 					headers: {
-						"Content-Type"  : "application/json"
+						"Content-Type"  : "application/json",
+						"Accept-Type"  : "application/json"
 					},
 					beforeSend: function(xhr) {
 						xhr.setRequestHeader("Content-Type", "application/json");
@@ -49,16 +52,19 @@ function getKeys()
 					type: "GET",
 					contentType: 'application/json',
 					error: function(XMLHttpRequest, textStatus, errorThrown){
+					    showLoginDialog();
 					    console.log(errorThrown);
 					}, success: function(data, textStatus, XMLHttpRequest){
 						response = XMLHttpRequest.responseText;
 						console.log(response);
 						lookup = {};
+						$('select[name*=]').html("");
 						for (var k in JSON.parse(response))
 						{
 							lookup[k] = JSON.parse(response)[k];
-							$('#keys').append(new Option(k, k, true, true));
+							$('select[name*=keys]').append(new Option(k, k, true, true));
 						}
+						renderJobs();
 					},
 				    });
 }
@@ -72,6 +78,9 @@ function keySwitch(ele)
 
 function renderJobs()
 {
+	publicKey = $("select[name*=keys]").val();
+	privateKey = lookup[privateKey = $("select[name*=keys]").val()];
+	
 	URL = "/users/" + account + "/apikey/" + publicKey + "/jobs/";
 
 	var hash = CryptoJS.HmacSHA1(URL, privateKey);
@@ -111,8 +120,10 @@ function buildTable(objResults)
 	table+='<th>METHOD</th>';       
 	table+='<th>INTERVAL</th>';       
 	table+='<th>WHEN</th></tr></thead><tbody>';       
+	beenHere = false;
 	for(var i = 0; i < objResults.length; i++)
 	{
+		beenHere = True;
 		table+='<tr>';
 		table+='<td><input type="checkbox" id="'+objResults[i]._id+'"/></td>';       
 		table+='<td>'+objResults[i].name+'</td>';    
@@ -121,6 +132,10 @@ function buildTable(objResults)
 		table+='<td>'+objResults[i].internal+'</td>';    
 		table+='<td>'+objResults[i].when+'</td>';    
 		table+='</tr>';
+	}
+	if(!beenHere)
+	{
+		table+='<tr><td>No Jobs</td></tr>'
 	}
 	table+='</tbody></table>';
 
@@ -132,9 +147,15 @@ function buildTable(objResults)
 
 function closeJob()
 {
-	$(".addJobDialog").find("[name=name]").val("");
-	$(".addJobDialog").find("[name=url]").val("");
-	$(".addJobDialog").dialog('close');
+	$("div[name*=addJobDialog]").find("[name=name]").val("");
+	$("div[name*=addJobDialog]").find("[name=url]").val("");
+	$("div[name*=addJobDialog]").dialog('close');
+}
+
+function closeKey()
+{
+	$("div[name*=addKeyDialog]").find("[name=keyname]").val("");
+	$("div[name*=addKeyDialog]").dialog('close');
 }
 
 function updateStatus(str)
@@ -154,6 +175,9 @@ function addJob()
 	data += '"method" : "PUT" , ';
 	data += '"headers" : {}'; 
 	data += ' } ';
+
+	publicKey = $("select[name*=keys]").val();
+	privateKey = lookup[privateKey = $("select[name*=keys]").val()];
 
 	var hash = CryptoJS.HmacSHA1(data, privateKey);
 	hash = hash.toString(CryptoJS.enc.Base64);	
@@ -190,33 +214,40 @@ function addJob()
 
 function showJobDialog()
 {
-	$(".addJobDialog").dialog({"width" : "400px", "title" : "Add Job"});
+	$("div[name*=addJobDialog]").dialog({"width" : "400px", "title" : "Add Job", "modal" : true, "resizable" : false});
+}
+
+function showKeysDialog()
+{
+	$("div[name*=addKeyDialog]").css('display', 'inline');
+	$("div[name*=addKeyDialog]").dialog({
+					"width"     : "420px",
+				       	"title"     : "Add Keys", 
+					"modal"     : true, 
+					"resizable" : false,
+				  });
 }
 
 function showLoginDialog()
 {
-	$(".loginDialog").dialog({"width" : "400px", "title" : "Login"});
+	$(".content").hide();
+	$("div[name*=loginDialog]").dialog({"width" : "400px", "title" : "Login", "modal" : true, "resizable" : false});
 }
 
 function Login()
 {
-	account  = $(".loginDialog").find("[name=account]").val("");
-	password = $(".loginDialog").find("[name=password]").val("");
-	$(".loginDialog").dialog('close');
+	account  = $("div[name*=loginDialog]").find("[name=account]").val();
+	password = $("div[name*=loginDialog]").find("[name=password]").val();
+	$("div[name*=loginDialog]").dialog('close');
 	$(".content").show();
 	getKeys();
-}
-
-function getUser(username, password)
-{
-
 }
 
 function addUser(username, password, email)
 {
 			$.ajax({
 					headers: {
-						"Content-Type"       : "application/json",
+						"Content-Type" : "application/json",
 						"Accept"       : "application/json"
 					},
 					beforeSend: function(xhr) {
@@ -268,4 +299,5 @@ function signUp(ele)
 
 	return back;
 }
+
 
