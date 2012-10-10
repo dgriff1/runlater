@@ -19,7 +19,7 @@
 		<script type="text/javascript" src="include/js/jquery.tablesorter.pager.js"></script>
 		<script type="text/javascript" src="include/js/utils.js"></script>
 
-		<link href="include/style.css" rel="stylesheet" type="text/css" />   
+		<link href="include/css/interface-style.css" rel="stylesheet" type="text/css" />   
 		<link href="include/css/custom-theme/jquery-ui-1.8.20.custom.css" rel="stylesheet" type="text/css" />   
 	</head>
 
@@ -33,6 +33,15 @@
 				//getKeys();
 				//#renderJobs();
 			});
+
+			function checkSubmit(e, func)
+			{
+			   if(e && e.keyCode == 13)
+			   {
+				   func()
+			   }
+			}
+			
 		</script>
 
 
@@ -62,7 +71,7 @@
 
 		</div> <!-- End content Div -->
 
-		<div name="addKeyDialog" style="display: none;">
+		<div name="addKeyDialog" onKeyPress="checkSubmit(event, addKey)" style="display: none;">
 				<div style="text-align: left;padding: 5px;float: left;">
 					Key Name: 
 				</div>
@@ -73,10 +82,9 @@
 					<button onclick="javascript:addKey();">Save</button>
 					<button onclick="javascript:closeKey();">Cancel</button>
 				</div>
-
 		</div>
 
-		<div name="addJobDialog" style="display: none;">
+		<div name="addJobDialog" onKeyPress="checkSubmit(event, addJob)" style="display: none;">
 				<div style="text-align: left;padding: 5px;float: left;">
 					Name: <br/>
 					URL:
@@ -92,7 +100,7 @@
 
 		</div>
 
-		<div name="loginDialog">
+		<div name="loginDialog" onKeyPress="checkSubmit(event, Login)">
 				<div style="text-align: left;padding: 5px;float: left;">
 					Account: <br/>
 					Password:
