@@ -220,7 +220,7 @@ function showJobDialog()
 
 function showKeysDialog()
 {
-	$("div[name*=addKeyDialog]").css('display', 'inline');
+	$("div[name*=addKeyDialog]").css('display', 'block');
 	$("div[name*=addKeyDialog]").dialog({
 					"width"     : "420px",
 				       	"title"     : "Add Keys", 
