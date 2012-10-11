@@ -18,7 +18,11 @@
 		<script type="text/javascript" src="include/js/jquery.tablesorter.min.js"></script>
 		<script type="text/javascript" src="include/js/jquery.tablesorter.pager.js"></script>
 		<script type="text/javascript" src="include/js/utils.js"></script>
+		<script type="text/javascript" src="include/js/jquery.timepicker.js"></script>
+		<script type="text/javascript" src="include/lib/base.js"></script>
 
+		<link rel="stylesheet" type="text/css" href="include/lib/base.css" />
+		<link rel="stylesheet" type="text/css" href="include/css/jquery.timepicker.css" />
 		<link href="include/css/interface-style.css" rel="stylesheet" type="text/css" />   
 		<link href="include/css/custom-theme/jquery-ui-1.8.20.custom.css" rel="stylesheet" type="text/css" />   
 	</head>
@@ -41,7 +45,7 @@
 				   func()
 			   }
 			}
-			
+
 		</script>
 
 
@@ -87,11 +91,14 @@
 		<div name="addJobDialog" onKeyPress="checkSubmit(event, addJob)" style="display: none;">
 				<div style="text-align: left;padding: 5px;float: left;">
 					Name: <br/>
-					URL:
+					URL:<br/>
+					When:
 				</div>
-				<div style="padding: 5px;float: left;">
-					<input name="name" type="text"/><br/>
-					<input name="url" type="text"/>
+				<div style="padding: 5px;float: left;text-align: left;">
+					<input size='22' name="name" type="text"/><br/>
+					<input size='22' name="url" type="text"/><br/>
+					<input size='10' name="date" type="text"/>
+					<input size='8' name="time" type="text"/>
 				</div>
 				<div align="center" style="clear: both;">
 					<button onclick="javascript:addJob();">Save</button>
@@ -110,7 +117,7 @@
 					<input name="password" type="text"/>
 				</div>
 				<div align="center" style="clear: both;">
-					<button onclick="javascript:Login();">Login</button>
+					<input type="button" onclick="javascript:Login();" value="Login"/>
 				</div>
 
 		</div>

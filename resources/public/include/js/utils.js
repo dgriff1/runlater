@@ -215,7 +215,9 @@ function addJob()
 
 function showJobDialog()
 {
+	$("div[name*=addKeyDialog]").css('display', 'block');
 	$("div[name*=addJobDialog]").dialog({"width" : "400px", "title" : "Add Job", "modal" : true, "resizable" : false});
+	$('div[name*=addJobDialog]').find('input[name*=time]').timepicker({ 'scrollDefaultNow': true });
 }
 
 function showKeysDialog()
