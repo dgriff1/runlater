@@ -92,13 +92,22 @@
 				<div style="text-align: left;padding: 5px;float: left;">
 					Name: <br/>
 					URL:<br/>
+					Method:<br/>
 					When:
 				</div>
 				<div style="padding: 5px;float: left;text-align: left;">
-					<input size='22' name="name" type="text"/><br/>
-					<input size='22' name="url" type="text"/><br/>
-					<input size='10' name="date" type="text"/>
-					<input size='8' name="time" type="text"/>
+					 <input size='24' name="name" type="text"/><br/>
+					 <input size='24' name="url" type="text"/><br/>
+					 <select name="methodtype">
+						<option value=""></option>
+						<option value="POST">POST</option>
+						<option value="GET">GET</option>
+						<option value="PUT">PUT</option>
+						<option value="DELETE">DELETE</option>
+				         </select></br>
+					 <input size='8' name="date" type="text"/>
+					 <input size='6' name="time" type="text"/>
+					+<input value="0" size='1' name="tzd" type="text"/>
 				</div>
 				<div align="center" style="clear: both;">
 					<button onclick="javascript:addJob();">Save</button>
