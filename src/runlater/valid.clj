@@ -1,6 +1,6 @@
 (ns runlater.valid
 (:use [clojure.data.json] [runlater.client] [runlater.utils] [runlater.client :as rclient ] [validateur.validation ]) 
-(:require [monger.collection :as mc] )
+(:require [monger.collection :as mc] [clojure.data :as cljdata]  )
 (:import [org.bson.types ObjectId]) )
 
 (defn lookup_key [ userid headers ]
@@ -65,3 +65,10 @@
 	(if (valid? jobs_validator job )
 		job
 		(throw (Exception. "Missing required fields"))))
+
+
+(defn check_map [ sched_map ]
+	(let [ [ difference inb inboth]   (cljdata/diff (set (keys sched_map))  #{ :seconds, :minutes, :hours, :days, :weeks, :months, :years } )]
+		(if  (empty? difference) 
+			sched_map
+			(throw (Exception. (str "Invalid interval map " sched_map " - " difference))))))

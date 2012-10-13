@@ -31,7 +31,9 @@
     ((comp 
         (fn [m] (safe_assoc m :_id (ObjectId.)) )
         (fn [m] (assoc m :when (parse (formatters :date-time) (get m :when))))
-        (fn [m] (assoc m :interval ( sched/split_into_hash (get m :interval "")))) 
+        (fn [m] (assoc m :interval (if (map? (get m :interval "") ) 
+							( rvalid/check_map (get m :interval ""))
+							( sched/split_into_hash (get m :interval ""))  ))) 
         (fn [m] (assoc m :doctype "job" ) ) 
         (fn [m] (assoc m :status "waiting" ) ) 
         (fn [m] (assoc m :userid (str userid) ) ) 

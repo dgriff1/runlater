@@ -136,6 +136,20 @@ assert "_id" in api_resp
 SERVER = pyrunlater.ServerConnection( USER_ACCT, api_public_key, api_private_key)
 
 # test_create_job
+try:
+	job = SERVER.createJob("Daily Backup", "2012-09-08T06:15:42.215Z", { "bullshithours" : 2 }, "http://google.com", "POST", {})
+except Exception, e:
+	assert "Invalid interval" in str(e), e
+
+job = SERVER.createJob("Daily Backup", "2012-09-08T06:15:42.215Z", { "hours" : 2 }, "http://google.com", "POST", {})
+assert job.name == "Daily Backup"
+assert job.when == "2012-09-08T06:15:42.215Z"
+assert job.interval == {"hours" : 2}
+assert job.url == "http://google.com"
+assert job.method == "post"
+assert job.headers == {}
+
+# test_create_job
 job = SERVER.createJob("Daily Backup", "2012-09-08T06:15:42.215Z", "2 hours", "http://google.com", "POST", {})
 
 assert job.name == "Daily Backup"
@@ -154,9 +168,8 @@ assert job.url == "http://www.facebook.com"
 
 # Test  that the job is listed
 jobs = SERVER.viewJobs()
-print "JOBS LIST ", jobs
-assert len(jobs) == 1, jobs
-j = jobs[0]
+assert len(jobs) == 2, jobs
+j = jobs[1]
 assert j.name == job.name
 
 # test viewing an individual job
@@ -178,8 +191,8 @@ for i in range(5):
 		break
 	time.sleep(1)
 	
-assert len(logs) == 1, len(logs)
-log = logs[0]
+assert len(logs) == 2, len(logs)
+log = logs[1]
 assert log.jobid == j._id
 assert log.userid == USER_ID
 assert log.runlater_key == api_public_key
@@ -191,7 +204,7 @@ assert log.scheduled == j.when
 # test deleting a job
 SERVER.deleteJob(job)
 jobs = SERVER.viewJobs()
-assert len(jobs) == 0
+assert len(jobs) == 1
 
 # test_delete_api_key_bad_key
 conn.request("DELETE", "/users/" + USER_ACCT + "/apikeys/"+"fake_api_key", "", headers)
