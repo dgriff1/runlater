@@ -221,6 +221,12 @@ function showJobDialog()
 	$("div[name*=addJobDialog]").dialog({"width" : "400px", "title" : "Add Job", "modal" : false, "resizable" : false});
 	$('div[name*=addJobDialog]').find('input[name*=time]').timepicker({ 'timeFormat': 'H:i:s', 'scrollDefaultNow': true });
 	$('div[name*=addJobDialog]').find('input[name*=date]').datepicker({dateFormat: 'yy-mm-dd'});
+
+	$('div[name*=addJobDialog]').find('select[name*=method]').html();
+	$('div[name*=addJobDialog]').find('select[name*=method]').append(new Option("POST", "POST", true, true));
+	$('div[name*=addJobDialog]').find('select[name*=method]').append(new Option("GET", "GET", true, true));
+	$('div[name*=addJobDialog]').find('select[name*=method]').append(new Option("PUT", "PUT", true, true));
+	$('div[name*=addJobDialog]').find('select[name*=method]').append(new Option("DELETE", "DELETE", true, true));
 }
 
 function showKeysDialog()
