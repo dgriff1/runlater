@@ -40,12 +40,9 @@
 
                           
 ; (prn (monger.core/connect! { :host "ds033067.mongolab.com" :port 33067 } ) )
-(prn (monger.core/connect! { :host "127.0.0.1" :port 27017} ) )
+(prn "Connecting to " (System/getenv "MONGOLAB_URI"))
+(prn (monger.core/connect-via-uri! (System/getenv "MONGOLAB_URI" ) ))
 
-; (prn (monger.core/authenticate "heroku_app4267510" "heroku_app4267510" (.toCharArray "pesafn60hcjm4sms7c7mt6frr9")))
-
-; (prn (monger.core/set-db! (monger.core/get-db "heroku_app4267510")))
-(prn (monger.core/set-db! (monger.core/get-db "runlater")))
 
 
 (def app
