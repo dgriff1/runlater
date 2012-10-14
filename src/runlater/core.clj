@@ -2,6 +2,7 @@
  (:use compojure.core [ring.adapter.jetty :only [run-jetty]] [clojure.walk :only [keywordize-keys]] )
     (:require [compojure.route :as route]
               [monger core util]
+			  [ring.util.response :as resp]
               [compojure.handler :as handler]
               [runlater.jobs :as jobs ]
               [runlater.runner :as runner]
@@ -32,8 +33,8 @@
   (PUT "/users/:id/apikeys/:apikeyname" { {id :id} :params {apikeyname :apikeyname } :params body :body :as req}  (users/create_apikey id apikeyname body (keywordize-keys req) ) )
   (DELETE "/users/:id/apikeys/:otherid" { {id :id} :params {keyname :otherid} :params body :body :as req}  (users/delete_apikey id keyname body (keywordize-keys req)) )
 
-  
   ; fall backs 
+  (GET "/" [] (resp/redirect "/index.html"))
   (route/resources "/")
   (route/not-found "Page not found")   )
              
