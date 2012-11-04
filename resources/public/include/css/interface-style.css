@@ -138,4 +138,6 @@ th.headerSortUp {
     background-color: #3399FF; 
 } 
 
-
+.ui-dialog-titlebar-close{
+    display: none;
+}

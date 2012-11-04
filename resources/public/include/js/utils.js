@@ -245,6 +245,7 @@ function showLoginDialog()
 {
 	$(".content").hide();
 	$("div[name*=loginDialog]").dialog({"width" : "400px", "title" : "Login", "modal" : true, "resizable" : false});
+	$("div[name*=loginDialog]").dialog("widget").find(".ui-dialog-titlebar-close").hide();   
 }
 
 function Login()

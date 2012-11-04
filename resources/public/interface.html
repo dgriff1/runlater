@@ -36,6 +36,13 @@
 
 		<script language="javascript">
 			$(document).ready(function() {
+			    $(function() {
+				$( "input[type=submit], a, button" )
+				    .button()
+				    .click(function( event ) {
+					event.preventDefault();
+				    });
+			    });
 				showLoginDialog();
 
 				//getKeys();
@@ -120,7 +127,7 @@
 
 		</div>
 
-		<div name="loginDialog" onKeyPress="checkSubmit(event, Login)">
+		<div name="loginDialog" onKeyPress="checkSubmit(event, Login)" style="display:none;">
 				<div style="text-align: left;padding: 5px;float: left;">
 					Account: <br/>
 					Password:
@@ -130,7 +137,7 @@
 					<input name="password" type="text"/>
 				</div>
 				<div align="center" style="clear: both;">
-					<input type="button" onclick="javascript:Login();" value="Login"/>
+					<button onclick="javascript:Login();">Login</button>
 				</div>
 
 		</div>
