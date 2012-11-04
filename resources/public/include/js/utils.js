@@ -114,7 +114,7 @@ function buildTable(objResults)
 
 	var table='<table class="tablesorter" id="jobsTable" name="jobsTable" width="100%" border="0">';
 
-	table+='<thead><tr style="height: 20px;">';
+	table+='<thead><tr>';
 	table+='<th><input type="checkbox" id="checkboxMain"/></th>';
 	table+='<th>NAME</th>';       
 	table+='<th>URL</th>';       
@@ -222,7 +222,7 @@ function showJobDialog()
 	$('div[name*=addJobDialog]').find('input[name*=time]').timepicker({ 'timeFormat': 'H:i:s', 'scrollDefaultNow': true });
 	$('div[name*=addJobDialog]').find('input[name*=date]').datepicker({dateFormat: 'yy-mm-dd'});
 
-	$('div[name*=addJobDialog]').find('select[name*=method]').html();
+	$('div[name*=addJobDialog]').find('select[name*=method]').html("");
 	$('div[name*=addJobDialog]').find('select[name*=method]').append(new Option("POST", "POST", true, true));
 	$('div[name*=addJobDialog]').find('select[name*=method]').append(new Option("GET", "GET", true, true));
 	$('div[name*=addJobDialog]').find('select[name*=method]').append(new Option("PUT", "PUT", true, true));
