@@ -112,26 +112,27 @@ function renderJobs()
 function buildTable(objResults)
 {
 
-	var table='<table class="tablesorter" id="jobsTable" name="jobsTable" width="100%" border="0">';
+	var table='<table style="background-color: #FFFFFF;" class="tablesorter" id="jobsTable" name="jobsTable" border="0">';
 
 	table+='<thead><tr>';
-	table+='<th><input type="checkbox" id="checkboxMain"/></th>';
+	table+='<th style="width:10px;"><input type="checkbox" id="checkboxMain"/></th>';
 	table+='<th>NAME</th>';       
 	table+='<th>URL</th>';       
-	table+='<th>METHOD</th>';       
+	table+='<th style="width:160px;">METHOD</th>';       
 	table+='<th>INTERVAL</th>';       
 	table+='<th>WHEN</th></tr></thead><tbody>';       
 	beenHere = false;
 	for(var i = 0; i < objResults.length; i++)
 	{
+                console.log(objResults[i].interval);
 		beenHere = true;
 		table+='<tr>';
 		table+='<td><input type="checkbox" id="'+objResults[i]._id+'"/></td>';       
-		table+='<td>'+objResults[i].name+'</td>';    
-		table+='<td>'+objResults[i].url+'</td>';    
-		table+='<td>'+objResults[i].method+'</td>';    
-		table+='<td>'+objResults[i].internal+'</td>';    
-		table+='<td>'+objResults[i].when+'</td>';    
+		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].name+'</td>';    
+		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].url+'</td>';    
+		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].method+'</td>';    
+		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].interval+'</td>';    
+		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].when+'</td>';    
 		table+='</tr>';
 	}
 	if(!beenHere)

@@ -63,13 +63,9 @@ a.login {
 	color: #121212;
 	background-color: #FDFDFD;
 	padding-top: 0px;
-	padding-left: 5px;
-	padding-right: 5px;
-	min-width: 400px;
-	margin-left: 5%;
-	margin-right: 5%;
-	border-bottom: 2px solid black;
-	border-right: 2px solid black;
+	min-width: 460px;
+	margin-left: 2%;
+	margin-right: 2%;
 	vertical-align: top;
 	border-radius: 5px;
 }
@@ -123,28 +119,22 @@ form {
 	margin: 0;
 }
 
-th.header { 
-    font-size: 0.8em;
-    height: 28px;
-    background-image: url(/include/image/bg.png);     
+th.header {  
+    background-color: #f8f6e2; 
+    padding: 0;
+    height:4px;
     cursor: pointer; 
-    font-weight: bold; 
-    background-repeat: no-repeat; 
-    background-position: center left; 
-    padding-left: 26px; 
-    padding-bottom: 8px; 
-    border-right: 1px solid #dad9c7; 
-    margin-left: -1px; 
+    font-weight: bold;
+    border: 0;
+    margin: 0; 
 } 
 
 th.headerSortDown { 
-    background-image: url(/include/image/desc.png);     
     background-color: #3399FF; 
 }
 
 
 th.headerSortUp { 
-    background-image: url(/include/image/asc.png);     
     background-color: #3399FF; 
 } 
 
