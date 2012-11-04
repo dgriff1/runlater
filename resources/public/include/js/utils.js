@@ -64,6 +64,11 @@ function getKeys()
 							lookup[k] = JSON.parse(response)[k];
 							$('select[name*=keys]').append(new Option(k, k, true, true));
 						}
+						$("select[name*=keys]").html($("option", $("select[name*=keys]")).sort(function(a, b) { 
+						    var arel = $(a).attr('value');
+						    var brel = $(b).attr('value');
+						    return arel == brel ? 0 : arel < brel ? -1 : 1 
+						}));
 						renderJobs();
 					},
 				    });
