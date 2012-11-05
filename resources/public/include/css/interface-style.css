@@ -143,7 +143,7 @@ th.headerSortUp {
 }
 
 .ui-button-text {
-	font-size: 0.8em;
+	font-size: 0.9em;
 }
 
 .ui-dialog-titlebar {
@@ -160,8 +160,12 @@ div {
 	font-size: 0.9em;
 }
 
-input {
+input[type=text] {
 	border: 1px solid #9F9F9F;
 	font-size: 0.8em;
+}
+
+.datepicker {
+  z-index: 200000 !important;
 }
 
