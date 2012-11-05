@@ -7,6 +7,17 @@ $.ajaxSetup ({
 
 var lookup = {};
 
+function getAttributeByIndex(obj, index){
+  var i = 0;
+  for (var attr in obj){
+    if (index === i){
+      return obj[attr];
+    }
+    i++;
+  }
+  return null;
+}
+
 function addKey()
 {
 			var hash = CryptoJS.HmacSHA1(account, "");
@@ -129,14 +140,13 @@ function buildTable(objResults)
 	beenHere = false;
 	for(var i = 0; i < objResults.length; i++)
 	{
-                console.log(objResults[i].interval);
 		beenHere = true;
 		table+='<tr>';
 		table+='<td><input type="checkbox" id="'+objResults[i]._id+'"/></td>';       
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].name+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].url+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].method+'</td>';    
-		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].interval+'</td>';    
+		table+='<td style="text-align:left;" valign="LEFT">'+getAttributeByIndex(objResults[i].interval, 0)+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].when+'</td>';    
 		table+='</tr>';
 	}
