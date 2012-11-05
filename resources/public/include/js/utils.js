@@ -18,6 +18,18 @@ function getAttributeByIndex(obj, index){
   return null;
 }
 
+function getAttributeByName(obj, index){
+  var i = 0;
+  for (var attr in obj){
+    if (index === i){
+      return attr;
+    }
+    i++;
+  }
+  return null;
+}
+
+
 function addKey()
 {
 			var hash = CryptoJS.HmacSHA1(account, "");
@@ -146,7 +158,7 @@ function buildTable(objResults)
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].name+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].url+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].method+'</td>';    
-		table+='<td style="text-align:left;" valign="LEFT">'+getAttributeByIndex(objResults[i].interval, 0)+'</td>';    
+		table+='<td style="text-align:left;" valign="LEFT">Every '+getAttributeByIndex(objResults[i].interval, 0)+' '+getAttributeByName(objResults[i].interval, 0)+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].when+'</td>';    
 		table+='</tr>';
 	}

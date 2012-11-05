@@ -151,7 +151,17 @@ th.headerSortUp {
 	padding: 0px;
 }
 
+
+.ui-dialog {
+	font-size: 0.9em;
+}
+
+div {
+	font-size: 0.9em;
+}
+
 input {
 	border: 1px solid #9F9F9F;
+	font-size: 0.8em;
 }
 
