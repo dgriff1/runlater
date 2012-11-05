@@ -141,3 +141,13 @@ th.headerSortUp {
 .ui-dialog-titlebar-close{
     display: none;
 }
+
+.ui-button-text {
+	font-size: 0.8em;
+}
+
+.ui-dialog-titlebar {
+	font-size: 0.8em;
+	padding: 0px;
+}
+
