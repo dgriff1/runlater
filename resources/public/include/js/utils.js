@@ -101,6 +101,10 @@ function getKeys()
 
 function keySwitch(ele)
 {
+	var pass = CryptoJS.AES.encrypt(password, PASS_PHRASE);
+	setCookie('runlater_cred','{"account" : "'+account+'", "password" : "'+pass+'", "keyPos" : "'+$("select[name*=keys]").val()+'"}',1);
+	console.log(getCookie("runlater_cred"));
+
 	privateKey = lookup[ele.value];
 	publicKey = ele.value;
 	renderJobs();
