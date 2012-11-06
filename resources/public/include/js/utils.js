@@ -145,6 +145,7 @@ function renderJobs()
 
 function buildTable(objResults)
 {
+	$(".loading").show();
 
 	var table='<table style="background-color: #FFFFFF;" class="tablesorter" id="jobsTable" name="jobsTable" border="0">';
 
@@ -275,17 +276,18 @@ function showKeysDialog()
 				  });
 }
 
+cookiepass = 1;
 function showLoginDialog()
 {
-	if(getCookie("runlater_cred"))
+	if(getCookie("runlater_cred") && cookiepass)
 	{
+		cookiepass= 0;
 		creds     = getCookie("runlater_cred");
 		creds     = JSON.parse(creds);
 		pass      = creds["password"];
 	        password  = CryptoJS.AES.decrypt(pass, PASS_PHRASE).toString(CryptoJS.enc.Utf8);
 		account   = creds["account"];
 	        $(".content").show();
-		$(".loading").show();
                 getKeys();
 	        return;	
 	}
