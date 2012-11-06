@@ -147,9 +147,9 @@ function buildTable(objResults)
 {
 	$(".loading").show();
 
-	var table='<table style="background-color: #FFFFFF;" class="tablesorter" id="jobsTable" name="jobsTable" border="0">';
+	var table='<table CELLPADDING=0 CELLSPACING=0 BORDER=0 style="background-color: #FFFFFF;" class="tablesorter" id="jobsTable" name="jobsTable" border="0">';
 
-	table+='<thead><tr>';
+	table+='<thead style="padding:0;"><tr">';
 	table+='<th style="width:10px;"><input type="checkbox" id="checkboxMain"/></th>';
 	table+='<th>NAME</th>';       
 	table+='<th>URL</th>';       
@@ -160,7 +160,7 @@ function buildTable(objResults)
 	for(var i = 0; i < objResults.length; i++)
 	{
 		beenHere = true;
-		table+='<tr>';
+		table+='<tr">';
 		table+='<td><input type="checkbox" id="'+objResults[i]._id+'"/></td>';       
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].name+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].url+'</td>';    
