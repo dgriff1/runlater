@@ -94,6 +94,11 @@ function getKeys()
 						    var brel = $(b).attr('value');
 						    return arel == brel ? 0 : arel < brel ? -1 : 1 
 						}));
+						if(getCookie("runlater_cred"))
+						{
+							cred = JSON.parse(getCookie("runlater_cred"));
+							$("select[name*=keys]").val(cred["keyPos"]);
+						}
 						renderJobs();
 					},
 				    });
