@@ -148,6 +148,16 @@ function renderJobs()
 	});
 }
 
+function showToolbarbuttons()
+{
+	$('div[name*=toolbar]').find('button').removeAttr('disabled');
+}
+
+function hideToolbarbuttons()
+{
+	$('div[name*=toolbar]').find('button').attr('disabled', 'disabled');
+}
+
 function buildTable(objResults)
 {
 	$(".loading").show();
@@ -258,7 +268,6 @@ function addJob()
 
 function showJobDialog()
 {
-	$("div[name*=loginDialog").child("button").attr('selected', 'selected');
 
 	$("div[name*=addJobDialog]").css('display', 'block');
 	$("div[name*=addJobDialog]").dialog({"width" : "400px", "title" : "Add Job", "modal" : false, "resizable" : false});
