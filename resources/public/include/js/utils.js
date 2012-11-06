@@ -301,6 +301,12 @@ function Login()
 	setCookie('runlater_cred','{"account" : "'+account+'", "password" : "'+pass+'"}',1);
 }
 
+function Logout()
+{
+	del_cookie("runlater_cred");
+	window.location = "";
+}
+
 function addUser(username, password, email)
 {
 			$.ajax({
@@ -392,4 +398,8 @@ for (i=0;i<ARRcookies.length;i++)
   }
 }
 
+function del_cookie(name)
+{
+    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
 
