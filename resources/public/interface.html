@@ -42,14 +42,13 @@
 
 			});
 
-			function checkSubmit(e, func)
+			function checkSubmit(e, func, name)
 			{
-			   //console($(e).parent());
 			   if(e && e.keyCode == 13)
 			   {
 				   func()
 			   }
-			}
+		        }
 
 		</script>
 
@@ -80,7 +79,7 @@
 
 		</div> <!-- End content Div -->
 
-		<div name="addKeyDialog" onKeyPress="checkSubmit(event, addKey)" style="display: none;">
+		<div name="addKeyDialog" onKeyPress="checkSubmit(event, addKey, 'addKeyDialog')" style="display: none;">
 				<div style="text-align: left;padding: 5px;float: left;">
 					Key Name: 
 				</div>
@@ -93,7 +92,7 @@
 				</div>
 		</div>
 
-		<div name="addJobDialog" onKeyPress="checkSubmit(event, addJob)" style="display: none;">
+		<div name="addJobDialog" onKeyPress="checkSubmit(event, addJob, 'addJobDialog')" style="display: none;">
 				<div style="text-align: left;padding: 5px;float: left;">
 					Name: <br/>
 					URL:<br/>
@@ -121,7 +120,7 @@
 
 		</div>
 
-		<div name="loginDialog" onKeyPress="checkSubmit(event, Login)" style="display:none;">
+		<div name="loginDialog" onKeyPress="checkSubmit(event, Login, 'loginDialog')" style="display:none;">
 				<div style="text-align: left;padding: 5px;float: left;">
 					Account: <br/>
 					Password:

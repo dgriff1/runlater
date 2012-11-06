@@ -253,6 +253,8 @@ function addJob()
 
 function showJobDialog()
 {
+	$("div[name*=loginDialog").child("button").attr('selected', 'selected');
+
 	$("div[name*=addJobDialog]").css('display', 'block');
 	$("div[name*=addJobDialog]").dialog({"width" : "400px", "title" : "Add Job", "modal" : false, "resizable" : false});
 	$('div[name*=addJobDialog]').find('input[name*=time]').timepicker({ 'timeFormat': 'H:i:s', 'scrollDefaultNow': true });
@@ -267,6 +269,8 @@ function showJobDialog()
 
 function showKeysDialog()
 {
+	$("div[name*=addKeyDialog").child("button").attr('selected', 'selected');
+
 	$("div[name*=addKeyDialog]").css('display', 'block');
 	$("div[name*=addKeyDialog]").dialog({
 					"width"     : "420px",
@@ -310,7 +314,7 @@ function Login()
 function Logout()
 {
 	del_cookie("runlater_cred");
-	window.location = "";
+	window.location = "interface.html";
 }
 
 function addUser(username, password, email)
