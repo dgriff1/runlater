@@ -269,8 +269,6 @@ function showJobDialog()
 
 function showKeysDialog()
 {
-	$("div[name*=addKeyDialog]").child("button").attr('selected', 'selected');
-
 	$("div[name*=addKeyDialog]").css('display', 'block');
 	$("div[name*=addKeyDialog]").dialog({
 					"width"     : "420px",
