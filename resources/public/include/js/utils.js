@@ -32,6 +32,24 @@ function getAttributeByName(obj, index){
   return null;
 }
 
+selectedJobs = [];
+
+function checkSelect(val)
+{
+	$('button[id*=jobDeleteButton]').hide();
+	if($("input[id*="+val+"]").attr('checked') == 'checked')
+	{
+		selectedJobs.push(val);
+	}
+	else
+	{
+		selectedJobs.splice(selectedJobs.indexOf(val), 1);
+	}
+	if(selectedJobs.length)
+	{
+		$('button[id*=jobDeleteButton]').show();
+	}
+}
 
 function addKey()
 {
@@ -170,7 +188,7 @@ function buildTable(objResults)
 	$("div[name*=welcome]").show();
 	$(".loading").show();
 
-	var table='<table CELLPADDING=0 CELLSPACING=0 BORDER=0 style="background-color: #FFFFFF;" class="tablesorter" id="jobsTable" name="jobsTable" border="0">';
+	var table='<table CELLPADDING=0 CELLSPACING=0 BORDER=0 style="background-color: #FFFFFF;" class="tablesorter" id="jobsTable" name="jobsTable">';
 
 	table+='<thead style="padding:0;"><tr">';
 	table+='<th style="width:10px;"><input type="checkbox" id="checkboxMain"/></th>';
@@ -184,7 +202,7 @@ function buildTable(objResults)
 	{
 		beenHere = true;
 		table+='<tr">';
-		table+='<td><input type="checkbox" id="'+objResults[i]._id+'"/></td>';       
+		table+='<td><input onclick="checkSelect('+"'"+objResults[i]._id+"'"+');" type="checkbox" id="'+objResults[i]._id+'"/></td>';       
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].name+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].url+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].method+'</td>';    
