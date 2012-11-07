@@ -273,6 +273,10 @@ function showJobDialog()
 {
 	$("div[name*=addJobDialog]").css('display', 'block');
 	$("div[name*=addJobDialog]").dialog({"width" : "400px", "title" : "Add Job", "modal" : false, "resizable" : false});
+	$('div[name*=addJobDialog]').find('input[name*=time]').val('');
+	$('div[name*=addJobDialog]').find('input[name*=date]').val('');
+	$('div[name*=addJobDialog]').find('input[name*=interval]').val('');
+	$('div[name*=addJobDialog]').find('input[name*=when]').val('');
 	$('div[name*=addJobDialog]').find('input[name*=time]').timepicker({ 'timeFormat': 'H:i:s', 'scrollDefaultNow': true });
 	$('div[name*=addJobDialog]').find('input[name*=date]').datepicker({dateFormat : $.datepicker.ATOM});
 
