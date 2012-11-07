@@ -203,6 +203,7 @@ function SortByName(a, b){
 function buildTable(objResults)
 {
 	selectedJobs = [];
+	$('button[id*=jobDeleteButton]').hide();
 
         objResults.sort(SortByName);
 
