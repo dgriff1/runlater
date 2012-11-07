@@ -63,6 +63,12 @@ function checkall()
 		allchecked = false;
 	}
 	$('table[id*=jobsTable]').find('input:checkbox').attr('checked', allchecked);
+	$('table[id*=jobsTable]').find('input:checkbox').each(function (i) {
+	if(this.id != 'checkboxMain')
+	{
+		checkSelect('"'+this.id+'"');
+	}
+	});
 }
 
 function addKey()
