@@ -232,12 +232,13 @@ function addJob()
 	var url      = $("div[name*=addJobDialog]").find("[name=url]").val();
 	var interval = $("div[name*=addJobDialog]").find("[name=interval]").val();
 	var when     = $("div[name*=addJobDialog]").find("[name=when]").val();
+	var method   = $("div[name*=addJobDialog]").find("[name=method]").val();
 	data = ' { ';
 	data += '"name" : "' + name + '" , ';
 	data += '"when" : "' + $('div[name*=addJobDialog]').find('input[name*=date]').val() + 'T' + $('div[name*=addJobDialog]').find('input[name*=time]').val() + ".000" + TZD + 'Z", ';
 	data += '"interval" : "'+interval+' '+when+'",';
 	data += '"url" : "' + url + '" , ';
-	data += '"method" : "PUT" , ';
+	data += '"method" : "'+method+'" , ';
 	data += '"headers" : {}'; 
 	data += ' } ';
 
