@@ -53,7 +53,7 @@
 
 		<div name="content" class="content" style="display: none;">
 
-		<div name="toolbar" style="clear: both;float: left;">
+		<div name="toolbar" style="clear: both;float: left;display:none;">
 			<button onclick="javascript:showJobDialog();">Add Job</button>
 			Product Keys: <select id="keys" name="keys" onchange="keySwitch(this);">
 			
@@ -62,7 +62,7 @@
 			<button onclick="javascript:renderJobs();">View Jobs</button>
 			<button onclick="javascript:renderLogs();">View Logs</button>
 		</div>	
-		<div class="welcome">
+		<div name="welcome" class="welcome" style="display:none;">
 			Welcome, <a href="javascript:window.location='settings.html';">User</a>!
 			<button onclick="javascript:Logout();">Logout</button>
 		</div>		

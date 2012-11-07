@@ -169,6 +169,8 @@ function buildTable(objResults)
 {
         objResults.sort(SortByName);
 
+	$("div[name*=toolbar]").show();
+	$("div[name*=welcome]").show();
 	$(".loading").show();
 
 	var table='<table CELLPADDING=0 CELLSPACING=0 BORDER=0 style="background-color: #FFFFFF;" class="tablesorter" id="jobsTable" name="jobsTable" border="0">';
