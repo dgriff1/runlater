@@ -159,8 +159,16 @@ function hideToolbarbuttons()
 	$('div[name*=toolbar]').find('button').attr('disabled', 'disabled');
 }
 
+function SortByName(a, b){
+  var aName = a.name.toLowerCase();
+  var bName = b.name.toLowerCase(); 
+  return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+}
+
 function buildTable(objResults)
 {
+        objResults.sort(SortByName);
+
 	$(".loading").show();
 
 	var table='<table CELLPADDING=0 CELLSPACING=0 BORDER=0 style="background-color: #FFFFFF;" class="tablesorter" id="jobsTable" name="jobsTable" border="0">';
