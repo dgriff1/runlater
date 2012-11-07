@@ -202,6 +202,8 @@ function SortByName(a, b){
 
 function buildTable(objResults)
 {
+	selectedJobs = [];
+
         objResults.sort(SortByName);
 
 	$("div[name*=toolbar]").show();
