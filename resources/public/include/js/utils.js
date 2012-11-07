@@ -220,12 +220,14 @@ function addJob()
 {
 	var TZD = "0";
 
-	var name = $("div[name*=addJobDialog]").find("[name=name]").val();
-	var url = $("div[name*=addJobDialog]").find("[name=url]").val();
+	var name     = $("div[name*=addJobDialog]").find("[name=name]").val();
+	var url      = $("div[name*=addJobDialog]").find("[name=url]").val();
+	var interval = $("div[name*=addJobDialog]").find("[name=interval]").val();
+	var when     = $("div[name*=addJobDialog]").find("[name=when]").val();
 	data = ' { ';
 	data += '"name" : "' + name + '" , ';
 	data += '"when" : "' + $('div[name*=addJobDialog]').find('input[name*=date]').val() + 'T' + $('div[name*=addJobDialog]').find('input[name*=time]').val() + ".000" + TZD + 'Z", ';
-	data += '"interval" : "2 hours",';
+	data += '"interval" : "'+interval+' '+when+'",';
 	data += '"url" : "' + url + '" , ';
 	data += '"method" : "PUT" , ';
 	data += '"headers" : {}'; 

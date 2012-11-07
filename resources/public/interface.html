@@ -95,6 +95,7 @@
 					Name: <br/>
 					URL:<br/>
 					Method:<br/>
+					Every:<br/>
 					When:
 				</div>
 				<div style="padding: 5px;float: left;text-align: left;">
@@ -107,9 +108,17 @@
 						<option value="PUT">PUT</option>
 						<option value="DELETE">DELETE</option>
 				         </select></br>
-					 <input size='12' name="date" type="text"/>
-					 <input size='10' name="time" type="text"/>
+					 <input size='6' name="interval" type="text"/>
+					 <select name="when">
+						<option value="seconds">seconds</option>
+						<option value="minutes">minutes</option>
+						<option value="hours">hours</option>
+						<option value="days">days</option>
+					</select><br/>
+					<input size='12' name="date" type="text"/>
+					<input size='10' name="time" type="text"/>
 					+<input value="0" size='1' name="tzd" type="text"/>
+				  
 				</div>
 				<div align="center" style="clear: both;">
 					<button onclick="javascript:addJob();">Save</button>
