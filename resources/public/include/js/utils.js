@@ -281,7 +281,7 @@ function addJob()
 function showJobDialog()
 {
 	$("div[name*=addJobDialog]").css('display', 'block');
-	$("div[name*=addJobDialog]").dialog({"width" : "400px", "title" : "Add Job", "modal" : false, "resizable" : false});
+	$("div[name*=addJobDialog]").dialog({"width" : "400px", "title" : "Add Job", "modal" : true, "resizable" : false});
 	$('div[name*=addJobDialog]').find('input[name*=time]').val('');
 	$('div[name*=addJobDialog]').find('input[name*=date]').val('');
 	$('div[name*=addJobDialog]').find('input[name*=interval]').val('');
