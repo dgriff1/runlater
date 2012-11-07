@@ -51,6 +51,20 @@ function checkSelect(val)
 	}
 }
 
+allchecked = false
+function checkall()
+{
+	if(!allchecked)
+	{
+		allchecked = true;
+	}
+	else
+	{
+		allchecked = false;
+	}
+	$('table[id*=jobsTable]').find('input:checkbox').attr('checked', allchecked);
+}
+
 function addKey()
 {
 			var hash = CryptoJS.HmacSHA1(account, "");
@@ -191,7 +205,7 @@ function buildTable(objResults)
 	var table='<table CELLPADDING=0 CELLSPACING=0 BORDER=0 style="background-color: #FFFFFF;" class="tablesorter" id="jobsTable" name="jobsTable">';
 
 	table+='<thead style="padding:0;"><tr">';
-	table+='<th style="width:10px;"><input type="checkbox" id="checkboxMain"/></th>';
+	table+='<th style="width:10px;"><input type="checkbox" id="checkboxMain" onclick="javascript:checkall();"/></th>';
 	table+='<th>NAME</th>';       
 	table+='<th>URL</th>';       
 	table+='<th style="width:160px;">METHOD</th>';       
