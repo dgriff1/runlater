@@ -1,4 +1,5 @@
 
+
 PASS_PHRASE = "SIMPLEOBSCURE";
 
 $.ajaxSetup ({
@@ -223,7 +224,7 @@ function addJob()
 	var url = $("div[name*=addJobDialog]").find("[name=url]").val();
 	data = ' { ';
 	data += '"name" : "' + name + '" , ';
-	data += '"when" : "' + $('div[name*=addJobDialog]').find('input[name*=date]').val() + ' T' + $('div[name*=addJobDialog]').find('input[name*=time]').val() + ".000" + TZD + 'Z", ';
+	data += '"when" : "' + $('div[name*=addJobDialog]').find('input[name*=date]').val() + 'T' + $('div[name*=addJobDialog]').find('input[name*=time]').val() + ".000" + TZD + 'Z", ';
 	data += '"interval" : "2 hours",';
 	data += '"url" : "' + url + '" , ';
 	data += '"method" : "PUT" , ';
@@ -268,11 +269,10 @@ function addJob()
 
 function showJobDialog()
 {
-
 	$("div[name*=addJobDialog]").css('display', 'block');
 	$("div[name*=addJobDialog]").dialog({"width" : "400px", "title" : "Add Job", "modal" : false, "resizable" : false});
 	$('div[name*=addJobDialog]').find('input[name*=time]').timepicker({ 'timeFormat': 'H:i:s', 'scrollDefaultNow': true });
-	$('div[name*=addJobDialog]').find('input[name*=date]').datepicker({dateFormat : "yy-mmd-dd"});
+	$('div[name*=addJobDialog]').find('input[name*=date]').datepicker({dateFormat : $.datepicker.ATOM});
 
 	$('div[name*=addJobDialog]').find('select[name*=method]').html("");
 	$('div[name*=addJobDialog]').find('select[name*=method]').append(new Option("POST", "POST", true, true));
