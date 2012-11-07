@@ -277,6 +277,12 @@ function addJob()
 
 }
 
+function showUserDialog()
+{
+	$("div[name*=editUserDialog]").css('display', 'block');
+	$("div[name*=editUserDialog]").dialog({"width" : "400px", "title" : "Edit User", "modal" : true, "resizable" : false});
+}
+
 function showJobDialog()
 {
 	$("div[name*=addJobDialog]").css('display', 'block');
