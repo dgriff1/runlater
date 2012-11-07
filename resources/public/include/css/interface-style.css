@@ -61,7 +61,7 @@ a.login {
 	margin-top: 40px;
 	text-align: center;
 	color: #121212;
-	background-color: #FDFDFD;
+	background-color: #f8f6e2;
 	padding-top: 0px;
 	min-width: 750px;
 	margin-left: 2%;
@@ -106,6 +106,13 @@ a.login {
 
 .welcome {
 	float: right;
+	background-color: #f8f6e2; 
+	border-radius: 5px;
+}
+
+.toolbar {
+    	background-color: #f8f6e2;
+	border-radius: 5px;
 }
 
 .addJobDialog {
