@@ -121,7 +121,7 @@ function getKeys()
 					}, success: function(data, textStatus, XMLHttpRequest){
 						response = XMLHttpRequest.responseText;
 						lookup = {};
-						$('select[name*=]').html("");
+						$('select[name*=keys]').children().remove();
 						for (var k in JSON.parse(response))
 						{
 							lookup[k] = JSON.parse(response)[k];
