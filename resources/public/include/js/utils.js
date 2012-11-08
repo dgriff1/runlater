@@ -152,6 +152,13 @@ function keySwitch(ele)
 	renderJobs();
 }
 
+function deleteSelected()
+{
+	jQuery.each(selectedJobs, function(i) {
+		console.log(this);
+	}); 
+}
+
 function renderJobs()
 {
 	publicKey = $("select[name*=keys]").val();
