@@ -66,7 +66,7 @@ function checkall()
 	$('table[id*=jobsTable]').find('input:checkbox').each(function (i) {
 	if(this.id != 'checkboxMain')
 	{
-		checkSelect('"'+this.id+'"');
+		checkSelect(this.id);
 	}
 	});
 }
@@ -152,11 +152,42 @@ function keySwitch(ele)
 	renderJobs();
 }
 
+function deleteJob(val)
+{
+	URL = "/users/" + account + "/jobs/" + val;
+
+	var hash = CryptoJS.HmacSHA1(URL, privateKey);
+	hash = hash.toString(CryptoJS.enc.Base64);	
+
+	$.ajax({
+		headers: {
+			"runlater_password" : password,
+			"runlater_key"      : publicKey,
+			"runlater_hash"     : hash,
+		},
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("runlater_password", password);
+			xhr.setRequestHeader("runlater_key", publicKey);
+			xhr.setRequestHeader("runlater_hash", hash);
+		},
+		url: URL,
+		type: "DELETE",
+		error: function(XMLHttpRequest, textStatus, errorThrown){
+		    console.log(errorThrown);
+		}, success: function(data, textStatus, XMLHttpRequest){
+				renderJobs();
+		}
+	});
+}
+
 function deleteSelected()
 {
-	jQuery.each(selectedJobs, function(i) {
-		console.log(this);
-	}); 
+	if(confirm("Delete Selected?"))
+	{
+		jQuery.each(selectedJobs, function(i) {
+			deleteJob(this);
+		}); 
+	}
 }
 
 function renderJobs()
