@@ -9,6 +9,7 @@ class Job(object):
 		self.name = kwargs.pop("name", "") # a string
 		self._id = kwargs.pop("_id", "") # runlater will generate this
 		self.when = kwargs.pop("when", "") # a string repr of the next run time
+		self.body = kwargs.pop("body", "") # a string repr of the next run time
 		self.interval = kwargs.pop("interval", "") # on create can be a string like "2 hours 4 minutes" afterwards will be { "hours" : 2, "minutes" : 4 }
 		self.url = kwargs.pop("url", "") # the URL to call
 		self.method = kwargs.pop("method", "") # post/get/delete/put
@@ -38,6 +39,7 @@ class Job(object):
 			"method" : self.method ,
 			"headers" : self.headers,
 			"status" : self.status,
+			"body" : self.body,
 			"userid" : self.userid,
 			"doctype" : self.doctype,
 			"runlater_key" : self.runlater_key
@@ -79,8 +81,8 @@ class ServerConnection(object):
 		j = json.loads( response.read() )
 		return Job(**j)
 
-	def createJob(self, name, when, interval, url, method, headers ):
-		data = { "name" : name, "when" : when, "interval" : interval, "url" : url, "method" : method, "headers" : headers}
+	def createJob(self, name, when, body, interval, url, method, headers ):
+		data = { "name" : name, "when" : when, "interval" : interval, "url" : url, "body" : body, "method" : method, "headers" : headers}
 		json_data = json.dumps(data)
 		self.conn.request("PUT", "/users/"+ str(self.userid) + "/jobs/", json_data, self.genHeaders(json_data) )
 		response = self.conn.getresponse()

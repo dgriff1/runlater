@@ -137,34 +137,38 @@ SERVER = pyrunlater.ServerConnection( USER_ACCT, api_public_key, api_private_key
 
 # test_create_job
 try:
-	job = SERVER.createJob("Daily Backup", "2012-09-08T06:15:42.215Z", { "bullshithours" : 2 }, "http://google.com", "POST", {})
+	job = SERVER.createJob("Daily Backup", "2012-09-08T06:15:42.215Z", "", { "bullshithours" : 2 }, "http://google.com", "POST", {})
 except Exception, e:
 	assert "Invalid interval" in str(e), e
 
-job = SERVER.createJob("Daily Backup", "2012-09-08T06:15:42.215Z", { "hours" : 2 }, "http://google.com", "POST", {})
+job = SERVER.createJob("Daily Backup", "2012-09-08T06:15:42.215Z", "body", { "hours" : 2 }, "http://google.com", "POST", {})
 assert job.name == "Daily Backup"
 assert job.when == "2012-09-08T06:15:42.215Z"
+assert job.body == "body"
 assert job.interval == {"hours" : 2}
 assert job.url == "http://google.com"
 assert job.method == "post"
 assert job.headers == {}
 
 # test_create_job
-job = SERVER.createJob("Daily Backup", "2012-09-08T06:15:42.215Z", "2 hours", "http://google.com", "POST", {})
+job = SERVER.createJob("Daily Backup", "2012-09-08T06:15:42.215Z", "body", "2 hours", "http://google.com", "POST", {})
 
 assert job.name == "Daily Backup"
 assert job.when == "2012-09-08T06:15:42.215Z"
 assert job.interval == {"hours" : 2}
 assert job.url == "http://google.com"
+assert job.body == "body"
 assert job.method == "post"
 assert job.headers == {}
 
 
 job.url = "http://www.facebook.com"
+job.body = "body2"
 
 # Test updating job
 SERVER.updateJob(job)
 assert job.url == "http://www.facebook.com"
+assert job.body == "body2"
 
 # Test  that the job is listed
 jobs = SERVER.viewJobs()
