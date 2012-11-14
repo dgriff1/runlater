@@ -148,7 +148,12 @@ function defaultKey()
 
 function deleteSelectedKey()
 {
-    keyToRemove = $("select[name*=keys]").val();
+        keyToRemove = $("select[name*=keys]").val();
+
+	if(!confirm("Delete Key "+keyToRemove+"?"))
+	{
+		return;
+	}
 
 	var hash = CryptoJS.HmacSHA1(account, "");
 	hash = hash.toString(CryptoJS.enc.Base64);	
