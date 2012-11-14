@@ -216,7 +216,6 @@ function deleteSelected()
 		}); 
 		renderJobs();
 	}
-}
 
 function renderJobs()
 {
@@ -316,8 +315,6 @@ function buildTable(objResults)
 
 	$(".loading").hide();
 	$(".tableWrapper").html( table );	
-
-        console.log(textJobs);
 
 	$("#jobsTable").tablesorter(); 
 
