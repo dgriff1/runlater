@@ -49,7 +49,7 @@ function renderTable()
 function renderSwitch(val)
 {
 	showing = val;
-	setCookie('runlater_cred','{"account" : "'+account+'", "password" : "'+pass+'", "keyPos" : "'+$("select[name*=keys]").val()+'", "showing" : "'+showing+'"}',1);
+	setCookie('runlater_cred','{"account" : "'+account+'", "password" : "'+pass+'", "keyPos" : "'+$("select[name*=keys]").val()+'", "showing" : '+showing+'}',1);
 	renderTable();
 }	
 
@@ -146,6 +146,35 @@ function defaultKey()
 				    });
 }
 
+function deleteSelectedKey()
+{
+    keyToRemove = $("select[name*=keys]").val();
+
+	var hash = CryptoJS.HmacSHA1(account, "");
+	hash = hash.toString(CryptoJS.enc.Base64);	
+
+	$.ajax({
+			headers: {
+				"Content-Type"  : "application/json",
+				"Accept-Type"  : "application/json"
+			},
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader("Content-Type", "application/json");
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("runlater_password", password);
+			     },
+			url: "users/" + account + "/apikeys/" + keyToRemove,
+			type: "DELETE",
+			contentType: 'application/json',
+			error: function(XMLHttpRequest, textStatus, errorThrown){
+			    console.log(errorThrown);
+			}, success: function(data, textStatus, XMLHttpRequest){
+				updateStatus("Key " + name + " deleted.");
+				getKeys();
+			},
+		    });
+}
+
 function getKeys()
 {
 
@@ -192,7 +221,7 @@ function getKeys()
 function keySwitch(ele)
 {
 	var pass = CryptoJS.AES.encrypt(password, PASS_PHRASE);
-	setCookie('runlater_cred','{"account" : "'+account+'", "password" : "'+pass+'", "keyPos" : "'+$("select[name*=keys]").val()+'", "showing" : "'+showing+'"}',1);
+	setCookie('runlater_cred','{"account" : "'+account+'", "password" : "'+pass+'", "keyPos" : "'+$("select[name*=keys]").val()+'", "showing" : '+showing+'}',1);
 
 	privateKey = lookup[ele.value];
 	publicKey = ele.value;
@@ -325,7 +354,7 @@ function SortByBegan(a, b){
 }
 function buildLogTable(objResults)
 {
-	$('button[id*=addJobButton]').css('display', 'none');
+	$('button[id*=addJobButton]').attr('disabled', true);
 
 	selectedJobs = [];
 	textLogs     = {};
@@ -379,7 +408,7 @@ function buildLogTable(objResults)
 
 function buildJobTable(objResults)
 {
-	$('button[id*=addJobButton]').css('display', 'inline');
+	$('button[id*=addJobButton]').attr('disabled', false);
 
 	selectedJobs = [];
 	textJobs     = {};
@@ -608,7 +637,7 @@ function Login()
 	$(".content").show();
 	getKeys();
 	var pass = CryptoJS.AES.encrypt(password, PASS_PHRASE);
-	setCookie('runlater_cred','{"account" : "'+account+'", "password" : "'+pass+'", "showing" : "'+showing+'"}',1);
+	setCookie('runlater_cred','{"account" : "'+account+'", "password" : "'+pass+'", "showing" : '+showing+'}',1);
 }
 
 function Logout()
