@@ -537,6 +537,7 @@ function nameCleaner(e)
 function showText(val)
 {
 	$("div[name*=info]").dialog({dialogClass : "alert", modal : true, width: "500px", buttons:{ "Ok": function(){ $(this).dialog("close")}}});
+	$("div[name*=info]").siblings('.ui-dialog-titlebar').remove();
 	$("div[name*=info]").html(textJobs[val]);
 }
 

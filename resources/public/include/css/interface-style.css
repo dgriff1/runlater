@@ -186,7 +186,6 @@ textarea {
 	font-size: 0.8em;
 }
 
-info .ui-dialog-titlebar { display:none; }
 
 .datepicker {
   z-index: 200000 !important;
