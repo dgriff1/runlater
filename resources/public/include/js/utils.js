@@ -9,6 +9,8 @@ $.ajaxSetup ({
 
 
 var lookup = {};
+var showing = 0;
+selectedJobs = [];
 
 function getAttributeByIndex(obj, index){
   var i = 0;
@@ -32,7 +34,23 @@ function getAttributeByName(obj, index){
   return null;
 }
 
-selectedJobs = [];
+function renderTable()
+{
+	if(showing)
+	{
+		renderLogs();
+	}
+	else
+	{
+		renderJobs();
+	}
+}
+
+function renderSwitch(val)
+{
+	showing = val;
+	renderTable();
+}	
 
 function checkSelect(val)
 {
@@ -165,7 +183,7 @@ function getKeys()
 							cred = JSON.parse(getCookie("runlater_cred"));
 							$("select[name*=keys]").val(cred["keyPos"]);
 						}
-						renderJobs();
+						renderTable();
 					},
 				    });
 }
@@ -177,7 +195,7 @@ function keySwitch(ele)
 
 	privateKey = lookup[ele.value];
 	publicKey = ele.value;
-	renderJobs();
+	renderTable();
 }
 
 function deleteJob(val)
@@ -214,7 +232,7 @@ function deleteSelected()
 		jQuery.each(selectedJobs, function(i) {
 			deleteJob(this);
 		}); 
-		renderJobs();
+		renderTable();
 	}
 }
 
@@ -245,7 +263,40 @@ function renderJobs()
 		    console.log(errorThrown);
 		}, success: function(data, textStatus, XMLHttpRequest){
 				response = XMLHttpRequest.responseText;
-				buildTable(JSON.parse(response));
+				buildJobTable(JSON.parse(response));
+		}
+	});
+}
+
+
+function renderLogs()
+{
+	publicKey = $("select[name*=keys]").val();
+	privateKey = lookup[privateKey = $("select[name*=keys]").val()];
+	
+	URL = "/users/" + account + "/apikey/" + publicKey + "/jobs/";
+
+	var hash = CryptoJS.HmacSHA1(URL, privateKey);
+	hash = hash.toString(CryptoJS.enc.Base64);	
+
+	$.ajax({
+		headers: {
+			"runlater_password" : password,
+			"runlater_key"      : publicKey,
+			"runlater_hash"     : hash,
+		},
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("runlater_password", password);
+			xhr.setRequestHeader("runlater_key", publicKey);
+			xhr.setRequestHeader("runlater_hash", hash);
+		},
+		url: URL,
+		type: "GET",
+		error: function(XMLHttpRequest, textStatus, errorThrown){
+		    console.log(errorThrown);
+		}, success: function(data, textStatus, XMLHttpRequest){
+				response = XMLHttpRequest.responseText;
+				buildLogTable(JSON.parse(response));
 		}
 	});
 }
@@ -266,7 +317,7 @@ function SortByName(a, b){
   return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
 }
 
-function buildTable(objResults)
+function buildJobTable(objResults)
 {
 	selectedJobs = [];
 	textJobs     = {};
@@ -397,7 +448,7 @@ function addJob()
 			}, success: function(data, textStatus, XMLHttpRequest){
 					updateStatus("Job " + name + " added.");
 					closeJob();
-					renderJobs();
+					renderTable();
 			}
 		    });
 
