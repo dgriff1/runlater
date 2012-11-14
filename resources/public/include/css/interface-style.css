@@ -111,6 +111,7 @@ a.login {
 }
 
 .toolbar {
+	padding-left: 4px;
     	background-color: #f8f6e2;
 	border-radius: 5px;
 }

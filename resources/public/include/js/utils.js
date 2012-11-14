@@ -325,6 +325,8 @@ function SortByBegan(a, b){
 }
 function buildLogTable(objResults)
 {
+	$('button[id*=addJobButton]').css('display', 'none');
+
 	selectedJobs = [];
 	textJobs     = {};
 	$('button[id*=jobDeleteButton]').hide();
@@ -371,6 +373,8 @@ function buildLogTable(objResults)
 
 function buildJobTable(objResults)
 {
+	$('button[id*=addJobButton]').css('display', 'inline');
+
 	selectedJobs = [];
 	textJobs     = {};
 	$('button[id*=jobDeleteButton]').hide();
