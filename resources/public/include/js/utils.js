@@ -444,6 +444,7 @@ function closeJob()
 function closeKey()
 {
 	$("div[name*=addKeyDialog]").find("[name=keyname]").val("");
+	$("div[name*=content]").attr("disabled", false);
 	$("div[name*=addKeyDialog]").dialog('close');
 }
 
@@ -568,6 +569,7 @@ function showJobDialog()
 
 function showKeysDialog()
 {
+	$("div[name*=content]").attr("disabled", true);
 	$("div[name*=addKeyDialog]").css('display', 'block');
 	$("div[name*=addKeyDialog]").dialog({
 					"width"     : "420px",
