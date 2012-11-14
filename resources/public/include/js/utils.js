@@ -328,7 +328,7 @@ function buildLogTable(objResults)
 	$('button[id*=addJobButton]').css('display', 'none');
 
 	selectedJobs = [];
-	textJobs     = {};
+	textLogs     = {};
 	$('button[id*=jobDeleteButton]').hide();
 
         //objResults.sort(SortByBegan);
@@ -340,7 +340,7 @@ function buildLogTable(objResults)
 	var table='<table CELLPADDING=0 CELLSPACING=0 BORDER=0 style="background-color: #FFFFFF;" class="tablesorter" id="logsTable" name="logsTable">';
 
 	table+='<thead style="padding:0;"><tr">';
-	table+='<th>BEGAN</th>';       
+	table+='<th style="padding-left: 2px;">BEGAN</th>';       
 	table+='<th>ENDED</th>';       
 	table+='<th>JOBID</th>';       
 	table+='<th>RESULT</th>';       
@@ -349,11 +349,17 @@ function buildLogTable(objResults)
 	beenHere = false;
 	for(var i = 0; i < objResults.length; i++)
 	{
+		linkText = '';
+		if($.trim(objResults[i].result))
+		{
+			textLogs[objResults[i]._id] = objResults[i].result.body;
+			linkText = '<a href=javascript:showText("'+objResults[i]._id+'")>Result</a>';
+		}
 		table+='<tr>';
-		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].began+'</td>';    
+		table+='<td style="padding-left: 1px;text-align:left;" valign="LEFT">'+objResults[i].began+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].ended+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].jobid+'</td>';    
-		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].result+'</td>';    
+		table+='<td style="text-align:left;" valign="LEFT">'+linkText+'</td>'; 
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].scheduled+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].userid+'</td>';    
 		table+='</tr>';
@@ -677,7 +683,14 @@ function showText(val)
 {
 	$("div[name*=info]").dialog({position: 'top', dialogClass : "alert", modal : true, width: "500px", buttons:{ "Ok": function(){ $(this).dialog("close")}}});
 	$("div[name*=info]").siblings('.ui-dialog-titlebar').remove();
-	$("div[name*=info]").html(textJobs[val]);
+	if(showing)
+	{
+		$("div[name*=info]").find("textarea").val(textLogs[val]);
+	}
+	else
+	{
+		$("div[name*=info]").find("textarea").val(textJobs[val]);
+	}
 }
 
 function widgetizeButtons()
