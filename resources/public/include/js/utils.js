@@ -216,6 +216,7 @@ function deleteSelected()
 		}); 
 		renderJobs();
 	}
+}
 
 function renderJobs()
 {
