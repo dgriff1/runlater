@@ -262,7 +262,7 @@ function buildTable(objResults)
 	for(var i = 0; i < objResults.length; i++)
 	{
 		beenHere = true;
-		table+='<tr">';
+		table+='<tr>';
 		table+='<td><input onclick="checkSelect('+"'"+objResults[i]._id+"'"+');" type="checkbox" id="'+objResults[i]._id+'"/></td>';       
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].name+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].url+'</td>';    

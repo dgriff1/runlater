@@ -126,6 +126,12 @@ form {
 	margin: 0;
 }
 
+tr td {
+    height: 4px;
+    padding: 0;
+    border: 0;
+}
+
 th.header {  
     background-color: #f8f6e2; 
     padding: 0;
