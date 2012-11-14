@@ -148,6 +148,10 @@ function defaultKey()
 
 function deleteSelectedKey()
 {
+        if(keyToRemove = $("select[name*=keys]").find("option").length == 1)
+	{
+		return;
+	}
         keyToRemove = $("select[name*=keys]").val();
 
 	if(!confirm("Delete Key "+keyToRemove+"?"))
