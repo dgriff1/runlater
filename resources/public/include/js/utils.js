@@ -241,6 +241,7 @@ function SortByName(a, b){
 function buildTable(objResults)
 {
 	selectedJobs = [];
+	textJobs     = {};
 	$('button[id*=jobDeleteButton]').hide();
 
         objResults.sort(SortByName);
@@ -255,17 +256,20 @@ function buildTable(objResults)
 	table+='<th style="width:10px;"><input type="checkbox" id="checkboxMain" onclick="javascript:checkall();"/></th>';
 	table+='<th>NAME</th>';       
 	table+='<th>URL</th>';       
+	table+='<th>DATA</th>';       
 	table+='<th style="width:160px;">METHOD</th>';       
 	table+='<th>INTERVAL</th>';       
 	table+='<th>WHEN</th></tr></thead><tbody>';       
 	beenHere = false;
 	for(var i = 0; i < objResults.length; i++)
 	{
+		textJobs[objResults[i]._id] = objResults[i].body;
 		beenHere = true;
 		table+='<tr>';
 		table+='<td><input onclick="checkSelect('+"'"+objResults[i]._id+"'"+');" type="checkbox" id="'+objResults[i]._id+'"/></td>';       
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].name+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].url+'</td>';    
+		table+='<td style="text-align:left;" valign="LEFT"><a href=javascript:showText("'+objResults[i]._id+'")>Body</a></td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].method+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">Every '+getAttributeByIndex(objResults[i].interval, 0)+' '+getAttributeByName(objResults[i].interval, 0)+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].when+'</td>';    
@@ -279,6 +283,8 @@ function buildTable(objResults)
 
 	$(".loading").hide();
 	$(".tableWrapper").html( table );	
+
+        console.log(textJobs);
 
 	$("#jobsTable").tablesorter(); 
 
@@ -526,6 +532,12 @@ function nameCleaner(e)
   e=e || window.event;
   var who=e.target || e.srcElement;
   who.value= who.value.replace(/[^\w-]+/g,'');
+}
+
+function showText(val)
+{
+	$("div[name*=info]").dialog({dialogClass : "alert", modal : true, width: "500px", buttons:{ "Ok": function(){ $(this).dialog("close")}}});
+	$("div[name*=info]").html(textJobs[val]);
 }
 
 function widgetizeButtons()
