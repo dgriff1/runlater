@@ -86,7 +86,7 @@ function addKey()
 						xhr.setRequestHeader("Accept", "application/json");
 						xhr.setRequestHeader("runlater_password", password);
 					     },
-					url: "users/" + account + "/apikeys/" + $("div[name*=addKeyDialog]").find("[name=keyname]").val(),
+					url: "users/" + account + "/apikeys/" + $("div[name*=addKeyDialog]").find("[name*=keyname]").val(),
 					type: "PUT",
 					contentType: 'application/json',
 					error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -533,6 +533,16 @@ function widgetizeButtons()
 					$("div[name*=addJobDialog]").find("input[name*=name]").css('background-color', 'white');
 					$("div[name*=addJobDialog]").find("input[name*=name]").val('');
 			       }     
+			    });
+		            $("div[name*=addJobDialog]").find("input[name*=name]").keyup(function(e) {
+				  e=e || window.event;
+				  var who=e.target || e.srcElement;
+				  who.value= who.value.replace(/[^\w-]+/g,'');
+			    });
+			    $("div[name*=addKeyDialog]").find("input[name*=keyname]").keyup(function(e) {
+				  e=e || window.event;
+				  var who=e.target || e.srcElement;
+				  who.value= who.value.replace(/[^\w-]+/g,'');
 			    });
 }
 
