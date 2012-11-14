@@ -271,11 +271,11 @@ function buildTable(objResults)
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].when+'</td>';    
 		table+='</tr>';
 	}
+	table+='</tbody></table>';
 	if(!beenHere)
 	{
-		table+='<tr><td>No Jobs</td></tr>'
+		table+="No Jobs"
 	}
-	table+='</tbody></table>';
 
 	$(".loading").hide();
 	$(".tableWrapper").html( table );	
@@ -362,16 +362,41 @@ function showUserDialog()
 	$("div[name*=editUserDialog]").dialog({"width" : "400px", "title" : "Edit User", "modal" : true, "resizable" : false});
 }
 
+function buildMilitaryTime()
+{
+	timeString = ""
+	theDate = new Date()
+	if(theDate.getHours() < 10)
+	{
+		timeString += "0";
+	}
+	timeString += theDate.getHours() + ":";
+	if(theDate.getMinutes() < 10)
+	{
+		timeString += "0";
+	}
+	timeString += theDate.getMinutes() + ":";
+	if(theDate.getSeconds() < 10)
+	{
+		timeString += "0";
+	}
+	timeString += theDate.getSeconds();
+
+	return timeString
+}
+
 function showJobDialog()
 {
 	$("div[name*=addJobDialog]").css('display', 'block');
 	$("div[name*=addJobDialog]").dialog({"width" : "400px", "title" : "Add Job", "modal" : true, "resizable" : false});
 	$('div[name*=addJobDialog]').find('input[name*=time]').val('');
 	$('div[name*=addJobDialog]').find('input[name*=date]').val('');
-	$('div[name*=addJobDialog]').find('input[name*=interval]').val('');
+	$('div[name*=addJobDialog]').find('input[name*=interval]').val('30');
 	$('div[name*=addJobDialog]').find('input[name*=when]').val('');
 	$('div[name*=addJobDialog]').find('input[name*=time]').timepicker({ 'timeFormat': 'H:i:s', 'scrollDefaultNow': true });
+	$('div[name*=addJobDialog]').find('input[name*=time]').val(buildMilitaryTime);
 	$('div[name*=addJobDialog]').find('input[name*=date]').datepicker({dateFormat : $.datepicker.ATOM});
+	$('div[name*=addJobDialog]').find('input[name*=date]').datepicker('setDate', new Date());
 
 	$('div[name*=addJobDialog]').find('select[name*=method]').html("");
 	$('div[name*=addJobDialog]').find('select[name*=method]').append(new Option("POST", "POST", true, true));
