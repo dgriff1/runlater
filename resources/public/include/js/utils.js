@@ -274,7 +274,7 @@ function renderLogs()
 	publicKey = $("select[name*=keys]").val();
 	privateKey = lookup[privateKey = $("select[name*=keys]").val()];
 	
-	URL = "/users/" + account + "/apikey/" + publicKey + "/jobs/";
+	URL = "/users/" + account + "/logs/" + publicKey;
 
 	var hash = CryptoJS.HmacSHA1(URL, privateKey);
 	hash = hash.toString(CryptoJS.enc.Base64);	
@@ -315,6 +315,58 @@ function SortByName(a, b){
   var aName = a.name.toLowerCase();
   var bName = b.name.toLowerCase(); 
   return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+}
+
+function SortByBegan(a, b){
+  var aName = a.began.toLowerCase();
+  var bName = b.began.toLowerCase(); 
+  return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+}
+function buildLogTable(objResults)
+{
+	selectedJobs = [];
+	textJobs     = {};
+	$('button[id*=jobDeleteButton]').hide();
+
+        //objResults.sort(SortByBegan);
+
+	$("div[name*=toolbar]").show();
+	$("div[name*=welcome]").show();
+	$(".loading").show();
+
+	var table='<table CELLPADDING=0 CELLSPACING=0 BORDER=0 style="background-color: #FFFFFF;" class="tablesorter" id="logsTable" name="logsTable">';
+
+	table+='<thead style="padding:0;"><tr">';
+	table+='<th>BEGAN</th>';       
+	table+='<th>ENDED</th>';       
+	table+='<th>JOBID</th>';       
+	table+='<th>RESULT</th>';       
+	table+='<th>SCHEDULED</th>';       
+	table+='<th>USER</th></tr></thead><tbody>';       
+	beenHere = false;
+	for(var i = 0; i < objResults.length; i++)
+	{
+		console.log(objResults);
+		table+='<tr>';
+		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].began+'</td>';    
+		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].ended+'</td>';    
+		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].jobid+'</td>';    
+		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].result+'</td>';    
+		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].scheduled+'</td>';    
+		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].userid+'</td>';    
+		table+='</tr>';
+	}
+	table+='</tbody></table>';
+	if(!beenHere)
+	{
+		table+="No Logs"
+	}
+
+	$(".loading").hide();
+	$(".tableWrapper").html( table );	
+
+	$("#logsTable").tablesorter(); 
+
 }
 
 function buildJobTable(objResults)
