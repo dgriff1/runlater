@@ -306,11 +306,11 @@ function addJob()
 {
 	var TZD = "0";
 
-	var name     = $("div[name*=addJobDialog]").find("[name=name]").val();
-	var url      = $("div[name*=addJobDialog]").find("[name=url]").val();
-	var interval = $("div[name*=addJobDialog]").find("[name=interval]").val();
-	var when     = $("div[name*=addJobDialog]").find("[name=when]").val();
-	var method   = $("div[name*=addJobDialog]").find("[name=method]").val();
+	var name     = $("div[name*=addJobDialog]").find("[name*=name]").val();
+	var url      = $("div[name*=addJobDialog]").find("[name*=url]").val();
+	var interval = $("div[name*=addJobDialog]").find("[name*=interval]").val();
+	var when     = $("div[name*=addJobDialog]").find("[name*=when]").val();
+	var method   = $("div[name*=addJobDialog]").find("[name*=method]").val();
 	data = ' { ';
 	data += '"name" : "' + name + '" , ';
 	data += '"when" : "' + $('div[name*=addJobDialog]').find('input[name*=date]').val() + 'T' + $('div[name*=addJobDialog]').find('input[name*=time]').val() + ".000" + TZD + 'Z", ';
@@ -319,6 +319,14 @@ function addJob()
 	data += '"method" : "'+method+'" , ';
 	data += '"headers" : {}'; 
 	data += ' } ';
+
+	trimmedName = $.trim(name)
+	if(trimmedName.length == 0 || $("div[name*=addJobDialog]").find("[name*=name]").css('background-color') == 'rgb(255, 151, 151)')
+	{
+		$("div[name*=addJobDialog]").find("[name*=name]").css('background-color', 'rgb(255, 151, 151)');
+		$("div[name*=addJobDialog]").find("[name*=name]").val('Please Enter a name');
+		return;
+	}
 
 	publicKey = $("select[name*=keys]").val();
 	privateKey = lookup[privateKey = $("select[name*=keys]").val()];
@@ -519,7 +527,15 @@ function widgetizeButtons()
 					event.preventDefault();
 				    });
 			    });
+		            $("div[name*=addJobDialog]").find("input[name*=name]").focus(function() {
+			       if($("div[name*=addJobDialog]").find("input[name*=name]").css('background-color') == 'rgb(255, 151, 151)')
+			       {
+					$("div[name*=addJobDialog]").find("input[name*=name]").css('background-color', 'white');
+					$("div[name*=addJobDialog]").find("input[name*=name]").val('');
+			       }     
+			    });
 }
+
 
 function setCookie(c_name,value,exdays)
 {
