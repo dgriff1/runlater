@@ -530,9 +530,6 @@ function widgetizeButtons()
 			    $(function() {
 				$( "input[type=submit], button" )
 				    .button()
-				    .click(function( event ) {
-					event.preventDefault();
-				    });
 			    });
 		            $("div[name*=addJobDialog]").find("input[name*=name]").focus(function() {
 			       if($("div[name*=addJobDialog]").find("input[name*=name]").css('background-color') == 'rgb(255, 151, 151)')
@@ -549,16 +546,12 @@ function widgetizeButtons()
 			    });
 			    $("div[name*=addKeyDialog]").find("input[name*=keyname]").keyup(function(e) {
 				        nameCleaner(e);
-			    });
-			     $("div[name*=loginDialog]").find("button[id*=loginButton]").focus(function(e) {
-			                $("div[name*=loginDialog]").find("button[id*=loginButton]").off();
-			    });	
-			     $("div[name*=addJobDialog]").find("button[id*=saveJobButton]").focus(function(e) {
-					console.log(1);
-			        $("div[name*=addJobDialog]").find("button[id*=saveJobButton]").off();
 			    });		
-			     $("div[name*=addJobDialog]").find("button[id*=saveJobButton]").click(function(e) {
-					addJob();
+			     $("div[name*=addJobDialog]").click(function(e, enterKeyPressed) {
+					if(e.originalEvent.detail)
+					{
+						addJob();
+					}
 			    });	
 }
 
