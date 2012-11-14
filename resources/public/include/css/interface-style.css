@@ -181,6 +181,10 @@ input[type=password] {
 	border: 1px solid #9F9F9F;
 	font-size: 0.8em;
 }
+textarea {
+	border: 1px solid #9F9F9F;
+	font-size: 0.8em;
+}
 
 .datepicker {
   z-index: 200000 !important;

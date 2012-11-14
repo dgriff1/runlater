@@ -311,12 +311,14 @@ function addJob()
 	var interval = $("div[name*=addJobDialog]").find("[name*=interval]").val();
 	var when     = $("div[name*=addJobDialog]").find("[name*=when]").val();
 	var method   = $("div[name*=addJobDialog]").find("[name*=method]").val();
+	var body     = $('div[name*=addJobDialog]').find('textarea[name*=jobTextArea]').val();
 	data = ' { ';
 	data += '"name" : "' + name + '" , ';
 	data += '"when" : "' + $('div[name*=addJobDialog]').find('input[name*=date]').val() + 'T' + $('div[name*=addJobDialog]').find('input[name*=time]').val() + ".000" + TZD + 'Z", ';
 	data += '"interval" : "'+interval+' '+when+'",';
 	data += '"url" : "' + url + '" , ';
 	data += '"method" : "'+method+'" , ';
+	data += '"body" : "'+body+'"'; 
 	data += '"headers" : {}'; 
 	data += ' } ';
 
@@ -400,7 +402,8 @@ function showJobDialog()
 	$('div[name*=addJobDialog]').find('input[name*=time]').val('');
 	$('div[name*=addJobDialog]').find('input[name*=date]').val('');
 	$('div[name*=addJobDialog]').find('input[name*=interval]').val('30');
-	$('div[name*=addJobDialog]').find('input[name*=when]').val('');
+	$('div[name*=addJobDialog]').find('input[name*=interval]').val('30');
+	$('div[name*=addJobDialog]').find('textarea[name*=jobTextArea]').val('');
 	$('div[name*=addJobDialog]').find('input[name*=time]').timepicker({ 'timeFormat': 'H:i:s', 'scrollDefaultNow': true });
 	$('div[name*=addJobDialog]').find('input[name*=time]').val(buildMilitaryTime);
 	$('div[name*=addJobDialog]').find('input[name*=date]').datepicker({dateFormat : $.datepicker.ATOM});
