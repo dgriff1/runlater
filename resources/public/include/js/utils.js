@@ -400,9 +400,9 @@ function showJobDialog()
 
 	$('div[name*=addJobDialog]').find('select[name*=method]').html("");
 	$('div[name*=addJobDialog]').find('select[name*=method]').append(new Option("POST", "POST", true, true));
-	$('div[name*=addJobDialog]').find('select[name*=method]').append(new Option("GET", "GET", true, true));
-	$('div[name*=addJobDialog]').find('select[name*=method]').append(new Option("PUT", "PUT", true, true));
-	$('div[name*=addJobDialog]').find('select[name*=method]').append(new Option("DELETE", "DELETE", true, true));
+	$('div[name*=addJobDialog]').find('select[name*=method]').append(new Option("GET", "GET", false, false));
+	$('div[name*=addJobDialog]').find('select[name*=method]').append(new Option("PUT", "PUT", false, false));
+	$('div[name*=addJobDialog]').find('select[name*=method]').append(new Option("DELETE", "DELETE", false, false));
 }
 
 function showKeysDialog()
