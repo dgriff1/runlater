@@ -263,13 +263,18 @@ function buildTable(objResults)
 	beenHere = false;
 	for(var i = 0; i < objResults.length; i++)
 	{
-		textJobs[objResults[i]._id] = objResults[i].body;
+		linkText = '';
+		if($.trim(objResults[i].body))
+		{
+			textJobs[objResults[i]._id] = objResults[i].body;
+			linkText = '<a href=javascript:showText("'+objResults[i]._id+'")>Body</a>';
+		}
 		beenHere = true;
 		table+='<tr>';
 		table+='<td><input onclick="checkSelect('+"'"+objResults[i]._id+"'"+');" type="checkbox" id="'+objResults[i]._id+'"/></td>';       
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].name+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].url+'</td>';    
-		table+='<td style="text-align:left;" valign="LEFT"><a href=javascript:showText("'+objResults[i]._id+'")>Body</a></td>';    
+		table+='<td style="text-align:left;" valign="LEFT">'+linkText+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].method+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">Every '+getAttributeByIndex(objResults[i].interval, 0)+' '+getAttributeByName(objResults[i].interval, 0)+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].when+'</td>';    
