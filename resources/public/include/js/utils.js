@@ -99,6 +99,34 @@ function addKey()
 				    });
 }
 
+function defaultKey()
+{
+			var hash = CryptoJS.HmacSHA1(account, "");
+			hash = hash.toString(CryptoJS.enc.Base64);	
+
+			$.ajax({
+					headers: {
+						"Content-Type"  : "application/json",
+						"Accept-Type"  : "application/json"
+					},
+					beforeSend: function(xhr) {
+						xhr.setRequestHeader("Content-Type", "application/json");
+						xhr.setRequestHeader("Accept", "application/json");
+						xhr.setRequestHeader("runlater_password", password);
+					     },
+					url: "users/" + account + "/apikeys/" + 'default',
+					type: "PUT",
+					contentType: 'application/json',
+					error: function(XMLHttpRequest, textStatus, errorThrown){
+					    console.log(errorThrown);
+					}, success: function(data, textStatus, XMLHttpRequest){
+						updateStatus("Key " + name + " added.");
+						closeKey();
+						getKeys();
+					},
+				    });
+}
+
 function getKeys()
 {
 
@@ -494,6 +522,7 @@ function addUser(username, password, email)
 					error: function(XMLHttpRequest, textStatus, errorThrown){
 					    console.log(errorThrown);
 					}, success: function(data, textStatus, XMLHttpRequest){
+						defaultKey();
 						alert("User created!");
 						window.location = "interface.html";
 					}
