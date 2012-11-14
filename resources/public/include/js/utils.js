@@ -49,6 +49,7 @@ function renderTable()
 function renderSwitch(val)
 {
 	showing = val;
+	setCookie('runlater_cred','{"account" : "'+account+'", "password" : "'+pass+'", "keyPos" : "'+$("select[name*=keys]").val()+'", "showing" : "'+showing+'"}',1);
 	renderTable();
 }	
 
@@ -191,7 +192,7 @@ function getKeys()
 function keySwitch(ele)
 {
 	var pass = CryptoJS.AES.encrypt(password, PASS_PHRASE);
-	setCookie('runlater_cred','{"account" : "'+account+'", "password" : "'+pass+'", "keyPos" : "'+$("select[name*=keys]").val()+'"}',1);
+	setCookie('runlater_cred','{"account" : "'+account+'", "password" : "'+pass+'", "keyPos" : "'+$("select[name*=keys]").val()+'", "showing" : "'+showing+'"}',1);
 
 	privateKey = lookup[ele.value];
 	publicKey = ele.value;
@@ -346,7 +347,6 @@ function buildLogTable(objResults)
 	beenHere = false;
 	for(var i = 0; i < objResults.length; i++)
 	{
-		console.log(objResults);
 		table+='<tr>';
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].began+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].ended+'</td>';    
@@ -578,6 +578,7 @@ function showLoginDialog()
 		pass      = creds["password"];
 	        password  = CryptoJS.AES.decrypt(pass, PASS_PHRASE).toString(CryptoJS.enc.Utf8);
 		account   = creds["account"];
+		showing   = creds["showing"];
 	        $(".content").show();
                 getKeys();
 	        return;	
@@ -595,7 +596,7 @@ function Login()
 	$(".content").show();
 	getKeys();
 	var pass = CryptoJS.AES.encrypt(password, PASS_PHRASE);
-	setCookie('runlater_cred','{"account" : "'+account+'", "password" : "'+pass+'"}',1);
+	setCookie('runlater_cred','{"account" : "'+account+'", "password" : "'+pass+'", "showing" : "'+showing+'}',1);
 }
 
 function Logout()
