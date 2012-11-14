@@ -203,7 +203,6 @@ function deleteJob(val)
 		error: function(XMLHttpRequest, textStatus, errorThrown){
 		    console.log(errorThrown);
 		}, success: function(data, textStatus, XMLHttpRequest){
-				renderJobs();
 		}
 	});
 }
@@ -215,6 +214,7 @@ function deleteSelected()
 		jQuery.each(selectedJobs, function(i) {
 			deleteJob(this);
 		}); 
+		renderJobs();
 	}
 }
 
