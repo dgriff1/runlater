@@ -547,12 +547,18 @@ function widgetizeButtons()
 			    $("div[name*=addKeyDialog]").find("input[name*=keyname]").keyup(function(e) {
 				        nameCleaner(e);
 			    });		
-			     $("div[name*=addJobDialog]").click(function(e, enterKeyPressed) {
+			     $("div[name*=addJobDialog]").find("button[id*=addJobButton]").click(function(e, enterKeyPressed) {
 					if(e.originalEvent.detail)
 					{
 						addJob();
 					}
 			    });	
+			    $("div[name*=addKeyDialog]").find("button[id*=addKeyButton]").click(function(e, enterKeyPressed) {
+					if(e.originalEvent.detail)
+					{
+						addKey();
+					}
+			    });
 }
 
 
