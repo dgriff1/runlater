@@ -495,6 +495,7 @@ function addUser(username, password, email)
 					    console.log(errorThrown);
 					}, success: function(data, textStatus, XMLHttpRequest){
 						alert("User created!");
+						window.location = "interface.html";
 					}
 				    });
 }
@@ -522,14 +523,12 @@ function signUp(ele)
 		back = false;
 	}
 
+	if(!back)
+	{
+		return;
+	}
 	addUser(account, password, email);
 
-	if(back)
-	{
-		window.location = 'interface.html';
-	}
-
-	return back;
 }
 
 function nameCleaner(e)
