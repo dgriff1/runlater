@@ -99,6 +99,34 @@ function addKey()
 				    });
 }
 
+function defaultKey()
+{
+			var hash = CryptoJS.HmacSHA1(account, "");
+			hash = hash.toString(CryptoJS.enc.Base64);	
+
+			$.ajax({
+					headers: {
+						"Content-Type"  : "application/json",
+						"Accept-Type"  : "application/json"
+					},
+					beforeSend: function(xhr) {
+						xhr.setRequestHeader("Content-Type", "application/json");
+						xhr.setRequestHeader("Accept", "application/json");
+						xhr.setRequestHeader("runlater_password", password);
+					     },
+					url: "users/" + account + "/apikeys/" + 'default',
+					type: "PUT",
+					contentType: 'application/json',
+					error: function(XMLHttpRequest, textStatus, errorThrown){
+					    console.log(errorThrown);
+					}, success: function(data, textStatus, XMLHttpRequest){
+						updateStatus("Key " + name + " added.");
+						closeKey();
+						getKeys();
+					},
+				    });
+}
+
 function getKeys()
 {
 
@@ -175,7 +203,6 @@ function deleteJob(val)
 		error: function(XMLHttpRequest, textStatus, errorThrown){
 		    console.log(errorThrown);
 		}, success: function(data, textStatus, XMLHttpRequest){
-				renderJobs();
 		}
 	});
 }
@@ -187,6 +214,7 @@ function deleteSelected()
 		jQuery.each(selectedJobs, function(i) {
 			deleteJob(this);
 		}); 
+		renderJobs();
 	}
 }
 
@@ -241,6 +269,7 @@ function SortByName(a, b){
 function buildTable(objResults)
 {
 	selectedJobs = [];
+	textJobs     = {};
 	$('button[id*=jobDeleteButton]').hide();
 
         objResults.sort(SortByName);
@@ -255,17 +284,25 @@ function buildTable(objResults)
 	table+='<th style="width:10px;"><input type="checkbox" id="checkboxMain" onclick="javascript:checkall();"/></th>';
 	table+='<th>NAME</th>';       
 	table+='<th>URL</th>';       
+	table+='<th>DATA</th>';       
 	table+='<th style="width:160px;">METHOD</th>';       
 	table+='<th>INTERVAL</th>';       
 	table+='<th>WHEN</th></tr></thead><tbody>';       
 	beenHere = false;
 	for(var i = 0; i < objResults.length; i++)
 	{
+		linkText = '';
+		if($.trim(objResults[i].body))
+		{
+			textJobs[objResults[i]._id] = objResults[i].body;
+			linkText = '<a href=javascript:showText("'+objResults[i]._id+'")>Body</a>';
+		}
 		beenHere = true;
 		table+='<tr>';
 		table+='<td><input onclick="checkSelect('+"'"+objResults[i]._id+"'"+');" type="checkbox" id="'+objResults[i]._id+'"/></td>';       
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].name+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].url+'</td>';    
+		table+='<td style="text-align:left;" valign="LEFT">'+linkText+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].method+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">Every '+getAttributeByIndex(objResults[i].interval, 0)+' '+getAttributeByName(objResults[i].interval, 0)+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].when+'</td>';    
@@ -279,6 +316,8 @@ function buildTable(objResults)
 
 	$(".loading").hide();
 	$(".tableWrapper").html( table );	
+
+        console.log(textJobs);
 
 	$("#jobsTable").tablesorter(); 
 
@@ -483,7 +522,9 @@ function addUser(username, password, email)
 					error: function(XMLHttpRequest, textStatus, errorThrown){
 					    console.log(errorThrown);
 					}, success: function(data, textStatus, XMLHttpRequest){
+						defaultKey();
 						alert("User created!");
+						window.location = "interface.html";
 					}
 				    });
 }
@@ -511,14 +552,12 @@ function signUp(ele)
 		back = false;
 	}
 
+	if(!back)
+	{
+		return;
+	}
 	addUser(account, password, email);
 
-	if(back)
-	{
-		window.location = 'interface.html';
-	}
-
-	return back;
 }
 
 function nameCleaner(e)
@@ -526,6 +565,13 @@ function nameCleaner(e)
   e=e || window.event;
   var who=e.target || e.srcElement;
   who.value= who.value.replace(/[^\w-]+/g,'');
+}
+
+function showText(val)
+{
+	$("div[name*=info]").dialog({position: 'top', dialogClass : "alert", modal : true, width: "500px", buttons:{ "Ok": function(){ $(this).dialog("close")}}});
+	$("div[name*=info]").siblings('.ui-dialog-titlebar').remove();
+	$("div[name*=info]").html(textJobs[val]);
 }
 
 function widgetizeButtons()
