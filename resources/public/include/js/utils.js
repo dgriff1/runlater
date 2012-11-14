@@ -518,6 +518,13 @@ function signUp(ele)
 	return back;
 }
 
+function nameCleaner(e)
+{
+  e=e || window.event;
+  var who=e.target || e.srcElement;
+  who.value= who.value.replace(/[^\w-]+/g,'');
+}
+
 function widgetizeButtons()
 {
 			    $(function() {
@@ -535,14 +542,13 @@ function widgetizeButtons()
 			       }     
 			    });
 		            $("div[name*=addJobDialog]").find("input[name*=name]").keyup(function(e) {
-				  e=e || window.event;
-				  var who=e.target || e.srcElement;
-				  who.value= who.value.replace(/[^\w-]+/g,'');
+				        nameCleaner(e);
+			    });
+			    $("div[name*=addJobDialog]").find("input[name*=name]").change(function(e) {
+				        nameCleaner(e);
 			    });
 			    $("div[name*=addKeyDialog]").find("input[name*=keyname]").keyup(function(e) {
-				  e=e || window.event;
-				  var who=e.target || e.srcElement;
-				  who.value= who.value.replace(/[^\w-]+/g,'');
+				        nameCleaner(e);
 			    });
 }
 
