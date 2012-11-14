@@ -550,6 +550,16 @@ function widgetizeButtons()
 			    $("div[name*=addKeyDialog]").find("input[name*=keyname]").keyup(function(e) {
 				        nameCleaner(e);
 			    });
+			     $("div[name*=loginDialog]").find("button[id*=loginButton]").focus(function(e) {
+			                $("div[name*=loginDialog]").find("button[id*=loginButton]").off();
+			    });	
+			     $("div[name*=addJobDialog]").find("button[id*=saveJobButton]").focus(function(e) {
+					console.log(1);
+			        $("div[name*=addJobDialog]").find("button[id*=saveJobButton]").off();
+			    });		
+			     $("div[name*=addJobDialog]").find("button[id*=saveJobButton]").click(function(e) {
+					addJob();
+			    });	
 }
 
 
