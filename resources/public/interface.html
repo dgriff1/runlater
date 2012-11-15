@@ -54,13 +54,14 @@
 		<div name="content" class="content" style="display: none;">
 
 		<div name="toolbar" class="toolbar" style="clear: both;float: left;display:none;">
-			<button onclick="javascript:showJobDialog();">Add Job</button>
+			<button id="addJobButton" onclick="javascript:showJobDialog();">Add Job</button>
 			Product Keys: <select id="keys" name="keys" onchange="keySwitch(this);">
 			
 			</select>
 			<button onclick="javascript:showKeysDialog();">New Key</button>
-			<button onclick="javascript:renderJobs();">View Jobs</button>
-			<button onclick="javascript:renderLogs();">View Logs</button>
+			<button onclick="javascript:deleteSelectedKey();">Delete Key</button>
+			<button onclick="javascript:renderSwitch(0);">Jobs</button>
+			<button onclick="javascript:renderSwitch(1);">Logs</button>
 			<button style="display:none;" id="jobDeleteButton" onclick="javascript:deleteSelected();">Delete Selected</button>
 		</div>	
 		<div name="welcome" class="welcome" style="display:none;">
@@ -97,7 +98,8 @@
 					URL:<br/>
 					Method:<br/>
 					Every:<br/>
-					When:
+					When:<br/>
+					Body:
 				</div>
 				<div style="padding: 5px;float: left;text-align: left;">
 					 <input size='24' name="name" type="text"/><br/>
@@ -155,8 +157,9 @@
 		<div style="margin-top: 10%;display:none;color: white;" name="loading" class="loading" id="loading">
 			LOADING...
 		</div>
-		<div name="info" class="info" id="info">
-
+		<div name="info" class="info" id="info" style="display:none;">
+			<textarea cols="45" rows="6" id="infoText">
+			</textarea:
 		</div>
 
 	</body>
