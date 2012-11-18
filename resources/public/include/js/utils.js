@@ -310,6 +310,8 @@ function renderJobs()
 
 function renderLogs()
 {
+        logLoading();
+
 	publicKey = $("select[name*=keys]").val();
 	privateKey = lookup[privateKey = $("select[name*=keys]").val()];
 	
@@ -361,19 +363,22 @@ function SortByBegan(a, b){
   var bName = b.began.toLowerCase(); 
   return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
 }
-function buildLogTable(objResults)
+
+function logLoading()
 {
+	$('table[class=tablesorter]').html("");
 	$('button[id*=addJobButton]').attr('disabled', true);
-
-	selectedJobs = [];
-	textLogs     = {};
 	$('button[id*=jobDeleteButton]').hide();
-
-        //objResults.sort(SortByBegan);
-
 	$("div[name*=toolbar]").show();
 	$("div[name*=welcome]").show();
 	$(".loading").show();
+
+}
+
+function buildLogTable(objResults)
+{
+	selectedJobs = [];
+	textLogs     = {};
 
 	var table='<table CELLPADDING=0 CELLSPACING=0 BORDER=0 style="background-color: #FFFFFF;" class="tablesorter" id="logsTable" name="logsTable">';
 
