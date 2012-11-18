@@ -387,6 +387,7 @@ function buildLogTable(objResults)
 	beenHere = false;
 	for(var i = 0; i < objResults.length; i++)
 	{
+                beenHere = true;
 		linkText = '';
 		if($.trim(objResults[i].result))
 		{
