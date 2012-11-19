@@ -1,5 +1,4 @@
 
-
 PASS_PHRASE = "SIMPLEOBSCURE";
 
 $.ajaxSetup ({
@@ -36,6 +35,7 @@ function getAttributeByName(obj, index){
 
 function renderTable()
 {
+	$("a[id=userLink]").text(account);
 	if(showing)
 	{
 		renderLogs();
@@ -649,6 +649,7 @@ function Login()
 	password = $("div[name*=loginDialog]").find("[name=password]").val();
 	$("div[name*=loginDialog]").dialog('close');
 	$(".content").show();
+	$("a[id=userLink]").text(account);
 	getKeys();
 	pass = CryptoJS.AES.encrypt(password, PASS_PHRASE);
 	setCookie('runlater_cred','{"account" : "'+account+'", "password" : "'+pass+'", "showing" : '+showing+'}',1);
