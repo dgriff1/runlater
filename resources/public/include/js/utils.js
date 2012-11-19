@@ -650,7 +650,7 @@ function Login()
 	$("div[name*=loginDialog]").dialog('close');
 	$(".content").show();
 	getKeys();
-	var pass = CryptoJS.AES.encrypt(password, PASS_PHRASE);
+	pass = CryptoJS.AES.encrypt(password, PASS_PHRASE);
 	setCookie('runlater_cred','{"account" : "'+account+'", "password" : "'+pass+'", "showing" : '+showing+'}',1);
 }
 
