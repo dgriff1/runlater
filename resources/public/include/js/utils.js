@@ -400,7 +400,7 @@ function buildLogTable(objResults)
 			linkText = '<a href=javascript:showText("'+objResults[i]._id+'")>Result</a>';
 		}
 		table+='<tr>';
-		table+='<td style="padding-left: 1px;text-align:left;" valign="LEFT">'+objResults[i].began+'</td>';    
+		table+='<td style="padding-left: 2px;text-align:left;" valign="LEFT">'+objResults[i].began+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].ended+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].jobid+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+linkText+'</td>'; 
