@@ -111,8 +111,13 @@ a.login {
 
 .welcome {
 	float: right;
-	background-color: #f8f6e2; 
-	border-radius: 5px;
+        color: #FFFFFF;
+        padding-right: 26px;
+        padding-top: 2px;
+}
+
+.welcome a {
+	color: #FFFF00;
 }
 
 .toolbar {

@@ -52,6 +52,10 @@
 
 		<div class="logo">
 			<img src="/include/image/runlater-logo.png" alt="logo"/>
+			<div name="welcome" class="welcome" style="display:none;">
+				Welcome, <a href="javascript:showUserDialog();">User</a>!
+				<button onclick="javascript:Logout();">Logout</button>
+			</div>		
 		</div>
 
 		<div name="content" class="content" style="display: none;">
@@ -67,10 +71,6 @@
 			<button onclick="javascript:renderSwitch(1);">Logs</button>
 			<button style="display:none;" id="jobDeleteButton" onclick="javascript:deleteSelected();">Delete Selected</button>
 		</div>	
-		<div name="welcome" class="welcome" style="display:none;">
-			Welcome, <a href="javascript:showUserDialog();">User</a>!
-			<button onclick="javascript:Logout();">Logout</button>
-		</div>		
 
 		<div id="status" name="status" style="padding-left: 2pt;float: left;color: red;font-weight: bold;hidden:first;">&nbsp;
 		</div>	

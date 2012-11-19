@@ -388,7 +388,7 @@ function buildLogTable(objResults)
 	table+='<th>JOBID</th>';       
 	table+='<th>RESULT</th>';       
 	table+='<th>SCHEDULED</th>';       
-	table+='<th>USER</th></tr></thead><tbody>';       
+	table+='</tr></thead><tbody>';       
 	beenHere = false;
 	for(var i = 0; i < objResults.length; i++)
 	{
@@ -405,7 +405,6 @@ function buildLogTable(objResults)
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].jobid+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+linkText+'</td>'; 
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].scheduled+'</td>';    
-		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].userid+'</td>';    
 		table+='</tr>';
 	}
 	table+='</tbody></table>';
