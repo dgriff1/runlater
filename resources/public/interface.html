@@ -153,7 +153,21 @@
 		</div>
 
 		<div name="editUserDialog" onKeyPress="checkSubmit(event, Login, 'editUserDialog')" style="display:none;">
-			<br/>
+				<div style="text-align: left;padding: 5px;float: left;">
+					Name: <br/>
+					Password:<br/>
+					Address:
+				</div>
+				<div style="padding: 5px;float: left;text-align: left;">
+					 <input size='10' name="first" type="text"/><input size='10' name="last" type="text"/><br/>
+					 <input size='24' name="password" type="text"/><br/>
+					 <input size='24' name="address" type="text"/>
+				  
+				</div>
+				<div align="center" style="clear: both;">
+					<button id="saveUserButton">Save</button>
+					<button onclick="javascript:closeUser();">Cancel</button>
+				</div>
 
 		</div>
 

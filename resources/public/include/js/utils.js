@@ -484,6 +484,14 @@ function closeJob()
 	$("div[name*=addJobDialog]").dialog('close');
 }
 
+function closeUser()
+{
+	$("div[name*=editUserDialog]").find("[name=first]").val("");
+	$("div[name*=editUserDialog]").find("[name=last]").val("");
+	$("div[name*=editUserDialog]").find("[name=url]").val("");
+	$("div[name*=editUserDialog]").dialog('close');
+}
+
 function closeKey()
 {
 	$("div[name*=addKeyDialog]").find("[name=keyname]").val("");
