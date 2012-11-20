@@ -570,6 +570,29 @@ function addJob()
 
 function showUserDialog()
 {
+			var hash = CryptoJS.HmacSHA1(account, "");
+			hash = hash.toString(CryptoJS.enc.Base64);	
+
+			$.ajax({
+					headers: {
+						"Content-Type"  : "application/json",
+						"Accept-Type"  : "application/json"
+					},
+					beforeSend: function(xhr) {
+						xhr.setRequestHeader("Content-Type", "application/json");
+						xhr.setRequestHeader("Accept", "application/json");
+						xhr.setRequestHeader("runlater_password", password);
+					     },
+					url: "users/" + account + "/apikeys/" ,
+					type: "GET",
+					contentType: 'application/json',
+					error: function(XMLHttpRequest, textStatus, errorThrown){
+					    console.log(errorThrown);
+					}, success: function(data, textStatus, XMLHttpRequest){
+					      $('div[name=editUserDialog]').find('input[name=password]').val(password);
+					},
+				    });
+
 	$("div[name*=editUserDialog]").css('display', 'block');
 	$("div[name*=editUserDialog]").dialog({"width" : "400px", "title" : "Edit User", "modal" : true, "resizable" : false});
 }
