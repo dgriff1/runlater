@@ -1,7 +1,8 @@
 
 body {
 	background-color: #1f649b;
-	line-height: 35px;
+        background-image: url(/include/image/blue/bg.png);
+	line-height: 30px;
 	font-size: 0.9em;
 	color: #212121;
 	margin: 0;
@@ -10,11 +11,16 @@ body {
 	text-align: center;
 }
 
+.logo {
+	text-align: left;
+	padding: 0;
+        padding-left: 17px;
+	margin: 0;
+}
+
 .header {
 	background-color: #242c2e;
 	height: 57px;
-	padding-top: 10px;
-	padding-bottom: 5px;
 	padding-left: 10px;
 	padding-right: 10px;
 	width: 1000px;
@@ -58,7 +64,6 @@ a.login {
 }
 
 .content {
-	margin-top: 40px;
 	text-align: center;
 	color: #121212;
 	background-color: #f8f6e2;
@@ -106,8 +111,13 @@ a.login {
 
 .welcome {
 	float: right;
-	background-color: #f8f6e2; 
-	border-radius: 5px;
+        color: #FFFFFF;
+        padding-right: 26px;
+        padding-top: 6px;
+}
+
+.welcome a {
+	color: #FFFF00;
 }
 
 .toolbar {

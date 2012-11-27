@@ -1,5 +1,4 @@
 
-
 PASS_PHRASE = "SIMPLEOBSCURE";
 
 $.ajaxSetup ({
@@ -36,6 +35,7 @@ function getAttributeByName(obj, index){
 
 function renderTable()
 {
+	$("a[id=userLink]").text(account);
 	if(showing)
 	{
 		renderLogs();
@@ -310,6 +310,8 @@ function renderJobs()
 
 function renderLogs()
 {
+        logLoading();
+
 	publicKey = $("select[name*=keys]").val();
 	privateKey = lookup[privateKey = $("select[name*=keys]").val()];
 	
@@ -361,19 +363,22 @@ function SortByBegan(a, b){
   var bName = b.began.toLowerCase(); 
   return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
 }
-function buildLogTable(objResults)
+
+function logLoading()
 {
+	$('table[class=tablesorter]').html("");
 	$('button[id*=addJobButton]').attr('disabled', true);
-
-	selectedJobs = [];
-	textLogs     = {};
 	$('button[id*=jobDeleteButton]').hide();
-
-        //objResults.sort(SortByBegan);
-
 	$("div[name*=toolbar]").show();
 	$("div[name*=welcome]").show();
 	$(".loading").show();
+
+}
+
+function buildLogTable(objResults)
+{
+	selectedJobs = [];
+	textLogs     = {};
 
 	var table='<table CELLPADDING=0 CELLSPACING=0 BORDER=0 style="background-color: #FFFFFF;" class="tablesorter" id="logsTable" name="logsTable">';
 
@@ -383,10 +388,11 @@ function buildLogTable(objResults)
 	table+='<th>JOBID</th>';       
 	table+='<th>RESULT</th>';       
 	table+='<th>SCHEDULED</th>';       
-	table+='<th>USER</th></tr></thead><tbody>';       
+	table+='</tr></thead><tbody>';       
 	beenHere = false;
 	for(var i = 0; i < objResults.length; i++)
 	{
+                beenHere = true;
 		linkText = '';
 		if($.trim(objResults[i].result))
 		{
@@ -394,12 +400,11 @@ function buildLogTable(objResults)
 			linkText = '<a href=javascript:showText("'+objResults[i]._id+'")>Result</a>';
 		}
 		table+='<tr>';
-		table+='<td style="padding-left: 1px;text-align:left;" valign="LEFT">'+objResults[i].began+'</td>';    
+		table+='<td style="padding-left: 2px;text-align:left;" valign="LEFT">'+objResults[i].began+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].ended+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].jobid+'</td>';    
 		table+='<td style="text-align:left;" valign="LEFT">'+linkText+'</td>'; 
 		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].scheduled+'</td>';    
-		table+='<td style="text-align:left;" valign="LEFT">'+objResults[i].userid+'</td>';    
 		table+='</tr>';
 	}
 	table+='</tbody></table>';
@@ -477,6 +482,14 @@ function closeJob()
 	$("div[name*=addJobDialog]").find("[name=name]").val("");
 	$("div[name*=addJobDialog]").find("[name=url]").val("");
 	$("div[name*=addJobDialog]").dialog('close');
+}
+
+function closeUser()
+{
+	$("div[name*=editUserDialog]").find("[name=first]").val("");
+	$("div[name*=editUserDialog]").find("[name=last]").val("");
+	$("div[name*=editUserDialog]").find("[name=url]").val("");
+	$("div[name*=editUserDialog]").dialog('close');
 }
 
 function closeKey()
@@ -557,6 +570,29 @@ function addJob()
 
 function showUserDialog()
 {
+			var hash = CryptoJS.HmacSHA1(account, "");
+			hash = hash.toString(CryptoJS.enc.Base64);	
+
+			$.ajax({
+					headers: {
+						"Content-Type"  : "application/json",
+						"Accept-Type"  : "application/json"
+					},
+					beforeSend: function(xhr) {
+						xhr.setRequestHeader("Content-Type", "application/json");
+						xhr.setRequestHeader("Accept", "application/json");
+						xhr.setRequestHeader("runlater_password", password);
+					     },
+					url: "users/" + account + "/apikeys/" ,
+					type: "GET",
+					contentType: 'application/json',
+					error: function(XMLHttpRequest, textStatus, errorThrown){
+					    console.log(errorThrown);
+					}, success: function(data, textStatus, XMLHttpRequest){
+					      $('div[name=editUserDialog]').find('input[name=password]').val(password);
+					},
+				    });
+
 	$("div[name*=editUserDialog]").css('display', 'block');
 	$("div[name*=editUserDialog]").dialog({"width" : "400px", "title" : "Edit User", "modal" : true, "resizable" : false});
 }
@@ -644,8 +680,9 @@ function Login()
 	password = $("div[name*=loginDialog]").find("[name=password]").val();
 	$("div[name*=loginDialog]").dialog('close');
 	$(".content").show();
+	$("a[id=userLink]").text(account);
 	getKeys();
-	var pass = CryptoJS.AES.encrypt(password, PASS_PHRASE);
+	pass = CryptoJS.AES.encrypt(password, PASS_PHRASE);
 	setCookie('runlater_cred','{"account" : "'+account+'", "password" : "'+pass+'", "showing" : '+showing+'}',1);
 }
 
