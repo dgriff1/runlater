@@ -20,35 +20,56 @@
 		<script type="text/javascript" src="include/js/utils.js"></script>
 
 		<link rel="stylesheet" type="text/css" href="include/css/jquery.timepicker.css" />
-		<link href="include/css/interface-style.css" rel="stylesheet" type="text/css" />   
+		<link href="include/css/style.css" rel="stylesheet" type="text/css" />   
 		<link href="include/css/custom-theme/jquery-ui-1.9.1.custom.css" rel="stylesheet" type="text/css" />    
 	</head>
 
-	<body>
+	<body id="home" class="home blog gecko">
 
-	<div class="content">
+	<div id="header-wrapper">
+		<div id="header">
+			
+			<div class="container">
+				<div id="top-box" style="float: left;">
+					<p><span>runlater</span> is the easiest way to add time to your application. <span>runlater</span> let's you programmatically call your own application on specific schedules with no overhead.  You program a task such as emailing out billing notices and we call it on your schedule. 
+					</p>
+					<p style="padding-top: 10px; padding-bottom: 12px;">
+					<a href="">					<img src="include/image/runlater-logo.png" alt="Runlater" id="logo"/></a>
+					</p>
+					<div style="cursor: pointer" id="button" onclick="window.location = 'newuser.html';" />Join Today</div>
+                                								 
+				</div>
+				<div class="signupform">
+				<form name="signup">
 
-	<form name="signup">
+					<table border="0" cellpadding="6" cellpadding="6">
+						<tr>
+							<td>Username: </td><td><input type="input" name="account"/></td>
+						</tr>
+						<tr>
+							<td>Password: </td><td><input type="password" name="password"/></td>
+						</tr>
+						<tr>
+							<td>E-Mail:  </td><td><input type="input" name="email"/></td>
+						</tr>
+						<tr>
+							<td></td><td><input type="button" name="submit" value="Submit" onclick="signUp();"/></td>
+						</tr>
+					</table>
+				
 
-		<table border="0">
-			<tr>
-				<td>Username: </td><td><input type="input" name="account"/></td>
-			</tr>
-			<tr>
-				<td>Password: </td><td><input type="input" name="password"/></td>
-			</tr>
-			<tr>
-				<td>E-Mail:  </td><td><input type="input" name="email"/></td>
-			</tr>
-			<tr>
-				<td></td><td><input type="button" name="submit" value="Submit" onclick="signUp();"/></td>
-			</tr>
-		</table>
-	
+				</form>
+				</div>
 
-	</form>
+			</div> <!-- end #top-box -->
+								
+		</div> <!-- end .container -->
+			
+	</div> <!-- end #header -->
 
-	</div>
+
+
+
 
 	</body>
 
