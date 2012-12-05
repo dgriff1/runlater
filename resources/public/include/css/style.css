@@ -370,7 +370,9 @@ a.readmore:hover, #sidebar div.custom-sidebar-block ul.control li a:hover, ul#ca
 	color: white;
 	font-size: 2.1em;
 	padding-top: 40px;
-	float: left;
+	padding-right: 40px;
+	float: right;
+	margin-top: -140px;
 }
 
 #tabbed-area #tabs { margin-top:-23px;  }
