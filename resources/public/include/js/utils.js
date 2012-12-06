@@ -570,9 +570,14 @@ function addJob()
 
 function saveUser()
 {
+	
 	data = {};
+	data["account"]     = account;
+        data["first"]       = "mitt"
+        data["last"]        = "miles"
+        data["email"]       = "password"
+	data["company"]     = "President" 
 	data['password']    = $("div[name*=editUserDialog]").find("input[name=resetpassword]").val();
-
 
 			var hash = CryptoJS.HmacSHA1(account, "");
 			hash = hash.toString(CryptoJS.enc.Base64);	
