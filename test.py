@@ -3,7 +3,7 @@ import json
 import hmac
 import hashlib
 import base64
-import pyrunlater 
+import runlater 
 from datetime import datetime
 import time
 
@@ -133,7 +133,7 @@ assert response.status == 200
 assert "_id" in api_resp
 
 
-SERVER = pyrunlater.ServerConnection( USER_ACCT, api_public_key, api_private_key)
+SERVER = runlater.ServerConnection( USER_ACCT, api_public_key, api_private_key)
 
 # test_create_job
 try:
