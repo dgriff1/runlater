@@ -114,8 +114,8 @@ function addKey()
 						updateStatus("Key " + name + " added.");
 						closeKey();
 						getKeys();
-					},
-				    });
+					}
+				    })
 }
 
 function defaultKey()
@@ -142,8 +142,8 @@ function defaultKey()
 						updateStatus("Key " + name + " added.");
 						closeKey();
 						getKeys();
-					},
-				    });
+					}
+				    })
 }
 
 function deleteSelectedKey()
@@ -180,8 +180,8 @@ function deleteSelectedKey()
 			}, success: function(data, textStatus, XMLHttpRequest){
 				updateStatus("Key " + name + " deleted.");
 				getKeys();
-			},
-		    });
+			}
+		    })
 }
 
 function getKeys()
@@ -223,8 +223,8 @@ function getKeys()
 							$("select[name*=keys]").val(cred["keyPos"]);
 						}
 						renderTable();
-					},
-				    });
+					}
+				    })
 }
 
 function keySwitch(ele)
@@ -248,7 +248,7 @@ function deleteJob(val)
 		headers: {
 			"runlater_password" : password,
 			"runlater_key"      : publicKey,
-			"runlater_hash"     : hash,
+			"runlater_hash"     : hash
 		},
 		beforeSend: function(xhr) {
 			xhr.setRequestHeader("runlater_password", password);
@@ -261,7 +261,7 @@ function deleteJob(val)
 		    console.log(errorThrown);
 		}, success: function(data, textStatus, XMLHttpRequest){
 		}
-	});
+	})
 }
 
 function deleteSelected()
@@ -289,7 +289,7 @@ function renderJobs()
 		headers: {
 			"runlater_password" : password,
 			"runlater_key"      : publicKey,
-			"runlater_hash"     : hash,
+			"runlater_hash"     : hash
 		},
 		beforeSend: function(xhr) {
 			xhr.setRequestHeader("runlater_password", password);
@@ -304,7 +304,7 @@ function renderJobs()
 				response = XMLHttpRequest.responseText;
 				buildJobTable(JSON.parse(response));
 		}
-	});
+	})
 }
 
 
@@ -324,7 +324,7 @@ function renderLogs()
 		headers: {
 			"runlater_password" : password,
 			"runlater_key"      : publicKey,
-			"runlater_hash"     : hash,
+			"runlater_hash"     : hash
 		},
 		beforeSend: function(xhr) {
 			xhr.setRequestHeader("runlater_password", password);
@@ -339,7 +339,7 @@ function renderLogs()
 				response = XMLHttpRequest.responseText;
 				buildLogTable(JSON.parse(response));
 		}
-	});
+	})
 }
 
 function showToolbarbuttons()
@@ -564,8 +564,47 @@ function addJob()
 					closeJob();
 					renderTable();
 			}
-		    });
+		    })
 
+}
+
+function saveUser()
+{
+	
+	data = {};
+	data["account"]     = account;
+        data["first"]       = "mitt"
+        data["last"]        = "miles"
+        data["email"]       = "password"
+	data["company"]     = "President" 
+	data['password']    = $("div[name*=editUserDialog]").find("input[name=resetpassword]").val();
+
+			var hash = CryptoJS.HmacSHA1(account, "");
+			hash = hash.toString(CryptoJS.enc.Base64);	
+
+			$.ajax({
+					headers: {
+						"Content-Type"  : "application/json",
+						"Accept-Type"  : "application/json"
+					},
+					beforeSend: function(xhr) {
+						xhr.setRequestHeader("Content-Type", "application/json");
+						xhr.setRequestHeader("Accept", "application/json");
+						xhr.setRequestHeader("runlater_password", password);
+					     },
+					url: "users/"  ,
+					type: "PUT",
+					data: JSON.stringify(data),
+					contentType: 'application/json',
+					error: function(XMLHttpRequest, textStatus, errorThrown){
+					    console.log(errorThrown);
+					}, success: function(data, textStatus, XMLHttpRequest){
+					    closeUser();
+					}
+				    })
+
+	$("div[name*=editUserDialog]").css('display', 'block');
+	$("div[name*=editUserDialog]").dialog({"width" : "400px", "title" : "Edit User", "modal" : true, "resizable" : false});
 }
 
 function showUserDialog()
@@ -590,8 +629,8 @@ function showUserDialog()
 					    console.log(errorThrown);
 					}, success: function(data, textStatus, XMLHttpRequest){
 					      $('div[name=editUserDialog]').find('input[name=password]').val(password);
-					},
-				    });
+					}
+				    })
 
 	$("div[name*=editUserDialog]").css('display', 'block');
 	$("div[name*=editUserDialog]").dialog({"width" : "400px", "title" : "Edit User", "modal" : true, "resizable" : false});
@@ -622,23 +661,23 @@ function buildMilitaryTime()
 
 function showJobDialog()
 {
-	$("div[name*=addJobDialog]").css('display', 'block');
-	$("div[name*=addJobDialog]").dialog({"width" : "400px", "title" : "Add Job", "modal" : true, "resizable" : false});
-	$('div[name*=addJobDialog]').find('input[name*=time]').val('');
-	$('div[name*=addJobDialog]').find('input[name*=date]').val('');
-	$('div[name*=addJobDialog]').find('input[name*=interval]').val('30');
-	$('div[name*=addJobDialog]').find('input[name*=interval]').val('30');
-	$('div[name*=addJobDialog]').find('textarea[name*=jobTextArea]').val('');
-	$('div[name*=addJobDialog]').find('input[name*=time]').timepicker({ 'timeFormat': 'H:i:s', 'scrollDefaultNow': true });
-	$('div[name*=addJobDialog]').find('input[name*=time]').val(buildMilitaryTime);
-	$('div[name*=addJobDialog]').find('input[name*=date]').datepicker({dateFormat : $.datepicker.ATOM});
-	$('div[name*=addJobDialog]').find('input[name*=date]').datepicker('setDate', new Date());
+	$("div[name=addJobDialog]").css('display', 'block');
+	$("div[name=addJobDialog]").dialog({"width" : "400px", "title" : "Add Job", "modal" : true, "resizable" : false});
+	$('div[name=addJobDialog]').find('input[name=time]').val('');
+	$('div[name=addJobDialog]').find('input[name=date]').val('');
+	$('div[name=addJobDialog]').find('input[name=interval]').val('30');
+	$('div[name=addJobDialog]').find('input[name=interval]').val('30');
+	$('div[name=addJobDialog]').find('textarea[name=jobTextArea]').val('');
+	$('div[name=addJobDialog]').find('input[name=time]').timepicker({ 'timeFormat': 'H:i:s', 'scrollDefaultNow': true });
+	$('div[name=addJobDialog]').find('input[name=time]').val(buildMilitaryTime);
+	$('div[name=addJobDialog]').find('input[name=date]').datepicker({dateFormat : $.datepicker.ATOM});
+	$('div[name=addJobDialog]').find('input[name=date]').datepicker('setDate', new Date());
 
-	$('div[name*=addJobDialog]').find('select[name*=method]').html("");
-	$('div[name*=addJobDialog]').find('select[name*=method]').append(new Option("POST", "POST", true, true));
-	$('div[name*=addJobDialog]').find('select[name*=method]').append(new Option("GET", "GET", false, false));
-	$('div[name*=addJobDialog]').find('select[name*=method]').append(new Option("PUT", "PUT", false, false));
-	$('div[name*=addJobDialog]').find('select[name*=method]').append(new Option("DELETE", "DELETE", false, false));
+	$('div[name=addJobDialog]').find('select[name=method]').html("");
+	$('div[name=addJobDialog]').find('select[name=method]').append(new Option("POST", "POST", true, true));
+	$('div[name=addJobDialog]').find('select[name=method]').append(new Option("GET", "GET", false, false));
+	$('div[name=addJobDialog]').find('select[name=method]').append(new Option("PUT", "PUT", false, false));
+	$('div[name=addJobDialog]').find('select[name=method]').append(new Option("DELETE", "DELETE", false, false));
 }
 
 function showKeysDialog()
@@ -649,7 +688,7 @@ function showKeysDialog()
 					"width"     : "420px",
 				       	"title"     : "Add Keys", 
 					"modal"     : true, 
-					"resizable" : false,
+					"resizable" : false
 				  });
 }
 
@@ -715,7 +754,7 @@ function addUser(username, password, email)
 						alert("User created!");
 						window.location = "interface.html";
 					}
-				    });
+				    })
 }
 
 function signUp(ele)
