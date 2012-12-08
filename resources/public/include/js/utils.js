@@ -573,14 +573,12 @@ function saveUser()
 	
 	data = {};
 	data["account"]     = account;
-        data["first"]       = "mitt"
-        data["last"]        = "miles"
-        data["email"]       = "password"
-	data["company"]     = "President" 
 	data['password']    = $("div[name*=editUserDialog]").find("input[name=resetpassword]").val();
-
-			var hash = CryptoJS.HmacSHA1(account, "");
-			hash = hash.toString(CryptoJS.enc.Base64);	
+	data['_id']         = $("div[name*=editUserDialog]").find("input[name=id]").val();
+	data['first']       = $("div[name*=editUserDialog]").find("input[name=first]").val();
+	data['last']        = $("div[name*=editUserDialog]").find("input[name=last]").val();
+	data['billing']     = {};
+	data['billing']['address'] = $("div[name=editUserDialog]").find('input[name=address]').val();
 
 			$.ajax({
 					headers: {
@@ -590,7 +588,6 @@ function saveUser()
 					beforeSend: function(xhr) {
 						xhr.setRequestHeader("Content-Type", "application/json");
 						xhr.setRequestHeader("Accept", "application/json");
-						xhr.setRequestHeader("runlater_password", password);
 					     },
 					url: "users/"  ,
 					type: "PUT",
@@ -605,6 +602,40 @@ function saveUser()
 
 	$("div[name*=editUserDialog]").css('display', 'block');
 	$("div[name*=editUserDialog]").dialog({"width" : "400px", "title" : "Edit User", "modal" : true, "resizable" : false});
+}
+
+function addUser(username, password, email)
+{
+	data = {};
+	data["account"]  = username
+	data["email"]    = email
+        data["password"] = password
+        data["first"]    = ""
+        data["last"]     = ""
+        data["company"]  = ""
+
+			$.ajax({
+					headers: {
+						"Content-Type" : "application/json",
+						"Accept"       : "application/json"
+					},
+					beforeSend: function(xhr) {
+						xhr.setRequestHeader("Content-Type", "application/json");
+						xhr.setRequestHeader("Accept", "application/json");
+				        },
+					url: "users/",
+					type: "PUT",
+					async: false,
+					contentType: 'application/json',
+					data: JSON.stringify( data ),
+					error: function(XMLHttpRequest, textStatus, errorThrown){
+					    console.log(errorThrown);
+					}, success: function(data, textStatus, XMLHttpRequest){
+						defaultKey();
+						alert("User created!");
+						window.location = "interface.html";
+					}
+				    })
 }
 
 function showUserDialog()
@@ -622,18 +653,28 @@ function showUserDialog()
 						xhr.setRequestHeader("Accept", "application/json");
 						xhr.setRequestHeader("runlater_password", password);
 					     },
-					url: "users/" + account + "/apikeys/" ,
+					url: "users/" + account ,
 					type: "GET",
 					contentType: 'application/json',
 					error: function(XMLHttpRequest, textStatus, errorThrown){
 					    console.log(errorThrown);
 					}, success: function(data, textStatus, XMLHttpRequest){
+					      populateDialog(JSON.parse(XMLHttpRequest.responseText));
 					      $('div[name=editUserDialog]').find('input[name=password]').val(password);
 					}
 				    })
 
 	$("div[name*=editUserDialog]").css('display', 'block');
 	$("div[name*=editUserDialog]").dialog({"width" : "400px", "title" : "Edit User", "modal" : true, "resizable" : false});
+}
+
+function populateDialog(Obj)
+{
+	$("div[name=editUserDialog]").find('input[name=id]').val(Obj["_id"]);
+	$("div[name=editUserDialog]").find('input[name=first]').val(Obj["first"]);
+	$("div[name=editUserDialog]").find('input[name=last]').val(Obj["last"]);
+	$("div[name=editUserDialog]").find('input[name=last]').val(Obj["billing"]["address"]);
+	
 }
 
 function buildMilitaryTime()
@@ -729,32 +770,6 @@ function Logout()
 {
 	del_cookie("runlater_cred");
 	window.location = "interface.html";
-}
-
-function addUser(username, password, email)
-{
-			$.ajax({
-					headers: {
-						"Content-Type" : "application/json",
-						"Accept"       : "application/json"
-					},
-					beforeSend: function(xhr) {
-						xhr.setRequestHeader("Content-Type", "application/json");
-						xhr.setRequestHeader("Accept", "application/json");
-				        },
-					url: "users/",
-					type: "PUT",
-					async: false,
-					contentType: 'application/json',
-					data: JSON.stringify(  { "account" : username, "first" : "mitt", "last" : "miles", "email" : email, "password" : password, "company" : "President" }  ),
-					error: function(XMLHttpRequest, textStatus, errorThrown){
-					    console.log(errorThrown);
-					}, success: function(data, textStatus, XMLHttpRequest){
-						defaultKey();
-						alert("User created!");
-						window.location = "interface.html";
-					}
-				    })
 }
 
 function signUp(ele)
