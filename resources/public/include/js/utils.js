@@ -574,11 +574,14 @@ function saveUser()
 	data = {};
 	data["account"]     = account;
 	data['password']    = $("div[name*=editUserDialog]").find("input[name=resetpassword]").val();
+	data['email']       = $("div[name*=editUserDialog]").find("input[name=email]").val();
 	data['_id']         = $("div[name*=editUserDialog]").find("input[name=id]").val();
 	data['first']       = $("div[name*=editUserDialog]").find("input[name=first]").val();
 	data['last']        = $("div[name*=editUserDialog]").find("input[name=last]").val();
 	data['billing']     = {};
 	data['billing']['address'] = $("div[name=editUserDialog]").find('input[name=address]').val();
+
+	console.log(data);
 
 			$.ajax({
 					headers: {
@@ -671,6 +674,7 @@ function showUserDialog()
 function populateDialog(Obj)
 {
 	$("div[name=editUserDialog]").find('input[name=id]').val(Obj["_id"]);
+	$("div[name=editUserDialog]").find('input[name=email]').val(Obj["email"]);
 	$("div[name=editUserDialog]").find('input[name=first]').val(Obj["first"]);
 	$("div[name=editUserDialog]").find('input[name=last]').val(Obj["last"]);
 	$("div[name=editUserDialog]").find('input[name=last]').val(Obj["billing"]["address"]);
