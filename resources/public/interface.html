@@ -100,42 +100,50 @@
 
 		<div name="addJobDialog" onKeyPress="checkSubmit(event, addJob, 'addJobDialog')" style="display: none;">
 				<div style="text-align: left;padding: 5px;float: left;">
-					Name: <br/>
-					URL:<br/>
-					Method:<br/>
-					Every:<br/>
-					When:<br/>
-					Body:
-				</div>
-				<div style="padding: 5px;float: left;text-align: left;">
-					 <input size='24' name="name" type="text"/><br/>
-					 <input size='24' name="url" type="text"/><br/>
-					 <select name="method">
-						<option value=""></option>
-						<option value="POST">POST</option>
-						<option value="GET">GET</option>
-						<option value="PUT">PUT</option>
-						<option value="DELETE">DELETE</option>
-				         </select></br>
-					 <input size='6' name="interval" type="text"/>
-					 <select name="when">
-						<option value="seconds">seconds</option>
-						<option value="minutes">minutes</option>
-						<option value="hours">hours</option>
-						<option value="days">days</option>
-					</select><br/>
-					<input size='12' name="date" type="text"/>
-					<input size='10' name="time" type="text"/>
-					+<input value="0" size='1' name="tzd" type="text"/>
-					<br/>
-					<textarea name="jobTextArea" id="jobTextArea" rows="3" cols="30">
-						
-					</textarea>
-				  
-				</div>
-				<div align="center" style="clear: both;">
-					<button id="addJobButton">Save</button>
-					<button onclick="javascript:closeJob();">Cancel</button>
+					<table border="0">
+					<tr>
+						<td> Name: </td><td><input size='24' name="name" type="text"/></td>
+					</tr>
+					<tr>
+						<td> URL: </td><td> <input size='24' name="url" type="text"/> </td>
+					</tr>
+					<tr>
+						<td> Method: </td> <td> <select name="method">
+								<option value=""></option>
+								<option value="POST">POST</option>
+								<option value="GET">GET</option>
+								<option value="PUT">PUT</option>
+								<option value="DELETE">DELETE</option>
+								</select> </td>
+					</tr>
+					<tr>
+						<td> When </td>
+						<td><input size='12' name="date" type="text"/>
+						<input size='10' name="time" type="text"/>
+						+<input value="0" size='1' name="tzd" type="text"/></td>
+					</tr>
+					<tr>
+
+						<td> Every: </td>
+						<td> <input size='6' name="interval" type="text"/>   <select name="when">
+							<option value="seconds">seconds</option>
+							<option value="minutes">minutes</option>
+							<option value="hours">hours</option>
+							<option value="days">days</option>
+								</select>
+						</td>
+					</tr>
+					<tr>
+						<td> Body: </td> <td> <textarea name="jobTextArea" id="jobTextArea" rows="3" cols="30"></textarea></td>
+					</tr>
+					<tr>
+					<td colspan="2" align="center">
+							<button id="addJobButton">Save</button>
+							<button onclick="javascript:closeJob();">Cancel</button>
+					</td>
+					</tr>
+					</table>
+					
 				</div>
 
 		</div>
