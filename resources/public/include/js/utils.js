@@ -213,7 +213,7 @@ function getKeys()
 						for (var k in JSON.parse(response))
 						{
 							lookup[k] = JSON.parse(response)[k];
-							$('select[name*=keys]').append(new Option(k, k, true, true));
+							$('select[name*=keys]').append('<option value="'+k+'">'+k+'</option>');
 						}
 						$("select[name*=keys]").html($("option", $("select[name*=keys]")).sort(function(a, b) { 
 						    var arel = $(a).attr('value');
