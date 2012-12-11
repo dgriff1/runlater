@@ -151,14 +151,15 @@
 		</div>
 
 		<div name="loginDialog" onKeyPress="checkSubmit(event, Login, 'loginDialog')" style="display:none;">
-				<div style="text-align: left;padding: 5px;float: left;">
-					Account: <br/>
-					Password:
-				</div>
-				<div style="padding: 5px;float: left;">
-					<input name="account" type="text"/><br/>
-					<input name="password" type="password"/>
-				</div>
+				<table border="0">
+					<tr>
+						<td>Account: </td><td>  <input name="account" type="text"/><br/></td>
+					</tr>
+					<tr>
+						<td>Password: </td><td> <input name="password" type="password"/></td>
+					</tr>
+				</table>
+					
 				<div align="center" style="clear: both;">
 					<button id="loginButton" onclick="javascript:Login();" autofocus="autofocus">Login</button>
 				</div>
