@@ -1,4 +1,7 @@
 
+
+var account;
+var password;
 PASS_PHRASE = "SIMPLEOBSCURE";
 
 $.ajaxSetup ({
@@ -581,8 +584,6 @@ function saveUser()
 	data['billing']     = {};
 	data['billing']['address'] = $("div[name=editUserDialog]").find('input[name=address]').val();
 
-	console.log(data);
-
 			$.ajax({
 					headers: {
 						"Content-Type"  : "application/json",
@@ -592,7 +593,8 @@ function saveUser()
 						xhr.setRequestHeader("Content-Type", "application/json");
 						xhr.setRequestHeader("Accept", "application/json");
 					     },
-					url: "users/"  ,
+					url: "users/",
+					async: false,
 					type: "PUT",
 					data: JSON.stringify(data),
 					contentType: 'application/json',
@@ -760,9 +762,9 @@ function showLoginDialog()
 
 function Login()
 {
-	account  = $("div[name*=loginDialog]").find("[name=account]").val();
-	password = $("div[name*=loginDialog]").find("[name=password]").val();
-	$("div[name*=loginDialog]").dialog('close');
+	account  = $("div[name=loginDialog]").find("[name=account]").val();
+	password = $("div[name=loginDialog]").find("[name=password]").val();
+	$("div[name=loginDialog]").dialog('close');
 	$(".content").show();
 	$("a[id=userLink]").text(account);
 	getKeys();
