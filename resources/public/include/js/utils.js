@@ -721,10 +721,10 @@ function showJobDialog()
 	$('div[name=addJobDialog]').find('input[name=date]').datepicker('setDate', new Date());
 
 	$('div[name=addJobDialog]').find('select[name=method]').html("");
-	$('div[name=addJobDialog]').find('select[name=method]').append(new Option("POST", "POST", true, true));
-	$('div[name=addJobDialog]').find('select[name=method]').append(new Option("GET", "GET", false, false));
-	$('div[name=addJobDialog]').find('select[name=method]').append(new Option("PUT", "PUT", false, false));
-	$('div[name=addJobDialog]').find('select[name=method]').append(new Option("DELETE", "DELETE", false, false));
+	$('div[name=addJobDialog]').find('select[name=method]').append('<option value="POST">POST</option>');
+	$('div[name=addJobDialog]').find('select[name=method]').append('<option value="GET">GET</option>');
+	$('div[name=addJobDialog]').find('select[name=method]').append('<option value="PUT">PUT</option>');
+	$('div[name=addJobDialog]').find('select[name=method]').append('<option value="DELETE">DELETE</option>');
 }
 
 function showKeysDialog()
@@ -836,30 +836,30 @@ function widgetizeButtons()
 				$( "input[type=submit], button" )
 				    .button()
 			    });
-		            $("div[name*=addJobDialog]").find("input[name*=name]").focus(function() {
-			       if($("div[name*=addJobDialog]").find("input[name*=name]").css('background-color') == 'rgb(255, 151, 151)')
+		            $("div[name=addJobDialog]").find("input[name=name]").focus(function() {
+			       if($("div[name=addJobDialog]").find("input[name=name]").css('background-color') == 'rgb(255, 151, 151)')
 			       {
-					$("div[name*=addJobDialog]").find("input[name*=name]").css('background-color', 'white');
-					$("div[name*=addJobDialog]").find("input[name*=name]").val('');
+					$("div[name*=addJobDialog]").find("input[name=name]").css('background-color', 'white');
+					$("div[name*=addJobDialog]").find("input[name=name]").val('');
 			       }     
 			    });
-		            $("div[name*=addJobDialog]").find("input[name*=name]").keyup(function(e) {
+		            $("div[name=addJobDialog]").find("input[name=name]").keyup(function(e) {
 				        nameCleaner(e);
 			    });
-			    $("div[name*=addJobDialog]").find("input[name*=name]").change(function(e) {
+			    $("div[name=addJobDialog]").find("input[name=name]").change(function(e) {
 				        nameCleaner(e);
 			    });
-			    $("div[name*=addKeyDialog]").find("input[name*=keyname]").keyup(function(e) {
+			    $("div[name=addKeyDialog]").find("input[name=keyname]").keyup(function(e) {
 				        nameCleaner(e);
 			    });		
-			     $("div[name*=addJobDialog]").find("button[id*=addJobButton]").click(function(e, enterKeyPressed) {
-					if(e.originalEvent.detail)
+			     $("div[name=addJobDialog]").find("button[id=addJobButton]").click(function(e, enterKeyPressed) {
+					if(e.originalEvent.detail == undefined || e.originalEvent.detail)
 					{
 						addJob();
 					}
 			    });	
-			    $("div[name*=addKeyDialog]").find("button[id*=addKeyButton]").click(function(e, enterKeyPressed) {
-					if(e.originalEvent.detail)
+			    $("div[name=addKeyDialog]").find("button[id=addKeyButton]").click(function(e, enterKeyPressed) {
+					if(e.originalEvent.detaul == undefined || e.originalEvent.detail)
 					{
 						addKey();
 					}
