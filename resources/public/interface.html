@@ -52,14 +52,16 @@
 		</script>
 
 		<div class="logo">
-			<img src="/include/image/runlater-logo.png" alt="logo"/>
+			<div style="float: left;">
+				<img src="/include/image/runlater-logo.png" alt="logo"/>
+			</div>
 			<div name="welcome" class="welcome" style="display:none;">
 				Welcome, <a id="userLink" href="javascript:showUserDialog();">User</a>!
 				<button onclick="javascript:Logout();">Logout</button>
 			</div>		
 		</div>
 
-		<div name="content" class="content" style="display: none;">
+		<div name="content" class="content" style="clear: both;display: none;">
 
 		<div name="toolbar" class="toolbar" style="clear: both;float: left;display:none;">
 			<button id="addJobButton" onclick="javascript:showJobDialog();">Add Job</button>
