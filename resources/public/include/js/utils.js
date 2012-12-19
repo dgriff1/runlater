@@ -36,6 +36,18 @@ function getAttributeByName(obj, index){
   return null;
 }
 
+function buildTable(data)
+{
+	if(showing)
+	{
+		buildLogTable(data);
+	}
+	else
+	{
+		buildJobTable(data);
+	}
+}
+
 function renderTable()
 {
 	$("a[id=userLink]").text(account);
@@ -305,7 +317,7 @@ function renderJobs()
 		    console.log(errorThrown);
 		}, success: function(data, textStatus, XMLHttpRequest){
 				response = XMLHttpRequest.responseText;
-				buildJobTable(JSON.parse(response));
+				buildTable(JSON.parse(response));
 		}
 	})
 }
@@ -340,7 +352,7 @@ function renderLogs()
 		    console.log(errorThrown);
 		}, success: function(data, textStatus, XMLHttpRequest){
 				response = XMLHttpRequest.responseText;
-				buildLogTable(JSON.parse(response));
+				buildTable(JSON.parse(response));
 		}
 	})
 }
@@ -573,7 +585,6 @@ function addJob()
 
 function saveUser()
 {
-	
 	data = {};
 	data["account"]     = account;
 	data['password']    = $("div[name*=editUserDialog]").find("input[name=resetpassword]").val();
@@ -594,13 +605,13 @@ function saveUser()
 						xhr.setRequestHeader("Accept", "application/json");
 					     },
 					url: "users/",
-					async: false,
 					type: "PUT",
-					data: JSON.stringify(data),
+					data: data,
 					contentType: 'application/json',
 					error: function(XMLHttpRequest, textStatus, errorThrown){
 					    console.log(errorThrown);
 					}, success: function(data, textStatus, XMLHttpRequest){
+					    password = data['password'];
 					    closeUser();
 					}
 				    })
