@@ -24,12 +24,11 @@
 				<div id="topnav">
 					<div id="topmenu-leftbg"></div>
 					<div id="topmenu">
-						<ul id="menu-main" class="superfish nav"><li class="current_page_item"><a href="http://www.runlater.com" id="homelink"><span>Home</span></a></li>
-<li id="" class="menu-item menu-item-type-custom"><a href="/howitworks.html">How it Works</a></li>
-<li id="" class="menu-item menu-item-type-custom"><a href="/pricing.html">Pricing</a></li>
-<li id="last-white" class="menu-item menu-item-type-custom"><a href="/support.html">Support</a></li>
-<li id="yellow" class="menu-item menu-item-type-custom"><a href="/newuser.html">Join Today</a></li>
-<li id="yellow2" class="menu-item menu-item-type-custom"><a href="/login">Log in</a></li>
+						<ul id="menu-main" class="superfish nav">
+							<li class=""><a href="/" >Features</a></li>
+							<li id="last-white" class="menu-item menu-item-type-custom current_page_item"><a href="/support.html">Support</a></li>
+							<li id="yellow" class="menu-item menu-item-type-custom"><a href="/newuser.html">Join Today</a></li>
+							<li id="yellow2" class="menu-item menu-item-type-custom"><a href="/login">Log in</a></li>
 <div id="topmenu-rightbg"></div>
 </ul>																	
 				  </div> <!-- end #topmenu -->
@@ -39,107 +38,182 @@
 	</div> <!-- end #header-wrapper -->	
 
 
+<div id="content">
+<div id="content-wrap">
+<div class="container clearfix" style="background-color: #e7e9eb;" >
 
-	<!-- HEY DAN CONTENT HERE TILL OTHER COMMENT -->
-
-
-
-
-	<div id="content">
-		<div id="content-wrap">
-			<div class="container clearfix" style="background-color: #e7e9eb;" >
-				<div id="content-left">
-					<div id="featured-wrap">
-						<div id="featured">			
-							<div class="slide clearfix">
-				<h2 class="title"><a href="" title="Permanent Link to Spend less time scheduling tasks in your App">Add a sense of Time to your Application</a></h2>
-				<!-- <h2 class="title"><a href="" title="Permanent Link to Spend less time scheduling tasks in your App">Spend less time scheduling tasks in your app</a></h2> -->
-				
-				<a href="" title="Permanent Link to Spend less time scheduling tasks in your app">
-					<img src="include/image/featuretab-image.jpg" class='thumbnail alignleft'  alt='Spend less time scheduling tasks in your app' />				</a>
-				
-				<p>
-					<ul style="padding-left: 0;padding-top: 0;margin-top: 0;color:black;">
-						<li>Program the task in your application</li>
-						<li>Create a task in <span>runlater</span> that calls your application on a schedule</li>
-						<li><span>runlater</span> runs your task and logs the result</li>
-						<li><span>runlater</span> reschedules your task</li>
-					</ul>
-</p>  
-			</div> <!-- end .slide -->
-			
-					
-			<div class="slide clearfix">
-				<h2 class="title"><a href="" title="Permanent Link to "></a></h2>
-				
-				<a href="" title="Permanent Link to ">
-					<img src="" class='thumbnail alignleft'  alt='' width='140' height='140' />				</a>
-				
-				<p></p>
-			</div> <!-- end .slide -->
-			
-					
-			<div class="slide clearfix">
-				<h2 class="title"><a href="" title="Permanent Link to "></a></h2>
-				
-				<a href="" title="Permanent Link to ">
-					<img src="" class='thumbnail alignleft'  alt='' width='140' height='140' />				</a>
-				
-				<p></p>
-			</div> <!-- end .slide -->
-			
-			</div> <!-- end #featured -->
-</div> <!-- end #featured-wrap -->	
-		
-		<div id="services" class="clearfix">
-			
-			<div class="service">
-			  <img class="icon" src="include/image/icon-automate.jpg" alt="" />
-										
-		<h3 class="title"><a href="">Automate any task</a></h3>
+<div id="featured-wrap">
+<div id="featured">
+<div class="slide clearfix" style="color:black;padding-bottom:2em;">
 
 
-		<p>
-			Almost every application requires periodic tasks, anything from triggering backups to scheduling as a feature. With <span>runlater</span> you can let us do the scheduling while you focus on your application.
-		</p>
+<br />
+
+<h2 class="title">RunLater Pricing</h2><br />
+<span>RunLater</span> is currently in beta and free for all users. <br />
+<br />
+We reserve the option to charge for our service at any point. <br />
+<br />  
+Tentative Pricing: <br /><br />
+<ul style="color:black">
+<li>$20.00 Per Month</li>
+<li>1,000 Logs Per Month</li>
+<li>Custom Installations and Unlimited Subscriptions Available</li>
+</ul> <br /><br />
 
 
-	</div> <!-- end .service -->
-			
-			<div class="service even">
-										
-              <img class="icon" src="include/image/icon-anylanguage.jpg" alt="" />
-			
-<h3 class="title"><a href="">Use any language</a></h3>
+<h2 class="title">How RunLater Works </h2><br />
 
-<p><span>runlater</span> is language agnostic. All tasks are submitted <span>runlater</span> over HTTP+SSL and all tasks are executed over HTTP(with SSL if specified). </p><br />
+Getting set up with RunLater is easy, below is a tutorial about creating Jobs using Python. <br /><br />
 
-			</div> <!-- end .service -->
-			
-			<div class="service lastrow">
-            <img class="icon" src="include/image/icon-errorhandling.jpg" alt="" />
-													
-<h3 class="title"><a href="">Error handling</a></h3>
 
-<p>Every time a task is run we store a log with the entire HTTP response, allowing you to keep track of success and failures</p>
+<h3 class="title">Getting Set Up</h3><br />
+Each organization that uses RunLater will have 1 user account and multiple API accounts. <br />
 
-							</div> <!-- end .service -->
-			
-			<div class="service even lastrow">
-            <img class="icon" src="include/image/icon-frontend.jpg" alt="" />
-													
-<h3 class="title"><a href="">Front End and REST API</a></h3>
+The user account consists of a username and password. Using it you can generate API accounts consisting of a key pair and a name. <br />
+Joe's Widgets might consist of: <br />
 
-<p>Use the web front-end to create API keys, view logs and even schedule tasks. Use the REST API to submit Jobs and view Logs.</p>
+User Account: <br />
+<pre>
+{ <br />
+	account: "joes_web_app"
+	email: "joe@joeswidgets.com" 
+	passwod: (hashed) 
+	address: "123 Fake Street" 
+	state: "Colorado"  
+	country: "USA"
+	postal: "80301" 
+} </pre> <br />
 
-							</div> <!-- end .service -->	
-			
-		</div> <!-- end #services -->
-	
-						  
-	</div> <!-- end #content-left -->
+API Accounts: <br />
+
+You should create API accounts for each set of tasks. <br />
+If you are exposing scheduling for each user you should create an API account for that user. <br />
+You should create an account for any special processes such as backups, or billing. <br />
+<pre>
+{ <br />
+	key: "production" 
+	secret: "62456bc123edf" 
+} <br />
+{ <br />
+	key: "backup"  
+	secret: "b123c123edf" 
+}</pre>  <br />
+<br />
+<h3 class="title">How to Create a Job</h3><br />
+Each Job is submitted using the api key, api secret and account name. The api key is specified in the header and the secret is used to compute the HMAC of the body. The account name is embedded in the URL. With these 3 pieces of data and our SSL encryption your data is secure.  <br />
+<br />
+For example, using the above account we can create a job like so: <br />
+<br />
+<pre> PUT to /users/joes_web_app/jobs/ </pre> <br />
+with headers  <br />
+<pre>
+{ <br />  
+	"runlater_key" : "backup", 
+	"runlater_hash" : base64(hmac(secret, body)),  
+	"Content-Type" : "application/json" 
+}</pre>  <br />
+and a JSON body  of <br />
+<pre>
+	{ <br />
+            "name" : "trigger backup" 
+            "when" : "2013-09-08T06:15:42.215Z", 
+            "interval" : "1 day", 
+            "url" : "http://joeswebapp.com/processes/backup"
+            "method" : "POST", 
+            "headers" : {  "authid" : 123456 }", 
+   	} <br />
+</pre>
+<br />
+<br />
+Certain API actions don't have bodies, in which case you will hash the URL. <br />
+<pre>DELETE to /users/joes_web_app/jobs/50c2d4b33004a1f2abfaea10 </pre> <br />
+with headers  <br />
+<pre> 
+{  <br />
+	"runlater_key" : "backup",
+	"runlater_hash" : base64(hmac(secret,"/users/joes_web_app/jobs/50c2d4b33004a1f2abfaea10" )),  
+	"Content-Type" : "application/json" 
+} </pre>  <br />
+<br />
+
+<h3 class="title">Using Python </h3> <br />
+For your convenience we have written a python helper and a ruby helper. <br />
+ <br />
+The Python wrapper is available here:  <br />
+ <br />
+To use it simply import it.   <br />
+ <br />
+<pre>import runlater </pre> <br />
+ <br />
+and using your account name, public and private key create a server connection.  <br />
+ <br />
+<pre>Server = runlater.ServerConnection( AccountName, APIPublicKey, APIPrivateKey) </pre>  <br />
+ <br />
+The Server has a number of methods for working with Jobs and Logs.   <br />
+ <br />
+For example to create a Job  <br />
+<pre> job = Server.createJob("Daily Backup", "2012-09-08T06:15:42.215Z", "", { "hours" : 2 }, "http://google.com", "POST", {})</pre>   <br />
+ <br />
+or using the string syntax for specifying interval  <br />
+ <br />
+<pre>job = Server.createJob("Daily Backup", "2012-09-08T06:15:42.215Z", "", "2 hours",  "http://myapp.com/processes/backup", "POST", {}) </pre> <br />
+ <br />
+The returned job has a type of runlater.Job   <br />
+ <br />
+We can edit the job by changing it's members  <br />
+ <br />
+<pre>job.url = "http://myapp.com/processes/newbackup"  <br />
+job = Server.updateJob(job)  </pre> <br />
+ <br />
+Here is a quick rundown of each method  <br />
+
+<pre># Get a list of all Jobs for this API Key  <br />
+ServerConnection.viewJobs() </pre> <br />
+ <br />
+<pre># Find a specific Job based by it's unique identifier  <br />
+ServerConnection.viewJob(jobid)  </pre> <br />
+ <br />
+<pre># Create a Job  <br />
+ServerConnection.createJob(name, when, body, interval, url, method, headers ) </pre> <br />
+ <br />
+<pre># Delete a Job  (Job must be a runlater.Job object)  <br />
+ServerConnection.deleteJob(job)  </pre> <br />
+ <br />
+# Get all Logs  <br />
+<pre> ServerConnection.getLogs()  </pre> <br />
+
+
+<br />
+<h3 class="title">The REST End Points</h3><br />
+Below are the URL's related to Jobs and Logs. <br />
+<br />
+
+Create a Job <br />
+<pre> PUT "/users/:account/jobs/" </pre> <br />
+
+Get all the Jobs for an API Key  <br />
+<pre> GET "/users/:account/apikey/:apikey/jobs/" </pre> <br />
+
+Get a specific Job <br />
+<pre> GET "/users/:account/jobs/:jobid" </pre> <br />
+
+Update a specific Job <br />
+<pre> PUT "/users/:account/jobs/:jobid" </pre> <br />
+
+Delete that Job <br />
+<pre> DELETE "/users/:account/jobs/:jobid" </pre> <br />
+
+View logs <br />
+<pre> GET "/users/:account/logs/:apikey" </pre> <br />
+
 	
 	</div> 
+	</div> 
+	</div> 
+	</div>
+	</div> 
+	</div>
 
 	
 
@@ -160,7 +234,7 @@
 
 	<div id="footer-copyright" class="clearfix">
 		<div class="container">
-			<p id="copyright">Designed by  <a href="http://www.keithportman.com" title="Elegant Themes">Keith Jared Portman</a> | © 2012 <span style="color:#FFCC00;">runlater.com</span></p>
+			<p id="copyright"><span> Copyright Hux Software 2013</span></p>
 		</div> <!-- end .container -->	
 	</div> <!-- end #footer-copyright -->
  
