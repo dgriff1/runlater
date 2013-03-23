@@ -594,17 +594,20 @@ function saveUser()
 	data['last']        = $("div[name*=editUserDialog]").find("input[name=last]").val();
 	data['billing']     = {};
 	data['billing']['address'] = $("div[name=editUserDialog]").find('input[name=address]').val();
+	console.log(data);
 
 			$.ajax({
 					headers: {
 						"Content-Type"  : "application/json",
-						"Accept-Type"  : "application/json"
+						"Accept-Type"  : "application/json",
+				                "runlater_password"  : password,
 					},
 					beforeSend: function(xhr) {
 						xhr.setRequestHeader("Content-Type", "application/json");
 						xhr.setRequestHeader("Accept", "application/json");
+				                xhr.setRequestHeader("runlater_password", password);
 					     },
-					url: "users/",
+					url: "users/" + account,
 					type: "PUT",
 					data: data,
 					contentType: 'application/json',
@@ -686,12 +689,15 @@ function showUserDialog()
 
 function populateDialog(Obj)
 {
+	console.log(Obj);
 	$("div[name=editUserDialog]").find('input[name=id]').val(Obj["_id"]);
 	$("div[name=editUserDialog]").find('input[name=email]').val(Obj["email"]);
 	$("div[name=editUserDialog]").find('input[name=first]').val(Obj["first"]);
 	$("div[name=editUserDialog]").find('input[name=last]').val(Obj["last"]);
-	$("div[name=editUserDialog]").find('input[name=last]').val(Obj["billing"]["address"]);
-	
+	if(Obj.hasOwnProperty("billing") && Obj["billing"].indexOf("address"))
+	{
+		$("div[name=editUserDialog]").find('input[name=last]').val(Obj["billing"]["address"]);
+	}
 }
 
 function buildMilitaryTime()
