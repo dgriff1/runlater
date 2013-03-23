@@ -587,14 +587,11 @@ function saveUser()
 {
 	data = {};
 	data["account"]     = account;
-	data['password']    = $("div[name*=editUserDialog]").find("input[name=resetpassword]").val();
+	data["password"]    = password;
 	data['email']       = $("div[name*=editUserDialog]").find("input[name=email]").val();
 	data['_id']         = $("div[name*=editUserDialog]").find("input[name=id]").val();
 	data['first']       = $("div[name*=editUserDialog]").find("input[name=first]").val();
 	data['last']        = $("div[name*=editUserDialog]").find("input[name=last]").val();
-	data['billing']     = {};
-	data['billing']['address'] = $("div[name=editUserDialog]").find('input[name=address]').val();
-	console.log(data);
 
 			$.ajax({
 					headers: {
@@ -609,12 +606,11 @@ function saveUser()
 					     },
 					url: "users/" + account,
 					type: "PUT",
-					data: data,
+					data: JSON.stringify(data),
 					contentType: 'application/json',
 					error: function(XMLHttpRequest, textStatus, errorThrown){
 					    console.log(errorThrown);
 					}, success: function(data, textStatus, XMLHttpRequest){
-					    password = data['password'];
 					    closeUser();
 					}
 				    })
@@ -689,7 +685,6 @@ function showUserDialog()
 
 function populateDialog(Obj)
 {
-	console.log(Obj);
 	$("div[name=editUserDialog]").find('input[name=id]').val(Obj["_id"]);
 	$("div[name=editUserDialog]").find('input[name=email]').val(Obj["email"]);
 	$("div[name=editUserDialog]").find('input[name=first]').val(Obj["first"]);

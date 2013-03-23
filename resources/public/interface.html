@@ -169,18 +169,16 @@
 		<div name="editUserDialog" onKeyPress="checkSubmit(event, Login, 'editUserDialog')" style="display:none;">
 				<div style="text-align: left;padding: 5px;float: left;">
 					Name: <br/>
-					Password:<br/>
-					Address:<br/>
 					Email:
 				</div>
 				<div style="padding: 5px;float: left;text-align: left;">
 					 <input size='10' name="first" type="text"/><input size='10' name="last" type="text"/><br/>
-					 <input size='24' name="resetpassword" type="password"/><br/>
-					 <input size='24' name="address" type="text"/><br/>
 					 <input size='24' name="email" type="text"/>
 					 <input size='24' name="id" type="hidden"/>
 				  
-				</div>
+				 </div>
+				 <div>
+					 <div style="line-height: 20px;font-size: 0.8em;"><span style="color: red;">*</span><i>Note: To change your password please email <a href="mailto:support@runlater.com">support@runlater.com</a></i></div>
 				<div align="center" style="clear: both;">
 					<button onclick="javascruot:saveUser();" id="saveUserButton">Save</button>
 					<button onclick="javascript:closeUser();">Cancel</button>
