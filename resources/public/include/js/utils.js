@@ -790,6 +790,11 @@ function Logout()
 	window.location = "interface.html";
 }
 
+function fnCheckString(str){
+    var re=/[0-9a-zA-Z]/;
+    return re.test(str);
+}
+
 function signUp(ele)
 {
 	account  = $("input[name*=account]").val();
@@ -797,7 +802,8 @@ function signUp(ele)
 	email    = $("input[name*=email]").val();
 
 	back = true;
-	if(account.length < 1 || account.indexOf(' ') != -1)
+
+	if(!fnCheckString(account) || account.length < 1 || account.indexOf(' ') != -1)
 	{
 		$("input[name*=account]").css('background-color', 'red');
 		back = false;
