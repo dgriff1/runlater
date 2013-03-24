@@ -647,7 +647,6 @@ function addUser(username, password, email)
 					    console.log(errorThrown);
 					}, success: function(data, textStatus, XMLHttpRequest){
 						defaultKey();
-						alert("User created!");
 						window.location = "interface.html";
 					}
 				    })
@@ -797,7 +796,7 @@ function signUp(ele)
 	email    = $("input[name*=email]").val();
 
 	back = true;
-	if(account.length < 1)
+	if(account.length < 1 || account.indexOf(' '))
 	{
 		$("input[name*=account]").css('background-color', 'red');
 		back = false;
@@ -818,7 +817,6 @@ function signUp(ele)
 		return;
 	}
 	addUser(account, password, email);
-
 }
 
 function nameCleaner(e)
