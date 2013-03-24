@@ -315,6 +315,7 @@ function renderJobs()
 		type: "GET",
 		error: function(XMLHttpRequest, textStatus, errorThrown){
 		    console.log(errorThrown);
+		    Logout();
 		}, success: function(data, textStatus, XMLHttpRequest){
 				response = XMLHttpRequest.responseText;
 				buildTable(JSON.parse(response));
@@ -796,7 +797,7 @@ function signUp(ele)
 	email    = $("input[name*=email]").val();
 
 	back = true;
-	if(account.length < 1 || account.indexOf(' '))
+	if(account.length < 1 || account.indexOf(' ') != -1)
 	{
 		$("input[name*=account]").css('background-color', 'red');
 		back = false;
