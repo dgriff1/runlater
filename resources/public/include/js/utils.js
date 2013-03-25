@@ -157,6 +157,7 @@ function defaultKey()
 						updateStatus("Key " + name + " added.");
 						closeKey();
 						getKeys();
+						window.location = "interface.html";
 					}
 				    })
 }
@@ -294,7 +295,10 @@ function renderJobs()
 {
 	publicKey = $("select[name*=keys]").val();
 	privateKey = lookup[privateKey = $("select[name*=keys]").val()];
-	
+
+        if( publicKey == undefined) {
+		defaultKey();
+	}
 	URL = "/users/" + account + "/apikey/" + publicKey + "/jobs/";
 
 	var hash = CryptoJS.HmacSHA1(URL, privateKey);
@@ -648,7 +652,6 @@ function addUser(username, password, email)
 					    console.log(errorThrown);
 					}, success: function(data, textStatus, XMLHttpRequest){
 						defaultKey();
-						window.location = "interface.html";
 					}
 				    })
 }
