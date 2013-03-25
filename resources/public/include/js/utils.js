@@ -651,6 +651,8 @@ function addUser(username, password, email)
 					error: function(XMLHttpRequest, textStatus, errorThrown){
 					    console.log(errorThrown);
 					}, success: function(data, textStatus, XMLHttpRequest){
+						pass = CryptoJS.AES.encrypt(password, PASS_PHRASE);
+						setCookie('runlater_cred','{"account" : "'+account+'", "password" : "'+pass+'", "showing" : '+showing+'}',1);
 						defaultKey();
 					}
 				    })
