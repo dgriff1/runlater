@@ -729,8 +729,7 @@ function showJobDialog()
 	$("div[name=addJobDialog]").dialog({"width" : "400px", "title" : "Add Job", "modal" : true, "resizable" : false});
 	$('div[name=addJobDialog]').find('input[name=time]').val('');
 	$('div[name=addJobDialog]').find('input[name=date]').val('');
-	$('div[name=addJobDialog]').find('input[name=interval]').val('30');
-	$('div[name=addJobDialog]').find('input[name=interval]').val('30');
+	$('div[name=addJobDialog]').find('input[name=interval]').val('0');
 	$('div[name=addJobDialog]').find('textarea[name=jobTextArea]').val('');
 	$('div[name=addJobDialog]').find('input[name=time]').timepicker({ 'timeFormat': 'H:i:s', 'scrollDefaultNow': true });
 	$('div[name=addJobDialog]').find('input[name=time]').val(buildMilitaryTime);
