@@ -1,28 +1,22 @@
 
-
-var account;
-var password;
-PASS_PHRASE = "SIMPLEOBSCURE";
-
 $.ajaxSetup ({
     // Disable caching of AJAX responses
     cache: false
 });
-
 
 var lookup = {};
 var showing = 0;
 selectedJobs = [];
 
 function getAttributeByIndex(obj, index){
-  var i = 0;
-  for (var attr in obj){
-    if (index === i){
-      return obj[attr];
-    }
-    i++;
-  }
-  return null;
+	var i = 0;
+	for (var attr in obj){
+	  if (index === i){
+	    return obj[attr];
+	  }
+	  i++;
+	}
+	return null;
 }
 
 function getAttributeByName(obj, index){
@@ -107,59 +101,59 @@ function checkall()
 
 function addKey()
 {
-			var hash = CryptoJS.HmacSHA1(account, "");
-			hash = hash.toString(CryptoJS.enc.Base64);	
+	var hash = CryptoJS.HmacSHA1(account, "");
+	hash = hash.toString(CryptoJS.enc.Base64);	
 
-			$.ajax({
-					headers: {
-						"Content-Type"  : "application/json",
-						"Accept-Type"  : "application/json"
-					},
-					beforeSend: function(xhr) {
-						xhr.setRequestHeader("Content-Type", "application/json");
-						xhr.setRequestHeader("Accept", "application/json");
-						xhr.setRequestHeader("runlater_password", password);
-					     },
-					url: "users/" + account + "/apikeys/" + $("div[name*=addKeyDialog]").find("[name*=keyname]").val(),
-					type: "PUT",
-					contentType: 'application/json',
-					error: function(XMLHttpRequest, textStatus, errorThrown){
-					    console.log(errorThrown);
-					}, success: function(data, textStatus, XMLHttpRequest){
-						updateStatus("Key " + name + " added.");
-						closeKey();
-						getKeys();
-					}
-				    })
+	$.ajax({
+		headers: {
+			"Content-Type"  : "application/json",
+			"Accept-Type"  : "application/json"
+		},
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Content-Type", "application/json");
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("runlater_password", password);
+		     },
+		url: "users/" + account + "/apikeys/" + $("div[name*=addKeyDialog]").find("[name*=keyname]").val(),
+		type: "PUT",
+		contentType: 'application/json',
+		error: function(XMLHttpRequest, textStatus, errorThrown){
+		    console.log(errorThrown);
+		}, success: function(data, textStatus, XMLHttpRequest){
+			updateStatus("Key " + name + " added.");
+			closeKey();
+			getKeys();
+		}
+	});
 }
 
 function defaultKey()
 {
-			var hash = CryptoJS.HmacSHA1(account, "");
-			hash = hash.toString(CryptoJS.enc.Base64);	
+	var hash = CryptoJS.HmacSHA1(account, "");
+	hash = hash.toString(CryptoJS.enc.Base64);	
 
-			$.ajax({
-					headers: {
-						"Content-Type"  : "application/json",
-						"Accept-Type"  : "application/json"
-					},
-					beforeSend: function(xhr) {
-						xhr.setRequestHeader("Content-Type", "application/json");
-						xhr.setRequestHeader("Accept", "application/json");
-						xhr.setRequestHeader("runlater_password", password);
-					     },
-					url: "users/" + account + "/apikeys/" + 'default',
-					type: "PUT",
-					contentType: 'application/json',
-					error: function(XMLHttpRequest, textStatus, errorThrown){
-					    console.log(errorThrown);
-					}, success: function(data, textStatus, XMLHttpRequest){
-						updateStatus("Key " + name + " added.");
-						closeKey();
-						getKeys();
-						window.location = "interface.html";
-					}
-				    })
+	$.ajax({
+		headers: {
+			"Content-Type"  : "application/json",
+			"Accept-Type"  : "application/json"
+		},
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Content-Type", "application/json");
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("runlater_password", password);
+		     },
+		url: "users/" + account + "/apikeys/" + 'default',
+		type: "PUT",
+		contentType: 'application/json',
+		error: function(XMLHttpRequest, textStatus, errorThrown){
+		    console.log(errorThrown);
+		}, success: function(data, textStatus, XMLHttpRequest){
+			updateStatus("Key " + name + " added.");
+			closeKey();
+			getKeys();
+			window.location = "interface.html";
+		}
+	});
 }
 
 function deleteSelectedKey()
@@ -179,68 +173,68 @@ function deleteSelectedKey()
 	hash = hash.toString(CryptoJS.enc.Base64);	
 
 	$.ajax({
-			headers: {
-				"Content-Type"  : "application/json",
-				"Accept-Type"  : "application/json"
-			},
-			beforeSend: function(xhr) {
-				xhr.setRequestHeader("Content-Type", "application/json");
-				xhr.setRequestHeader("Accept", "application/json");
-				xhr.setRequestHeader("runlater_password", password);
-			     },
-			url: "users/" + account + "/apikeys/" + keyToRemove,
-			type: "DELETE",
-			contentType: 'application/json',
-			error: function(XMLHttpRequest, textStatus, errorThrown){
-			    console.log(errorThrown);
-			}, success: function(data, textStatus, XMLHttpRequest){
-				updateStatus("Key " + name + " deleted.");
-				getKeys();
-			}
-		    })
+		headers: {
+			"Content-Type"  : "application/json",
+			"Accept-Type"  : "application/json"
+		},
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Content-Type", "application/json");
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("runlater_password", password);
+		     },
+		url: "users/" + account + "/apikeys/" + keyToRemove,
+		type: "DELETE",
+		contentType: 'application/json',
+		error: function(XMLHttpRequest, textStatus, errorThrown){
+		    console.log(errorThrown);
+		}, success: function(data, textStatus, XMLHttpRequest){
+			updateStatus("Key " + name + " deleted.");
+			getKeys();
+		}
+	});
 }
 
 function getKeys()
 {
 
-			$.ajax({
-					headers: {
-						"Content-Type"  : "application/json",
-						"Accept-Type"  : "application/json"
-					},
-					beforeSend: function(xhr) {
-						xhr.setRequestHeader("Content-Type", "application/json");
-						xhr.setRequestHeader("Accept", "application/json");
-						xhr.setRequestHeader("runlater_password", password);
-					     },
-					url: "users/" + account + "/apikeys/",
-					type: "GET",
-					contentType: 'application/json',
-					error: function(XMLHttpRequest, textStatus, errorThrown){
-					    showLoginDialog();
-					    console.log(errorThrown);
-					}, success: function(data, textStatus, XMLHttpRequest){
-						response = XMLHttpRequest.responseText;
-						lookup = {};
-						$('select[name*=keys]').children().remove();
-						for (var k in JSON.parse(response))
-						{
-							lookup[k] = JSON.parse(response)[k];
-							$('select[name*=keys]').append('<option value="'+k+'">'+k+'</option>');
-						}
-						$("select[name*=keys]").html($("option", $("select[name*=keys]")).sort(function(a, b) { 
-						    var arel = $(a).attr('value');
-						    var brel = $(b).attr('value');
-						    return arel == brel ? 0 : arel < brel ? -1 : 1 
-						}));
-						if(getCookie("runlater_cred"))
-						{
-							cred = JSON.parse(getCookie("runlater_cred"));
-							$("select[name*=keys]").val(cred["keyPos"]);
-						}
-						renderTable();
-					}
-				    })
+	$.ajax({
+		headers: {
+			"Content-Type"  : "application/json",
+			"Accept-Type"  : "application/json"
+		},
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Content-Type", "application/json");
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("runlater_password", password);
+		     },
+		url: "users/" + account + "/apikeys/",
+		type: "GET",
+		contentType: 'application/json',
+		error: function(XMLHttpRequest, textStatus, errorThrown){
+		    showLoginDialog();
+		    console.log(errorThrown);
+		}, success: function(data, textStatus, XMLHttpRequest){
+			response = XMLHttpRequest.responseText;
+			lookup = {};
+			$('select[name*=keys]').children().remove();
+			for (var k in JSON.parse(response))
+			{
+				lookup[k] = JSON.parse(response)[k];
+				$('select[name*=keys]').append('<option value="'+k+'">'+k+'</option>');
+			}
+			$("select[name*=keys]").html($("option", $("select[name*=keys]")).sort(function(a, b) { 
+			    var arel = $(a).attr('value');
+			    var brel = $(b).attr('value');
+			    return arel == brel ? 0 : arel < brel ? -1 : 1 
+			}));
+			if(getCookie("runlater_cred"))
+			{
+				cred = JSON.parse(getCookie("runlater_cred"));
+				$("select[name*=keys]").val(cred["keyPos"]);
+			}
+			renderTable();
+		}
+	});
 }
 
 function keySwitch(ele)
@@ -379,20 +373,31 @@ function SortByName(a, b){
 }
 
 function SortByBegan(a, b){
-  var aName = a.began.toLowerCase();
-  var bName = b.began.toLowerCase(); 
-  return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+	var aName = a.began.toLowerCase();
+	var bName = b.began.toLowerCase(); 
+	return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+}
+
+function contentBlock() {
+	$(".content").block({ 
+                message: '<h2>Loading...</h2><img src="/include/image/ajax-loader.gif"><br>', 
+                css: { border: '2px solid #124585' } 
+        }); 
+}
+
+function contentUnblock() {
+	$(".content").unblock();
 }
 
 function logLoading()
 {
 	$('table[class=tablesorter]').html("");
 	$('button[id*=addJobButton]').attr('disabled', true);
+	$('button[id*=addJobButton]').css('color', 'gray');
 	$('button[id*=jobDeleteButton]').hide();
 	$("div[name*=toolbar]").show();
 	$("div[name*=welcome]").show();
-	$(".loading").show();
-
+	contentBlock();
 }
 
 function buildLogTable(objResults)
@@ -433,7 +438,7 @@ function buildLogTable(objResults)
 		table+="No Logs"
 	}
 
-	$(".loading").hide();
+	contentUnblock();
 	$(".tableWrapper").html( table );	
 
 	$("#logsTable").tablesorter(); 
@@ -443,6 +448,7 @@ function buildLogTable(objResults)
 function buildJobTable(objResults)
 {
 	$('button[id*=addJobButton]').attr('disabled', false);
+	$('button[id*=addJobButton]').css('color', 'rgb(46, 110, 158)');
 
 	selectedJobs = [];
 	textJobs     = {};
@@ -452,7 +458,7 @@ function buildJobTable(objResults)
 
 	$("div[name*=toolbar]").show();
 	$("div[name*=welcome]").show();
-	$(".loading").show();
+	contentBlock();
 
 	var table='<table CELLPADDING=0 CELLSPACING=0 BORDER=0 style="background-color: #FFFFFF;" class="tablesorter" id="jobsTable" name="jobsTable">';
 
@@ -490,7 +496,7 @@ function buildJobTable(objResults)
 		table+="No Jobs"
 	}
 
-	$(".loading").hide();
+	contentUnblock();
 	$(".tableWrapper").html( table );	
 
 	$("#jobsTable").tablesorter(); 
@@ -559,33 +565,32 @@ function addJob()
 	hash = hash.toString(CryptoJS.enc.Base64);	
 
 	$.ajax({
-			headers: {
-				"runlater_key"       : publicKey,
-				"runlater_password"  : password,
-				"runlater_hash"      : hash,
-				"Content-Type"       : "application/json"
-			},
-			beforeSend: function(xhr) {
-				xhr.setRequestHeader("Content-Type", "application/json");
-				xhr.setRequestHeader("Accept", "application/json");
-				xhr.setRequestHeader("runlater_password", password);
-				xhr.setRequestHeader("runlater_key", publicKey);
-				xhr.setRequestHeader("runlater_hash", hash);
-			     },
-			url: "users/" + account + "/jobs/",
-			type: "PUT",
-			data: data,
-			dataType: "json",
-			contentType: 'application/json',
-			error: function(XMLHttpRequest, textStatus, errorThrown){
-			    console.log(errorThrown);
-			}, success: function(data, textStatus, XMLHttpRequest){
-					updateStatus("Job " + name + " added.");
-					closeJob();
-					renderTable();
-			}
-		    })
-
+		headers: {
+			"runlater_key"       : publicKey,
+			"runlater_password"  : password,
+			"runlater_hash"      : hash,
+			"Content-Type"       : "application/json"
+		},
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Content-Type", "application/json");
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("runlater_password", password);
+			xhr.setRequestHeader("runlater_key", publicKey);
+			xhr.setRequestHeader("runlater_hash", hash);
+		     },
+		url: "users/" + account + "/jobs/",
+		type: "PUT",
+		data: data,
+		dataType: "json",
+		contentType: 'application/json',
+		error: function(XMLHttpRequest, textStatus, errorThrown){
+		    console.log(errorThrown);
+		}, success: function(data, textStatus, XMLHttpRequest){
+				updateStatus("Job " + name + " added.");
+				closeJob();
+				renderTable();
+		}
+	});
 }
 
 function saveUser()
@@ -598,27 +603,27 @@ function saveUser()
 	data['first']       = $("div[name*=editUserDialog]").find("input[name=first]").val();
 	data['last']        = $("div[name*=editUserDialog]").find("input[name=last]").val();
 
-			$.ajax({
-					headers: {
-						"Content-Type"  : "application/json",
-						"Accept-Type"  : "application/json",
-				                "runlater_password"  : password,
-					},
-					beforeSend: function(xhr) {
-						xhr.setRequestHeader("Content-Type", "application/json");
-						xhr.setRequestHeader("Accept", "application/json");
-				                xhr.setRequestHeader("runlater_password", password);
-					     },
-					url: "users/" + account,
-					type: "PUT",
-					data: JSON.stringify(data),
-					contentType: 'application/json',
-					error: function(XMLHttpRequest, textStatus, errorThrown){
-					    console.log(errorThrown);
-					}, success: function(data, textStatus, XMLHttpRequest){
-					    closeUser();
-					}
-				    })
+	$.ajax({
+		headers: {
+			"Content-Type"  : "application/json",
+			"Accept-Type"  : "application/json",
+	                "runlater_password"  : password,
+		},
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Content-Type", "application/json");
+			xhr.setRequestHeader("Accept", "application/json");
+	                xhr.setRequestHeader("runlater_password", password);
+		     },
+		url: "users/" + account,
+		type: "PUT",
+		data: JSON.stringify(data),
+		contentType: 'application/json',
+		error: function(XMLHttpRequest, textStatus, errorThrown){
+		    console.log(errorThrown);
+		}, success: function(data, textStatus, XMLHttpRequest){
+		    closeUser();
+		}
+	});
 
 	$("div[name*=editUserDialog]").css('display', 'block');
 	$("div[name*=editUserDialog]").dialog({"width" : "400px", "title" : "Edit User", "modal" : true, "resizable" : false});
@@ -634,55 +639,55 @@ function addUser(username, password, email)
         data["last"]     = ""
         data["company"]  = ""
 
-			$.ajax({
-					headers: {
-						"Content-Type" : "application/json",
-						"Accept"       : "application/json"
-					},
-					beforeSend: function(xhr) {
-						xhr.setRequestHeader("Content-Type", "application/json");
-						xhr.setRequestHeader("Accept", "application/json");
-				        },
-					url: "users/",
-					type: "PUT",
-					async: false,
-					contentType: 'application/json',
-					data: JSON.stringify( data ),
-					error: function(XMLHttpRequest, textStatus, errorThrown){
-					    console.log(errorThrown);
-					}, success: function(data, textStatus, XMLHttpRequest){
-						pass = CryptoJS.AES.encrypt(password, PASS_PHRASE);
-						setCookie('runlater_cred','{"account" : "'+account+'", "password" : "'+pass+'", "showing" : '+showing+'}',1);
-						defaultKey();
-					}
-				    })
+	$.ajax({
+		headers: {
+			"Content-Type" : "application/json",
+			"Accept"       : "application/json"
+		},
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Content-Type", "application/json");
+			xhr.setRequestHeader("Accept", "application/json");
+	        },
+		url: "users/",
+		type: "PUT",
+		async: false,
+		contentType: 'application/json',
+		data: JSON.stringify( data ),
+		error: function(XMLHttpRequest, textStatus, errorThrown){
+		    console.log(errorThrown);
+		}, success: function(data, textStatus, XMLHttpRequest){
+			pass = CryptoJS.AES.encrypt(password, PASS_PHRASE);
+			setCookie('runlater_cred','{"account" : "'+account+'", "password" : "'+pass+'", "showing" : '+showing+'}',1);
+			defaultKey();
+		}
+	});
 }
 
 function showUserDialog()
 {
-			var hash = CryptoJS.HmacSHA1(account, "");
-			hash = hash.toString(CryptoJS.enc.Base64);	
+	var hash = CryptoJS.HmacSHA1(account, "");
+	hash = hash.toString(CryptoJS.enc.Base64);	
 
-			$.ajax({
-					headers: {
-						"Content-Type"  : "application/json",
-						"Accept-Type"  : "application/json"
-					},
-					beforeSend: function(xhr) {
-						xhr.setRequestHeader("Content-Type", "application/json");
-						xhr.setRequestHeader("Accept", "application/json");
-						xhr.setRequestHeader("runlater_password", password);
-					     },
-					url: "users/" + account ,
-					type: "GET",
-					contentType: 'application/json',
-					error: function(XMLHttpRequest, textStatus, errorThrown){
-					    console.log(errorThrown);
-					}, success: function(data, textStatus, XMLHttpRequest){
-					      populateDialog(JSON.parse(XMLHttpRequest.responseText));
-					      $('div[name=editUserDialog]').find('input[name=password]').val(password);
-					}
-				    })
+	$.ajax({
+		headers: {
+			"Content-Type"  : "application/json",
+			"Accept-Type"  : "application/json"
+		},
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Content-Type", "application/json");
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("runlater_password", password);
+		     },
+		url: "users/" + account ,
+		type: "GET",
+		contentType: 'application/json',
+		error: function(XMLHttpRequest, textStatus, errorThrown){
+		    console.log(errorThrown);
+		}, success: function(data, textStatus, XMLHttpRequest){
+		      populateDialog(JSON.parse(XMLHttpRequest.responseText));
+		      $('div[name=editUserDialog]').find('input[name=password]').val(password);
+		}
+	});
 
 	$("div[name*=editUserDialog]").css('display', 'block');
 	$("div[name*=editUserDialog]").dialog({"width" : "400px", "title" : "Edit User", "modal" : true, "resizable" : false});
@@ -853,62 +858,62 @@ function showText(val)
 
 function widgetizeButtons()
 {
-			    $(function() {
-				$( "input[type=submit], button" )
-				    .button()
-			    });
-		            $("div[name=addJobDialog]").find("input[name=name]").focus(function() {
-			       if($("div[name=addJobDialog]").find("input[name=name]").css('background-color') == 'rgb(255, 151, 151)')
-			       {
-					$("div[name*=addJobDialog]").find("input[name=name]").css('background-color', 'white');
-					$("div[name*=addJobDialog]").find("input[name=name]").val('');
-			       }     
-			    });
-		            $("div[name=addJobDialog]").find("input[name=name]").keyup(function(e) {
-				        nameCleaner(e);
-			    });
-			    $("div[name=addJobDialog]").find("input[name=name]").change(function(e) {
-				        nameCleaner(e);
-			    });
-			    $("div[name=addKeyDialog]").find("input[name=keyname]").keyup(function(e) {
-				        nameCleaner(e);
-			    });		
-			     $("div[name=addJobDialog]").find("button[id=addJobButton]").click(function(e, enterKeyPressed) {
-					if(e.originalEvent.detail == undefined || e.originalEvent.detail)
-					{
-						addJob();
-					}
-			    });	
-			    $("div[name=addKeyDialog]").find("button[id=addKeyButton]").click(function(e, enterKeyPressed) {
-					if(e.originalEvent.detaul == undefined || e.originalEvent.detail)
-					{
-						addKey();
-					}
-			    });
+	$(function() {
+	    $( "input[type=submit], button" )
+	        .button()
+	});
+	$("div[name=addJobDialog]").find("input[name=name]").focus(function() {
+	   if($("div[name=addJobDialog]").find("input[name=name]").css('background-color') == 'rgb(255, 151, 151)')
+	   {
+	    	$("div[name*=addJobDialog]").find("input[name=name]").css('background-color', 'white');
+	    	$("div[name*=addJobDialog]").find("input[name=name]").val('');
+	   }     
+	});
+	$("div[name=addJobDialog]").find("input[name=name]").keyup(function(e) {
+	            nameCleaner(e);
+	});
+	$("div[name=addJobDialog]").find("input[name=name]").change(function(e) {
+	            nameCleaner(e);
+	});
+	$("div[name=addKeyDialog]").find("input[name=keyname]").keyup(function(e) {
+	            nameCleaner(e);
+	});		
+	 $("div[name=addJobDialog]").find("button[id=addJobButton]").click(function(e, enterKeyPressed) {
+	    	if(e.originalEvent.detail == undefined || e.originalEvent.detail)
+	    	{
+	    		addJob();
+	    	}
+	});	
+	$("div[name=addKeyDialog]").find("button[id=addKeyButton]").click(function(e, enterKeyPressed) {
+	    	if(e.originalEvent.detaul == undefined || e.originalEvent.detail)
+	    	{
+	    		addKey();
+	    	}
+	});
 }
 
 
 function setCookie(c_name,value,exdays)
 {
-var exdate=new Date();
-exdate.setDate(exdate.getDate() + exdays);
-var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
-document.cookie=c_name + "=" + c_value;
+	var exdate=new Date();
+	exdate.setDate(exdate.getDate() + exdays);
+	var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+	document.cookie=c_name + "=" + c_value;
 }
 
 function getCookie(c_name)
 {
-var i,x,y,ARRcookies=document.cookie.split(";");
-for (i=0;i<ARRcookies.length;i++)
-{
-  x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
-  y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
-  x=x.replace(/^\s+|\s+$/g,"");
-  if (x==c_name)
-    {
-    return unescape(y);
-    }
-  }
+	var i,x,y,ARRcookies=document.cookie.split(";");
+	for (i=0;i<ARRcookies.length;i++)
+	{
+		x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+		y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+		x=x.replace(/^\s+|\s+$/g,"");
+		if (x==c_name)
+		{
+			return unescape(y);
+		}
+	}
 }
 
 function del_cookie(name)
@@ -916,3 +921,7 @@ function del_cookie(name)
     document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
 
+
+var account;
+var password;
+PASS_PHRASE = "SIMPLEOBSCURE";
